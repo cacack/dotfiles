@@ -1,0 +1,1 @@
+KERNEL=="sd*", SUBSYSTEMS=="scsi", ATTRS{vendor}=="TEAC    ", ATTRS{model}=="FD-05PUB        ", SYMLINK+="floppy"
