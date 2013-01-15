@@ -25,7 +25,8 @@ You can then git fetch/merge and rerun setup.sh to refresh a box.
 ### Without Git
 	mkdir ~/.dotfiles
 	cd ~/.dotfiles
-	curl -#L https://github.com/cacack/dotfiles/archive/master.tar.gz |tar -xzv --strip-components 1	$OSTYPE/setup.sh
+	curl -#L https://github.com/cacack/dotfiles/archive/master.tar.gz |tar -xzv --strip-components 1
+	$OSTYPE/setup.sh
 
 Just re-run the last two commands to refresh a box.
 
