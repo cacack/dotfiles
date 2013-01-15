@@ -21,7 +21,7 @@ srcdirbase="${HOME}/.dotfiles/${OSTYPE}/${set}"
 [[ ${set} -eq "user" ]] && destdirbase="${HOME}" || destdirbase="/etc"
 
 # Relative to $destdir and is laid out relative to $HOME minus the dot
-cfgs='abcde.conf bashrc bash_aliases bash_profile profile tmux.conf vimrc vim config/Terminal/terminalrc'
+cfgs='abcde.conf bashrc bash_aliases bash_profile dir_colors profile tmux.conf vimrc vim config/Terminal/terminalrc'
 
 ###############################################################################
 # Directories
