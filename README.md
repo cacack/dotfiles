@@ -1,4 +1,4 @@
-# README
+# DotFiles
 My various configuration files for Linux, multi-OS apps, and to a lesser extent, Windows.
 
 Includes (but not limited to):
@@ -7,6 +7,11 @@ Includes (but not limited to):
 * tmux
 * vi
 * XFCE Terminal
+
+These are mine; they may not work for you as-is.  But read on and feel free to fork 'em.
+
+## Purpose
+I wanted a way to track changes and simplify bootstrapping new boxes.  Github and a setup script allow me to accomplish this making home feel like home.  This is a work in progress, specially the bootstrap method.
 
 ## Layout
 / ${OSTYPE} / {user|system}
