@@ -30,3 +30,13 @@ You can then git fetch/merge and rerun setup.sh to refresh a box.
 
 Just re-run the last two commands to refresh a box.
 
+## Inspiration
+I've borrowed/learned a thing or two from the following folks:
+* https://github.com/cowboy/dotfiles
+* https://github.com/rtomayko/dotfiles
+
+## License
+Copyright (c) [Chris Clonch][1]. Distributed under an [MIT License][2].
+
+[1]: http://www.theclonchs.com/chris/
+[2]: http://www.opensource.org/licenses/MIT
