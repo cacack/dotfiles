@@ -39,6 +39,9 @@ Just re-run the last two commands to refresh a box.
 I've borrowed/learned a thing or two from the following folks:
 * https://github.com/cowboy/dotfiles
 * https://github.com/rtomayko/dotfiles
+* http://ethanschoonover.com/solarized
+
+More attributions may be found throughout the files contained within this repository..
 
 ## License
 Copyright (c) [Chris Clonch][1]. Distributed under an [MIT License][2].
