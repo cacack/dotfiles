@@ -55,6 +55,9 @@ for cfg in ${cfgs}; do
   ln -s ${srcdirbase}/${cfg} ${destdirbase}/.${cfg}
 done
 
+# Run the private dotfiles if it exists and is excutable.
+[ -x ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh ] && ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh
+
 # Update 
 
 
