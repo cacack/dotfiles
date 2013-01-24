@@ -48,10 +48,9 @@ xdg-user-dirs-update --set VIDEOS ${destdirbase}/video
 
 for cfg in ${cfgs}; do
   # First backup any existing files or remove old symlinks
+  [ -L ${destdirbase}/.${cfg} ] && rm ${destdirbase}/.${cfg}
   if [[ -f ${destdirbase}/.${cfg} || -d ${destdirbase}/.${cfg} ]]; then
-    mv ${destdirbase}/.${cfg} ${destdirbase}/.${cfg}.preusersetup
-  elif [[ -L ${destdirbase}/.${cfg} ]]; then
-    rm ${destdirbase}/.${cfg}
+	  mv ${destdirbase}/.${cfg} ${destdirbase}/.${cfg}.prev_$(date '+%F_%R')
   fi
   ln -s ${srcdirbase}/${cfg} ${destdirbase}/.${cfg}
 done
