@@ -58,6 +58,7 @@ done
 # Run the private dotfiles if it exists and is excutable.
 [ -x ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh ] && ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh
 
-# Update 
-
-
+###############################################################################
+# Fonts
+mkdir ~/.fonts
+ln -s ~/.dotfiles/multi/fonts/* ~/.fonts/
