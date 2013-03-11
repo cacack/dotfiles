@@ -1,0 +1,2 @@
+# Ignore .git directories so we can nest repos.
+.git/**/*
