@@ -43,6 +43,9 @@ I've borrowed/learned a thing or two from the following folks:
 
 More attributions may be found throughout the files contained within this repository..
 
+## ToDo
+* See if using unicode in statusbar or other places makes sense. See http://superuser.com/questions/385472/get-current-window-number-for-bash-prompt.
+
 ## License
 Copyright (c) [Chris Clonch][1]. Distributed under an [MIT License][2].
 
