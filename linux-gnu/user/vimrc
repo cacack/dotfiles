@@ -7,3 +7,11 @@ set expandtab ts=3 sw=3 ai
 set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
+
+set tabstop=3
+set shiftwidth=3
+set softtabstop=3
+set expandtab
+set smarttab
+
+set ls=2

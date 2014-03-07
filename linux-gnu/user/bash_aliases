@@ -10,6 +10,7 @@ alias la='ls -a'
 alias lla='la -l'
 alias lx='ls -X'
 alias llx='lx -l'
+alias l='ls -1'
  
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
