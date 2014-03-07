@@ -2,7 +2,6 @@ call pathogen#infect()
 syntax on
 filetype plugin indent on
 "se t_Co=256
-set expandtab ts=3 sw=3 ai
 
 set background=dark
 let g:solarized_termcolors=256
