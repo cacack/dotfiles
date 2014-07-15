@@ -11,21 +11,19 @@
 
 # Set $mode to $1 or default to "user" if unset/null.
 mode=${1:-"user"}
-
 # Set $environ to $2 or default to 'minimal" if unset/null.
 environ=${2:-"minimal"}
 
-# My directories to setup.
+# Directories 
+dir_src="${HOME}/.dotfiles"
+dir_src_os="$dir_base/${OSTYPE}"
+dir_src_mode="${dir_base_os}/${mode}"
+[[ ${mode} -eq "user" ]] && dir_dest="${HOME}" || dir_dest="/etc"
+
 dirs='bin devel etc tmp'
-# Include XDG desktop dirs if needed.
-[[ ${environ} -eq 'desktop' ]] && dirs="$dirs $dirs_xdg"
 
 # Key=Value pairs used to set XDG desktop directory names.
 xdgkv='DESKTOP=desktop DOCUMENTS=documents DOWNLOAD=downloads MUSIC=music PICTURES=pictures PUBLICSHARE=public TEMPLATES=templates VIDEOS=videos'
-
-# Path configuration..
-srcdirbase="${HOME}/.dotfiles/${OSTYPE}/${mode}"
-[[ ${mode} -eq "user" ]] && destdirbase="${HOME}" || destdirbase="/etc"
 
 # Relative to $destdir and is laid out relative to $HOME minus the dot
 cfgs='bashrc bash_aliases bash_profile dir_colors profile tmux.conf vimrc vim'
@@ -38,8 +36,8 @@ cfgs_desktop='abcde.conf config/Terminal/terminalrc'
 # Directories
 for dir in ${dirs}; do
    # Create directories if not exists
-   if [[ ! -d ${destdirbase}/${dir} ]]; then
-      mkdir ${destdirbase}/${dir}
+   if [[ ! -d ${dir_dest}/${dir} ]]; then
+      mkdir ${dir_dest}/${dir}
    fi
 done
 
@@ -51,9 +49,18 @@ if [[ ${environ} -eq 'desktop' ]]; then
       set -- `echo ${pairs} | tr '=' ' '`
       key=${1}
       value=${2}
-      xdg-user-dirs-update --set ${key} ${destdirbase}/${value}
+      xdg-user-dirs-update --set ${key} ${dir_dest}/${value}
    done
 fi
+
+
+###############################################################################
+# Executables
+for bin in ${dir_src_mode}/bin; do
+   # Remove old symlink
+  [[ -L ${dir_dest}/bin/${bin} ]] && rm ${dir_dest}/bin/${bin}
+  ln -s ${dir_dest}/bin/${bin} ${dir_dest}/bin/${bin}
+}
 
 
 ###############################################################################
@@ -61,18 +68,19 @@ fi
 
 for cfg in ${cfgs}; do
   # Remove old symlink
-  [ -L ${destdirbase}/.${cfg} ] && rm ${destdirbase}/.${cfg}
+  [ -L ${dir_dest}/.${cfg} ] && rm ${dir_dest}/.${cfg}
   # Or backup file/directory if real
-  if [[ -f ${destdirbase}/.${cfg} || -d ${destdirbase}/.${cfg} ]]; then
-	  mv ${destdirbase}/.${cfg} ${destdirbase}/.${cfg}.prev_$(date '+%F_%R')
+  if [[ -f ${dir_dest}/.${cfg} || -d ${dir_dest}/.${cfg} ]]; then
+	  mv ${dir_dest}/.${cfg} ${dir_dest}/.${cfg}.prev_$(date '+%F_%R')
   fi
-  ln -s ${srcdirbase}/${cfg} ${destdirbase}/.${cfg}
+  ln -s ${dir_src_mode}/${cfg} ${dir_dest}/.${cfg}
 done
 
 # Run the private dotfiles if it exists and is excutable.
 [ -x ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh ] && ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh
 
+
 ###############################################################################
 # Fonts
 mkdir ~/.fonts
-ln -s ~/.dotfiles/multi/fonts/* ~/.fonts/
+ln -s ${dir_src}/multi/fonts/* ~/.fonts/
