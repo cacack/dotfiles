@@ -13,6 +13,8 @@
 mode=${1:-"user"}
 # Set $environ to $2 or default to 'minimal" if unset/null.
 environ=${2:-"minimal"}
+# Allow a verbose mode, defaults to no
+verbose=${3}
 # Set date = 2014-07-15_12:38
 datetime=$(date '+%F_%R')
 
@@ -26,12 +28,6 @@ dirs='bin devel etc tmp'
 
 # Key=Value pairs used to set XDG desktop directory names.
 xdgkv='DESKTOP=desktop DOCUMENTS=documents DOWNLOAD=downloads MUSIC=music PICTURES=pictures PUBLICSHARE=public TEMPLATES=templates VIDEOS=videos'
-
-# Relative to $destdir and is laid out relative to $HOME minus the dot
-cfgs='bashrc bash_aliases bash_profile dir_colors profile tmux.conf vimrc vim'
-cfgs_desktop='abcde.conf config/Terminal/terminalrc'
-# Include desktop configs if needed.
-[[ ${environ} -eq 'desktop' ]] && cfgs="$cfgs $cfgs_desktop"
 
 
 ###############################################################################
@@ -64,10 +60,8 @@ for bin_src in ${dir_src_mode}/bin/*; do
    bin_dest=${dir_dest}/bin/${bin_src##${dir_src_mode}/bin/}
    # Remove old symlink
    [[ -L ${bin_dest} ]] && rm ${bin_dest}
-   # Or backup file/directory if real.
-   if [[ -f ${bin_dest} ]]; then
-      mv ${bin_dest} ${bin_dest}.prev_${datetime}
-   fi
+   # Or backup file if real.
+   [[ -f ${bin_dest} ]] && mv ${bin_dest} ${bin_dest}.prev_${datetime}
    ln -s ${bin_src} ${bin_dest}
 done
 
@@ -75,14 +69,33 @@ done
 ###############################################################################
 # Configuration Files
 echo "Linking configuration files..."
-for cfg in ${cfgs}; do
-  # Remove old symlink
-  [[ -L ${dir_dest}/.${cfg} ]] && rm ${dir_dest}/.${cfg}
-  # Or backup file/directory if real
-  if [[ -f ${dir_dest}/.${cfg} || -d ${dir_dest}/.${cfg} ]]; then
-	  mv ${dir_dest}/.${cfg} ${dir_dest}/.${cfg}.prev_${datetime}
-  fi
-  ln -s ${dir_src_mode}/${cfg} ${dir_dest}/.${cfg} 2>/dev/null
+#for cfg in ${cfgs}; do
+for cfg_src in ${dir_src_mode}/dot*; do
+   cfg_dest=${dir_dest}/${cfg_src##${dir_src_mode}/dot}
+   # If source is a directory,
+   if [[ -d ${cfg_src} ]]; then
+      # Find individual files recursively
+      for cfg_src_r in `find ${cfg_src} -type f`; do
+         cfg_dest_r=${dir_dest}/${cfg_src_r##${dir_src_mode}/dot}
+         # Make sure destination path exists
+         d=$(dirname ${cfg_dest_r})
+         [[ -d ${d} ]] || mkdir -p ${d}
+         [[ ${verbose} ]] && echo "$cfg_src_r >>> $cfg_dest_r"
+         # Remove old symlink
+         [[ -L ${cfg_dest_r} ]] && rm ${cfg_dest_r}
+         # Or backup file if real
+         [[ -f ${cfg_dest_r} ]] &&  mv ${cfg_dest_r} ${cfg_dest_r}.prev_${datetime}
+         ln -s ${cfg_src_r} ${cfg_dest_r} 
+      done
+      # Next ${cfg_src}
+      continue
+   fi
+   [[ ${verbose} ]] && echo "$cfg_src >>> $cfg_dest"
+   # Remove old symlink
+   [[ -L ${cfg_dest} ]] && rm ${cfg_dest}
+   # Or backup file if real
+   [[ -f ${cfg_dest} ]] &&  mv ${cfg_dest} ${cfg_dest}.prev_${datetime}
+   ln -s ${cfg_src} ${cfg_dest}
 done
 
 # Run the private dotfiles if it exists and is excutable.
@@ -98,9 +111,7 @@ for font_src in ${dir_src}/multi/fonts/*; do
    font_dest=${HOME}/.fonts/${font_src##${dir_src}/multi/fonts/}
    # Remove old symlink
    [[ -L ${font_dest} ]] && rm ${font_dest}
-   # Or backup file/directory if real.
-   if [[ -f ${font_dest} ]]; then
-      mv ${font_dest} ${font_dest}.prev_${datetime}
-   fi
+   # Or backup file if real.
+   [[ -f ${font_dest} ]] && mv ${font_dest} ${font_dest}.prev_${datetime}
    ln -s ${font_src} ${font_dest}
 done
