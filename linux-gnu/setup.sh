@@ -68,7 +68,7 @@ for bin in ${dir_src_mode}/bin; do
 
 for cfg in ${cfgs}; do
   # Remove old symlink
-  [ -L ${dir_dest}/.${cfg} ] && rm ${dir_dest}/.${cfg}
+  [[ -L ${dir_dest}/.${cfg} ]] && rm ${dir_dest}/.${cfg}
   # Or backup file/directory if real
   if [[ -f ${dir_dest}/.${cfg} || -d ${dir_dest}/.${cfg} ]]; then
 	  mv ${dir_dest}/.${cfg} ${dir_dest}/.${cfg}.prev_$(date '+%F_%R')
@@ -77,7 +77,7 @@ for cfg in ${cfgs}; do
 done
 
 # Run the private dotfiles if it exists and is excutable.
-[ -x ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh ] && ${HOME}/.dotfiles.priv/${OSTYPE}/setup.sh
+[[ -x ${dir_src}.priv/${OSTYPE}/setup.sh ]] && ${dir_src}.priv/${OSTYPE}/setup.sh
 
 
 ###############################################################################
