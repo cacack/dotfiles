@@ -18,7 +18,8 @@ alias grep='grep --color=auto --exclude-dir=\.svn'
 
 alias vi='vim'
 
-alias ssh='TERM=xterm-256color ssh'
+# Enable 256 color and use wrapped SSH bin.
+alias ssh='TERM=xterm-256color ~/bin/ssh'
 
 # Easy way to set application "defaults"
 alias dvgrab='dvgrab --autosplit --timestamp --format dv2 --opendml --size 0'
