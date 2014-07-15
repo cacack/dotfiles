@@ -9,46 +9,60 @@
 ###############################################################################
 # Init
 
-# Default to "user" if first arg is unset/null.
-set=${1:-"user"}
+# Set $mode to $1 or default to "user" if unset/null.
+mode=${1:-"user"}
+
+# Set $environ to $2 or default to 'minimal" if unset/null.
+environ=${2:-"minimal"}
 
 # My directories to setup.
-xdgdirs='desktop documents downloads music pictures public templates videos'
-mydirs='bin devel etc tmp'
+dirs='bin devel etc tmp'
+# Include XDG desktop dirs if needed.
+[[ ${environ} -eq 'desktop' ]] && dirs="$dirs $dirs_xdg"
+
+# Key=Value pairs used to set XDG desktop directory names.
+xdgkv='DESKTOP=desktop DOCUMENTS=documents DOWNLOAD=downloads MUSIC=music PICTURES=pictures PUBLICSHARE=public TEMPLATES=templates VIDEOS=videos'
 
 # Path configuration..
-srcdirbase="${HOME}/.dotfiles/${OSTYPE}/${set}"
-[[ ${set} -eq "user" ]] && destdirbase="${HOME}" || destdirbase="/etc"
+srcdirbase="${HOME}/.dotfiles/${OSTYPE}/${mode}"
+[[ ${mode} -eq "user" ]] && destdirbase="${HOME}" || destdirbase="/etc"
 
 # Relative to $destdir and is laid out relative to $HOME minus the dot
-cfgs='abcde.conf bashrc bash_aliases bash_profile dir_colors profile tmux.conf vimrc vim config/Terminal/terminalrc'
+cfgs='bashrc bash_aliases bash_profile dir_colors profile tmux.conf vimrc vim'
+cfgs_desktop='abcde.conf config/Terminal/terminalrc'
+# Include desktop configs if needed.
+[[ ${environ} -eq 'desktop' ]] && cfgs="$cfgs $cfgs_desktop"
+
 
 ###############################################################################
 # Directories
-
-for dir in ${mydirs} ${xdgdirs}; do
-  if [[ ! -d ${destdirbase}/${dir} ]]; then
-    mkdir ${destdirbase}/${dir}
-  fi
+for dir in ${dirs}; do
+   # Create directories if not exists
+   if [[ ! -d ${destdirbase}/${dir} ]]; then
+      mkdir ${destdirbase}/${dir}
+   fi
 done
 
-# xdg-user-dirs does not use a user config file so we're left using a tool to
-# set the dirs.
-xdg-user-dirs-update --set DESKTOP ${destdirbase}/desktop
-xdg-user-dirs-update --set DOWNLOAD ${destdirbase}/downloads
-xdg-user-dirs-update --set TEMPLATES ${destdirbase}/templates
-xdg-user-dirs-update --set PUBLICSHARE ${destdirbase}/public
-xdg-user-dirs-update --set DOCUMENTS ${destdirbase}/documents
-xdg-user-dirs-update --set MUSIC ${destdirbase}/music
-xdg-user-dirs-update --set PICTURES ${destdirbase}/pictures
-xdg-user-dirs-update --set VIDEOS ${destdirbase}/video
+if [[ ${environ} -eq 'desktop' ]]; then
+   # xdg-user-dirs does not use a user config file so we're left using a tool to
+   # set the dirs.
+   for pairs in ${xdgkv}; do
+      # Split the Key=Value pairs
+      set -- `echo ${pairs} | tr '=' ' '`
+      key=${1}
+      value=${2}
+      xdg-user-dirs-update --set ${key} ${destdirbase}/${value}
+   done
+fi
+
 
 ###############################################################################
 # Configuration Files
 
 for cfg in ${cfgs}; do
-  # First backup any existing files or remove old symlinks
+  # Remove old symlink
   [ -L ${destdirbase}/.${cfg} ] && rm ${destdirbase}/.${cfg}
+  # Or backup file/directory if real
   if [[ -f ${destdirbase}/.${cfg} || -d ${destdirbase}/.${cfg} ]]; then
 	  mv ${destdirbase}/.${cfg} ${destdirbase}/.${cfg}.prev_$(date '+%F_%R')
   fi
