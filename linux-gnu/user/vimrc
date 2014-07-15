@@ -16,6 +16,7 @@ set smarttab
 set ls=2
 
 " Automatic toggle of paste/nopaste modes
+" https://coderwall.com/p/if9mda
 function! WrapForTmux(s)
   if !exists('$TMUX')
     return a:s
