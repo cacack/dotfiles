@@ -13,6 +13,8 @@
 mode=${1:-"user"}
 # Set $environ to $2 or default to 'minimal" if unset/null.
 environ=${2:-"minimal"}
+# Set date = 2014-07-15_12:38
+datetime=$(date '+%F_%R')
 
 # Directories 
 dir_src="${HOME}/.dotfiles"
@@ -34,6 +36,7 @@ cfgs_desktop='abcde.conf config/Terminal/terminalrc'
 
 ###############################################################################
 # Directories
+echo "Creating directories..."
 for dir in ${dirs}; do
    # Create directories if not exists
    if [[ ! -d ${dir_dest}/${dir} ]]; then
@@ -56,24 +59,30 @@ fi
 
 ###############################################################################
 # Executables
-for bin in ${dir_src_mode}/bin; do
+echo "Linking user executables..."
+for bin_src in ${dir_src_mode}/bin/*; do
+   bin_dest=${dir_dest}/bin/${bin_src##${dir_src_mode}/bin/}
    # Remove old symlink
-  [[ -L ${dir_dest}/bin/${bin} ]] && rm ${dir_dest}/bin/${bin}
-  ln -s ${dir_dest}/bin/${bin} ${dir_dest}/bin/${bin}
+   [[ -L ${bin_dest} ]] && rm ${bin_dest}
+   # Or backup file/directory if real.
+   if [[ -f ${bin_dest} ]]; then
+      mv ${bin_dest} ${bin_dest}.prev_${datetime}
+   fi
+   ln -s ${bin_src} ${bin_dest}
 done
 
 
 ###############################################################################
 # Configuration Files
-
+echo "Linking configuration files..."
 for cfg in ${cfgs}; do
   # Remove old symlink
   [[ -L ${dir_dest}/.${cfg} ]] && rm ${dir_dest}/.${cfg}
   # Or backup file/directory if real
   if [[ -f ${dir_dest}/.${cfg} || -d ${dir_dest}/.${cfg} ]]; then
-	  mv ${dir_dest}/.${cfg} ${dir_dest}/.${cfg}.prev_$(date '+%F_%R')
+	  mv ${dir_dest}/.${cfg} ${dir_dest}/.${cfg}.prev_${datetime}
   fi
-  ln -s ${dir_src_mode}/${cfg} ${dir_dest}/.${cfg}
+  ln -s ${dir_src_mode}/${cfg} ${dir_dest}/.${cfg} 2>/dev/null
 done
 
 # Run the private dotfiles if it exists and is excutable.
@@ -82,5 +91,16 @@ done
 
 ###############################################################################
 # Fonts
-mkdir ~/.fonts
-ln -s ${dir_src}/multi/fonts/* ~/.fonts/
+echo "Linking fonts..."
+[[ -d ${HOME}/.fonts ]] || mkdir ${HOME}/.fonts
+for font_src in ${dir_src}/multi/fonts/*; do
+   # Derive destination from src.
+   font_dest=${HOME}/.fonts/${font_src##${dir_src}/multi/fonts/}
+   # Remove old symlink
+   [[ -L ${font_dest} ]] && rm ${font_dest}
+   # Or backup file/directory if real.
+   if [[ -f ${font_dest} ]]; then
+      mv ${font_dest} ${font_dest}.prev_${datetime}
+   fi
+   ln -s ${font_src} ${font_dest}
+done
