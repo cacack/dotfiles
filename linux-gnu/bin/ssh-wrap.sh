@@ -1,4 +1,5 @@
 #!/bin/env bash
+# http://www.linuxsysadmintutorials.com/multiple-ssh-client-configuration-files/
 
 ssh() {
     TMPDIR=~/tmp
