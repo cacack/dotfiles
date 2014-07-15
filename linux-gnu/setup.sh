@@ -16,8 +16,8 @@ environ=${2:-"minimal"}
 
 # Directories 
 dir_src="${HOME}/.dotfiles"
-dir_src_os="$dir_base/${OSTYPE}"
-dir_src_mode="${dir_base_os}/${mode}"
+dir_src_os="${dir_src}/${OSTYPE}"
+dir_src_mode="${dir_src_os}/${mode}"
 [[ ${mode} -eq "user" ]] && dir_dest="${HOME}" || dir_dest="/etc"
 
 dirs='bin devel etc tmp'
