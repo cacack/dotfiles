@@ -60,7 +60,7 @@ for bin in ${dir_src_mode}/bin; do
    # Remove old symlink
   [[ -L ${dir_dest}/bin/${bin} ]] && rm ${dir_dest}/bin/${bin}
   ln -s ${dir_dest}/bin/${bin} ${dir_dest}/bin/${bin}
-}
+done
 
 
 ###############################################################################
