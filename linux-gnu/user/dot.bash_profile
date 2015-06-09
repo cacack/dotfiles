@@ -10,3 +10,8 @@ fi
 if [ -f ~/.bashrc ]; then
   source ~/.bashrc
 fi
+
+if [ -x $(which ssh-agent) ]; then
+  eval $(ssh-agent)
+  ssh-add
+fi
