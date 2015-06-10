@@ -11,7 +11,20 @@ if [ -f ~/.bashrc ]; then
   source ~/.bashrc
 fi
 
-if [ -x $(which ssh-agent) ]; then
+  
+# Unlock SSH keys
+if [ -x $(which envoy) ]; then
+  # Use envoy first.
+  envoy -t ssh-agent -a chris\@home
+  envoy -t ssh-agent -a chris-software\@home
+  source <(envoy -p)
+elif [ -x $(which keychain) ]; then
+  # Use keychain second.
+  eval $(keychain --eval --agents ssh -Q --quiet chris\@home)
+  eval $(keychain --eval --agents ssh -Q --quiet chris-software\@home)
+elif [ -x $(which ssh-agent) ]; then
+  # Fall back to ssh-agent directly.
   eval $(ssh-agent)
-  ssh-add
+  ssh-add chris\@home
+  ssh-add chris-software\@home
 fi
