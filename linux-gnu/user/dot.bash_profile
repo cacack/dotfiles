@@ -28,3 +28,8 @@ elif [ -x $(which ssh-agent) ]; then
   ssh-add chris\@home
   ssh-add chris-software\@home
 fi
+
+if [ -n "$DESKTOP_SESSION" ];then
+    eval $(gnome-keyring-daemon --start)
+    export SSH_AUTH_SOCK
+fi
