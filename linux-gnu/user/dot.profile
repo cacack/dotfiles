@@ -8,7 +8,8 @@ run_scripts() {
       # skip non-executable snippets
       [ -x "${script}" ] || continue
       # execute $script in the context of the current shell
-      source ${script} >/dev/null 2>&1
+      #source ${script} >/dev/null 2>&1
+      source ${script}
    done
 }
 
