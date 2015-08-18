@@ -13,6 +13,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Bundle 'chase/vim-ansible-yaml'
+Bundle 'endel/vim-github-colorscheme'
 
 call pathogen#infect()
 syntax on
@@ -23,6 +24,9 @@ filetype plugin indent on
 set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
+if &diff
+   colorscheme github
+endif
 
 " Set default indentation rules.
 set tabstop=3        " How many columns tab uses.
