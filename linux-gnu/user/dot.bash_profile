@@ -22,7 +22,6 @@ function start_agent {
     chmod 600 "${SSH_ENV}"
     . "${SSH_ENV}" > /dev/null
     /usr/bin/ssh-add ~/.ssh/chris\@home;
-    /usr/bin/ssh-add ~/.ssh/chris-software\@home;
 }
 
 # Source SSH settings, if applicable
