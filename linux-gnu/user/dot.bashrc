@@ -60,7 +60,7 @@ CYAN=${AB}$(tput setaf 6)${AE}
 WHITE=${AB}$(tput setaf 7)${AE}
 
 # Set the PS1 prompt (with colors).
-export PS1="${BOLD}${GREEN}\u${RESET}${GREEN}@${BOLD}\h${RESET}:${BOLD}${BLUE}\W${RESET}$ "
+export PS1="${BOLD}${GREEN}\u${RESET}${GREEN}@\h${RESET}:${BOLD}${BLUE}\W${RESET}$ "
 
 [ -f ~/.dir_colors ] &&  eval $(dircolors -b ~/.dir_colors)
  
