@@ -24,6 +24,16 @@ run_scripts() {
 [ -f "/etc/bashrc" ] && source "/etc/bashrc"
 [ -f "/etc/bash.bashrc" ] && source "/etc/bash.bashrc"
 
+USE_COLORS=''
+if [ -t 1 ]; then
+   # see if it supports colors...
+   ncolors=$(tput colors)
+   if test -n "$ncolors" && test $ncolors -ge 8; then
+		USE_COLORS=${ncolors}
+   fi
+fi
+export USE_COLORS
+
 
 ################################################################################
 # Bash Options
