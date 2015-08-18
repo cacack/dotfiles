@@ -5,3 +5,6 @@
 if [ -f ~/.profile ]; then
   source ~/.profile
 fi
+
+# Source .bashrc, containing non-login related bash initializations.
+[ -f ~/.bashrc ] && source ~/.bashrc
