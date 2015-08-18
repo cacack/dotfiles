@@ -12,6 +12,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+Bundle 'chase/vim-ansible-yaml'
+
 call pathogen#infect()
 syntax on
 filetype plugin indent on
