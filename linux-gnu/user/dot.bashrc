@@ -128,28 +128,10 @@ export PAGER MANPAGER
 ################################################################################
 # EXTERNALS
 
-# Source in external configs.
-[ -d ${HOME}/.bashrc.d ] && run_scripts ${HOME}/.bashrc.d
-
 # Enable programmable completion features.
 if [ -f "/etc/bash_completion" ] && [ ! `shopt -oq posix` ]; then
     source "/etc/bash_completion"
 fi
 
-# Execute local differences
-[ -f "$HOME/.bashrc_local" ] && source "$HOME/.bashrc_local"
-
-
-################################################################################
-# TMUX
-
-# The last thing is to execute tmux
-if [ -z $TMUX ] && [ $TERM != "screen*" ] && [ -z $SSH_TTY ] && [ ! -r "$HOME/.notmux" ]; then
-  # Only automatically connect to the default tmux session once.
-  if [[ ! `tmux list-clients -t default` ]]; then
-    # I cannot get 'exec tmux ...' to work so fudge it by launching it regularly
-    # then exiting afterwards.
-    tmux -2 attach-session -t default || tmux -2 new-session -s default
-    exit 0
-  fi
-fi
+# Source in external configs.
+[ -d ${HOME}/.bashrc.d ] && run_scripts ${HOME}/.bashrc.d
