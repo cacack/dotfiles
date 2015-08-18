@@ -10,6 +10,16 @@
 # outputting anything in those cases.
 [[ $- != *i* ]] && return
 
+# Function to source seperate config files.
+run_scripts() {
+   for script in ${1}/*; do
+      # skip non-executable snippets
+      [ -x "${script}" ] || continue
+      # execute $script in the context of the current shell
+      . ${script}
+   done
+}
+
 # Source system's global definitions
 [ -f "/etc/bashrc" ] && source "/etc/bashrc"
 [ -f "/etc/bash.bashrc" ] && source "/etc/bash.bashrc"
@@ -105,6 +115,9 @@ export PAGER MANPAGER
 
 ################################################################################
 # EXTERNALS
+
+# Source in external configs.
+[ -d ${HOME}/.bashrc.d ] && run_scripts ${HOME}/.bashrc.d
 
 # Add bash aliases.
 [ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
