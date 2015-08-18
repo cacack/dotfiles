@@ -119,9 +119,6 @@ export PAGER MANPAGER
 # Source in external configs.
 [ -d ${HOME}/.bashrc.d ] && run_scripts ${HOME}/.bashrc.d
 
-# Add bash aliases.
-[ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
-
 # Enable programmable completion features.
 if [ -f "/etc/bash_completion" ] && [ ! `shopt -oq posix` ]; then
     source "/etc/bash_completion"
