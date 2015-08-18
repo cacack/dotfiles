@@ -13,7 +13,7 @@ env=~/.ssh/agent.env
 #       (for example, when using agent-forwarding over SSH).
 
 agent_is_running() {
-    if [ "$SSH_AUTH_SOCK" ]; then
+    if [ -S "$SSH_AUTH_SOCK" ]; then
         # ssh-add returns:
         #   0 = agent running, has keys
         #   1 = agent running, no keys
@@ -49,5 +49,19 @@ if ! agent_is_running; then
 elif ! agent_has_keys; then
     ssh-add
 fi
+
+# attempt to connect to a running agent - cache SSH_AUTH_SOCK in ~/.ssh/
+sagent() {
+	[ -S "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK="$(< ~/.ssh/ssh-agent.env)"
+
+	# if cached agent socket is invalid, start a new one
+	[ -S "$SSH_AUTH_SOCK" ] || {
+		eval "$(ssh-agent)"
+		ssh-add -t 25920000 -K ~/.ssh/id_rsa
+		echo "$SSH_AUTH_SOCK" > ~/.ssh/ssh-agent.env
+	}
+}
+
+typeset -fx sagent
 
 unset env
