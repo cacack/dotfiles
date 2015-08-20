@@ -25,29 +25,34 @@ agent_is_running() {
 }
 
 agent_has_keys() {
-    ssh-add -l >/dev/null 2>&1
+	ssh-add -l >/dev/null 2>&1
+}
+
+agent_add_keys() {
+	#ssh-add -t 25920000 -K ~/.ssh/id_rsa
+	ssh-add -t 24h -K ~/.ssh/id_rsa
 }
 
 agent_load_env() {
-    . "$env" >/dev/null
+	. "$env" >/dev/null
 }
 
 agent_start() {
-    (umask 077; ssh-agent >"$env")
-    . "$env" >/dev/null
+	(umask 077; ssh-agent >"$env")
+	. "$env" >/dev/null
 }
 
 if ! agent_is_running; then
-    agent_load_env
+	agent_load_env
 fi
 
 # if your keys are not stored in ~/.ssh/id_rsa or ~/.ssh/id_dsa, you'll need
 # to paste the proper path after ssh-add
 if ! agent_is_running; then
-    agent_start
-    ssh-add
+	agent_start
+	agent_add_keys
 elif ! agent_has_keys; then
-    ssh-add
+	agent_add_keys
 fi
 
 # attempt to connect to a running agent - cache SSH_AUTH_SOCK in ~/.ssh/
