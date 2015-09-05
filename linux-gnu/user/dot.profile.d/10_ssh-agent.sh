@@ -29,8 +29,10 @@ agent_has_keys() {
 }
 
 agent_add_keys() {
-	#ssh-add -t 25920000 -K ~/.ssh/id_rsa
-	ssh-add -t 24h ~/.ssh/id_rsa
+	#ssh-add -t 24h ~/.ssh/id_rsa
+	for key in ~/.ssh/*.priv; do
+		ssh-add -t 24h ${key}
+	done
 }
 
 agent_load_env() {
