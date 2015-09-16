@@ -82,7 +82,8 @@ WHITE=${AB}$(tput setaf 7)${AE}
 # Set the PS1 prompt (with colors).
 export PS1="${BOLD}${GREEN}\u${RESET}${GREEN}@\h${RESET}:${BOLD}${BLUE}\W${RESET}$ "
 # Use alternate colors for work.
-[ -e .at_work ] && export PS1="${YELLOW}\u${CYAN}@\h${RESET}:${BLUE}\W${RESET}$ "
+[ -e ~/.cas-home ] && export PS1="${BOLD}${CYAN}\u${RESET}${CYAN}@\h${RESET}:${BOLD}${BLUE}\W${RESET}$ "
+
 [ -f ~/.dir_colors ] &&  eval $(dircolors -b ~/.dir_colors)
  
 
