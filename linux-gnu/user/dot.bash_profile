@@ -2,7 +2,7 @@
 # Favored by *BASH* shells over .profile.
 
 # Load .profile, containing login, non-bash related initializations.
-[ -f ~/.profile ] && source ~/.profile
+[ -f ${HOME}/.profile ] && source ${HOME}/.profile
 
 # Source .bashrc, containing non-login related bash initializations.
-[ -f ~/.bashrc ] && source ~/.bashrc
+[ -f ${HOME}/.bashrc ] && source ${HOME}/.bashrc
