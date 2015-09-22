@@ -1,4 +1,5 @@
 #~/.profile
+# 
 # Sourced for *ALL* interactive login shells and non-interactive shells with the 
 # --login option.
 
@@ -12,10 +13,6 @@ run_scripts() {
       source ${script}
    done
 }
-
-# Add my paths ahead of the system's
-PATH=$HOME/.local/bin:$HOME/bin:$PATH
-export PATH
 
 # Source in external configs.
 [ -d ${HOME}/.profile.d ] && run_scripts ${HOME}/.profile.d

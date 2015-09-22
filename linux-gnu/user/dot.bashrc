@@ -1,4 +1,5 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bashrc
+# interactive, non-login
 #
 # This file is sourced by all *interactive* bash shells on startup,
 # including some apparently non-interactive shells such as scp and rcp
@@ -23,6 +24,7 @@ run_scripts() {
 # Source system's global definitions
 [ -f "/etc/bashrc" ] && source "/etc/bashrc"
 [ -f "/etc/bash.bashrc" ] && source "/etc/bash.bashrc"
+[ -f "~/.profile" ] && source "~/.profile"
 
 USE_COLORS=''
 if [ -t 1 ]; then
