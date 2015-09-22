@@ -24,7 +24,7 @@ run_scripts() {
 # Source system's global definitions
 [ -f "/etc/bashrc" ] && source "/etc/bashrc"
 [ -f "/etc/bash.bashrc" ] && source "/etc/bash.bashrc"
-[ -f "~/.profile" ] && source "~/.profile"
+[ -f "${HOME}/.profile" ] && source "${HOME}/.profile"
 
 USE_COLORS=''
 if [ -t 1 ]; then
