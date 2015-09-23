@@ -21,10 +21,12 @@ run_scripts() {
    done
 }
 
+# Source ~/.profile here so all shells init in a sane manner.
+[ -f "${HOME}/.profile" ] && source "${HOME}/.profile"
+
 # Source system's global definitions
 [ -f "/etc/bashrc" ] && source "/etc/bashrc"
 [ -f "/etc/bash.bashrc" ] && source "/etc/bash.bashrc"
-[ -f "${HOME}/.profile" ] && source "${HOME}/.profile"
 
 USE_COLORS=''
 if [ -t 1 ]; then
