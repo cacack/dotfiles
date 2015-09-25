@@ -29,9 +29,8 @@ agent_has_keys() {
 }
 
 agent_add_keys() {
-	#ssh-add -t 24h ~/.ssh/id_rsa
-	for key in ~/.ssh/*.priv; do
-		ssh-add -t 24h ${key}
+	for key in ~/.ssh/*.pub; do
+		[ -f ${key%%.pub} ] && ssh-add -t 24h ${key%%.pub}
 	done
 }
 
@@ -56,19 +55,5 @@ if ! agent_is_running; then
 elif ! agent_has_keys; then
 	agent_add_keys
 fi
-
-# attempt to connect to a running agent - cache SSH_AUTH_SOCK in ~/.ssh/
-sagent() {
-	[ -S "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK="$(< ~/.ssh/ssh-agent.env)"
-
-	# if cached agent socket is invalid, start a new one
-	[ -S "$SSH_AUTH_SOCK" ] || {
-		eval "$(ssh-agent)"
-		ssh-add -t 25920000 -K ~/.ssh/id_rsa
-		echo "$SSH_AUTH_SOCK" > ~/.ssh/ssh-agent.env
-	}
-}
-
-typeset -fx sagent
 
 unset env
