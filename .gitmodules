@@ -13,3 +13,6 @@
 [submodule "linux-gnu/user/dot.vim/bundle/vim-github-colorscheme"]
 	path = linux-gnu/user/dot.vim/bundle/vim-github-colorscheme
 	url = https://github.com/endel/vim-github-colorscheme
+[submodule "linux-gnu/user/dot.vim/bundle/vim-ansible-yaml"]
+	path = linux-gnu/user/dot.vim/bundle/vim-ansible-yaml
+	url = https://github.com/chase/vim-ansible-yaml.git
