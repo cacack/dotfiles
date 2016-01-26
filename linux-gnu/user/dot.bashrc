@@ -121,7 +121,7 @@ export VISUAL="$EDITOR"
 
 # Perfer less with specific options.
 if [[ $(which less) ]]; then
-  PAGER="less -FwX"
+  PAGER="less -FwXR"
   MANPAGER="$PAGER"
 else
   PAGER="more"
