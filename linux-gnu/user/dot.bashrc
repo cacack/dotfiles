@@ -11,6 +11,8 @@
 # outputting anything in those cases.
 [[ $- != *i* ]] && return
 
+#set -x
+
 # Function to source seperate config files.
 run_scripts() {
    for script in ${1}/*; do
