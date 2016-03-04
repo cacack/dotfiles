@@ -1,2 +1,3 @@
 # Ignore .git directories so we can nest repos.
 .git/**/*
+linux-gnu/user/dot.vim/bundle/*
