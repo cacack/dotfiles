@@ -18,6 +18,8 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'endel/vim-github-colorscheme'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'rodjek/vim-puppet'
+
 call vundle#end()
 
 
