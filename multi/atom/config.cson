@@ -1,0 +1,24 @@
+"*":
+  "exception-reporting":
+    userId: "80df623a-3460-dc46-d87c-29e1c03d53bb"
+  welcome:
+    showOnStartup: false
+  core:
+    projectHome: "/home/cac21/devel"
+    autoHideMenuBar: true
+    themes: [
+      "one-dark-ui"
+      "solarized-dark-syntax"
+    ]
+  editor:
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+    tabLength: 3
+    fontSize: 10
+    softTabs: false
+    fontFamily: "Meslo LG S DZ"
+  "one-dark-ui":
+    layoutMode: "Compact"
+    fontSize: 10
+  "autocomplete-plus": {}
