@@ -22,3 +22,7 @@
     layoutMode: "Compact"
     fontSize: 10
   "autocomplete-plus": {}
+  "markdown-preview": {}
+".source.yaml":
+  editor:
+    tabLength: 2
