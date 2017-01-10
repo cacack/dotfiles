@@ -2,4 +2,5 @@
 .git/**/*
 linux-gnu/user/dot.vim/bundle/*
 multi/atom/blob-store
+multi/atom/.apm/
 linux-gnu/user/dot.vim/.netrwhist
