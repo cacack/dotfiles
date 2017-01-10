@@ -15,7 +15,8 @@ set rtp+=~/.vim/bundle/Vundle.vim  " set the runtime path to include Vundle
 call vundle#begin()                " initailize Vundle
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-Plugin 'chase/vim-ansible-yaml'
+Plugin 'editorconfig/editorconfig-vim'
+"Plugin 'chase/vim-ansible-yaml'
 Plugin 'endel/vim-github-colorscheme'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'rodjek/vim-puppet'
