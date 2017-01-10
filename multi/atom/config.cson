@@ -1,28 +1,39 @@
 "*":
-  "exception-reporting":
-    userId: "80df623a-3460-dc46-d87c-29e1c03d53bb"
-  welcome:
-    showOnStartup: false
+  "atom-beautify":
+    _analyticsUserId: "f7d1587f-dd17-450c-adfa-ccf0ec3c7e9e"
+    ruby_indent_size: 3
+  "autocomplete-plus": {}
   core:
-    projectHome: "/home/cac21/devel"
     autoHideMenuBar: true
+    disabledPackages: [
+      "atom-beautify"
+      "editor-settings"
+      "rubo-format"
+    ]
+    projectHome: "/home/cac21/devel"
+    telemetryConsent: "limited"
     themes: [
       "one-dark-ui"
       "solarized-dark-syntax"
     ]
   editor:
+    fontFamily: "Meslo LG S DZ"
+    fontSize: 10
     invisibles: {}
     showIndentGuide: true
     showInvisibles: true
-    tabLength: 3
-    fontSize: 10
-    softTabs: false
-    fontFamily: "Meslo LG S DZ"
-  "one-dark-ui":
-    layoutMode: "Compact"
-    fontSize: 10
-  "autocomplete-plus": {}
+  "exception-reporting":
+    userId: "80df623a-3460-dc46-d87c-29e1c03d53bb"
   "markdown-preview": {}
+  "one-dark-ui":
+    fontSize: 10
+    layoutMode: "Compact"
+  "spell-check":
+    locales: [
+      "en-US"
+    ]
+  welcome:
+    showOnStartup: false
 ".source.yaml":
   editor:
     tabLength: 2
