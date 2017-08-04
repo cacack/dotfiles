@@ -7,7 +7,6 @@
     autoHideMenuBar: true
     disabledPackages: [
       "atom-beautify"
-      "editor-settings"
       "rubo-format"
     ]
     projectHome: "/home/cac21/devel"
