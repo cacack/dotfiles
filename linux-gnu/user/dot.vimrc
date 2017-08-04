@@ -22,6 +22,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'rodjek/vim-puppet'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
 
 call vundle#end()
 
