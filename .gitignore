@@ -3,4 +3,5 @@
 linux-gnu/user/dot.vim/bundle/*
 multi/atom/blob-store
 multi/atom/.apm/
+multi/atom/packages/
 linux-gnu/user/dot.vim/.netrwhist
