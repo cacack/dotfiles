@@ -39,7 +39,7 @@ set ruler                           " show current position at bottom
 set noerrorbells                    " don't whine
 set visualbell t_vb=                " and don't make faces
 set lazyredraw                      " don't redraw while in macros
-set scrolloff=5                     " keep at least 5 lines around the cursor
+set scrolloff=10                    " keep at least 10 lines around the cursor
 set listchars=eol:$,tab:>·,trail:~  " define chars used for EOL, <Tab> and trailing whitespace
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
