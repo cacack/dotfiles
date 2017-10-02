@@ -87,6 +87,7 @@ set tabstop=2                " number of columns that <Tab> in file uses
 set shiftwidth=2             " number of columns to use for (auto)indent step
 set softtabstop=2            " number of columns that <Tab> uses while editing
 "set noexpandtab              " don't use spaces when <Tab> is inserted
+set expandtab                " only use spaces when <Tab> is inserted
 set smarttab                 " use &shiftwidth when inserting tabs
 filetype plugin indent on    " load filetype plugins and indent settings
 
