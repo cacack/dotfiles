@@ -16,3 +16,6 @@
 [submodule "linux-gnu/user/dot.vim/bundle/vim-ansible-yaml"]
 	path = linux-gnu/user/dot.vim/bundle/vim-ansible-yaml
 	url = https://github.com/chase/vim-ansible-yaml.git
+[submodule "liquidprompt"]
+	path = liquidprompt
+	url = https://github.com/nojhan/liquidprompt.git
