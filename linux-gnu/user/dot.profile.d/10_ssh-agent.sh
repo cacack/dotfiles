@@ -30,16 +30,18 @@ agent_has_keys() {
 
 agent_add_keys() {
 	for key in ~/.ssh/*.pub; do
-		[ -f ${key%%.pub} ] && ssh-add -t 24h ${key%%.pub}
+		[ -f "${key%%.pub}" ] && ssh-add -t 24h "${key%%.pub}"
 	done
 }
 
 agent_load_env() {
+  # shellcheck disable=SC1090
 	. "$env" >/dev/null
 }
 
 agent_start() {
 	(umask 077; ssh-agent >"$env")
+  # shellcheck disable=SC1090
 	. "$env" >/dev/null
 }
 
