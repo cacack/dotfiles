@@ -1,8 +1,10 @@
+#!/usr/bin/env bash
+
 # Make some possibly destructive commands more interactive.
 alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -i'
- 
+
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 alias ls='ls -F --color=auto'
 alias ll='ls -l'
@@ -11,7 +13,7 @@ alias lla='la -l'
 alias lx='ls -X'
 alias llx='lx -l'
 alias l='ls -1'
- 
+
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
 alias grep='grep --color=auto --exclude-dir=\.svn'
