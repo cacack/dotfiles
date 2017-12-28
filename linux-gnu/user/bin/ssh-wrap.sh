@@ -1,4 +1,5 @@
-#!/bin/env bash
+#!/usr/bin/env bash
+# shellcheck disable=SC2029
 # http://www.linuxsysadmintutorials.com/multiple-ssh-client-configuration-files/
 
 ssh() {
@@ -21,8 +22,8 @@ ssh() {
 
     mkfifo "$tmp_fifo"
     cat ~/.ssh/config ~/.ssh/config.* >"$tmp_fifo" 2>/dev/null &
-    /usr/bin/ssh -F "$tmp_fifo" "$@"
+    /usr/bin/ssh -F "$tmp_fifo" "${@}"
     rm "$tmp_fifo"
 }
 
-ssh $*
+ssh "$@"

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Only execute if at work.
 [ -e ~/.work ] || return
 
