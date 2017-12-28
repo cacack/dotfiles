@@ -11,9 +11,28 @@
     grep
 
 stages:
+  - checks
   - lint
   - test
 
+################################################################################
+# Checks
+check_nonascii_filenames:
+  stage: checks
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - bin/check_for_nonascii_filenames.sh
+
+check_whitespace_errors:
+  stage: checks
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - bin/check_for_whitespace_errors.sh
+
+################################################################################
+# Lint
 lint_yaml:
   stage: lint
   image: alpine:3.7
@@ -51,6 +70,8 @@ shellcheck:
     - mv ~/shellcheck-latest/shellcheck /usr/bin/
     - bin/run_shellcheck.sh
 
+################################################################################
+# Tests
 rubocop:
   stage: test
   image: ruby:2.3-alpine
