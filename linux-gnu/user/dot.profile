@@ -1,6 +1,6 @@
 #~/.profile
-# 
-# Sourced for *ALL* interactive login shells and non-interactive shells with the 
+#
+# Sourced for *ALL* interactive login shells and non-interactive shells with the
 # --login option.
 
 # Function to source seperate config files.

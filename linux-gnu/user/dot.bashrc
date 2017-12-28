@@ -91,7 +91,7 @@ export PS1="${BOLD}${GREEN}\u${RESET}${GREEN}@\h${RESET}:${BOLD}${BLUE}\W${RESET
 [ -e ~/.cas-home ] && export PS1="${BOLD}${CYAN}\u${RESET}${CYAN}@\h${RESET}:${BOLD}${BLUE}\W${RESET}$ "
 
 [ -f ~/.dir_colors ] &&  eval $(dircolors -b ~/.dir_colors)
- 
+
 
 ################################################################################
 # HISTORY

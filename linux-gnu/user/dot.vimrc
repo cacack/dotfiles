@@ -70,7 +70,7 @@ if has('syntax')
 	endif
 
 	if &t_Co == 256                   " if 256 color mode is enabled
-		set background=dark            " use dark backgrounds 
+		set background=dark            " use dark backgrounds
 		let g:solarized_termcolors=256 " enable 256 color in solarized theme
 		colorscheme solarized          " use solarized theme
 	endif
