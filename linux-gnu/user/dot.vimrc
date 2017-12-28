@@ -111,7 +111,9 @@ set formatoptions=tcrql         " t - autowrap to textwidth
                                 " r - autoinsert comment leader with <Enter>
                                 " q - allow formatting of comments with :gq
                                 " l - don't format already long lines
-
+set spelllang=en_us
+hi clear SpellBad
+hi SpellBad cterm=underline ctermfg=red
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Old and unused conf
