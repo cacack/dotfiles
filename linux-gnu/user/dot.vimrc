@@ -102,7 +102,8 @@ set smartcase                   " unless there's a capital letter
 "set completeopt=menu,longest,preview " more autocomplete <Ctrl>-P options
 "set nostartofline               " leave my cursor position alone!
 set backspace=2                 " equiv to :set backspace=indent,eol,start
-"set textwidth=80                " we like 80 columns
+set colorcolumn=80
+set textwidth=80                " we like 80 columns
 set showmatch                   " show matching brackets
 set pastetoggle=<F11>           " use <F11> to toggle between paste and nopaste
 set formatoptions=tcrql         " t - autowrap to textwidth
