@@ -71,10 +71,10 @@ if has('syntax')
 	if &t_Co == 256                  " if 256 color mode is enabled
 		set background=dark            " use dark backgrounds
 		let g:solarized_termcolors=256 " enable 256 color in solarized theme
-		colorscheme solarized          " use solarized theme
+		silent! colorscheme solarized  " use solarized theme
 	endif
 	if &diff                         " if this is vimdiff
-		colorscheme apprentice         " use the blue colorscheme
+		silent! colorscheme apprentice " use the blue colorscheme
 	endif
 endif
 
