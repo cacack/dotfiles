@@ -18,6 +18,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'editorconfig/editorconfig-vim'
 "Plugin 'chase/vim-ansible-yaml'
 Plugin 'endel/vim-github-colorscheme'
+Plugin 'romainl/Apprentice'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'rodjek/vim-puppet'
 Plugin 'vim-airline/vim-airline'
@@ -72,8 +73,8 @@ if has('syntax')
 		let g:solarized_termcolors=256 " enable 256 color in solarized theme
 		colorscheme solarized          " use solarized theme
 	endif
-	if &diff                          " if this is vimdiff
-		colorscheme blue               " use the blue colorscheme
+	if &diff                         " if this is vimdiff
+		colorscheme apprentice         " use the blue colorscheme
 	endif
 endif
 
