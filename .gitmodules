@@ -4,18 +4,6 @@
 [submodule "linux-gnu/user/dot.tmux/plugins/tmux-resurrect"]
 	path = linux-gnu/user/dot.tmux/plugins/tmux-resurrect
 	url = https://github.com/tmux-plugins/tmux-resurrect
-[submodule "linux-gnu/user/dot.vim/bundle/Vundle.vim"]
-	path = linux-gnu/user/dot.vim/bundle/Vundle.vim
-	url = https://github.com/VundleVim/Vundle.vim.git
-[submodule "linux-gnu/user/dot.vim/bundle/vim-colors-solarized"]
-	path = linux-gnu/user/dot.vim/bundle/vim-colors-solarized
-	url = https://github.com/altercation/vim-colors-solarized
-[submodule "linux-gnu/user/dot.vim/bundle/vim-github-colorscheme"]
-	path = linux-gnu/user/dot.vim/bundle/vim-github-colorscheme
-	url = https://github.com/endel/vim-github-colorscheme
-[submodule "linux-gnu/user/dot.vim/bundle/vim-ansible-yaml"]
-	path = linux-gnu/user/dot.vim/bundle/vim-ansible-yaml
-	url = https://github.com/chase/vim-ansible-yaml.git
 [submodule "liquidprompt"]
 	path = liquidprompt
 	url = https://github.com/nojhan/liquidprompt.git
