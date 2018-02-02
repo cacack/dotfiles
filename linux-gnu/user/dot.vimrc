@@ -62,13 +62,13 @@ let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
 if has('syntax')
-	syntax on                        " enable syntax highlighting
-	if &term =~ '256color'           " if 256color is part of our term name
+	syntax on                       " enable syntax highlighting
+	if &term =~ '256color'          " if 256color is part of our term name
 		set t_Co=256                  " enable 256-color mode
 		set t_ut=                     " disable background color erase: http://sunaku.github.io/vim-256color-bce.html
 	endif
 
-	if &t_Co == 256                   " if 256 color mode is enabled
+	if &t_Co == 256                  " if 256 color mode is enabled
 		set background=dark            " use dark backgrounds
 		let g:solarized_termcolors=256 " enable 256 color in solarized theme
 		colorscheme solarized          " use solarized theme
