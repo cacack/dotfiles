@@ -1,0 +1,15 @@
+[push]
+	default = simple
+
+[color]
+	ui = true
+
+[diff]
+	renames = true
+  tool = vimdiff
+
+[user]
+	name = Chris Clonch
+
+[include]
+  path = ~/.config/git/aliases
