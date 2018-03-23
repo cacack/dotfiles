@@ -11,7 +11,7 @@ fi
 exec 1>&2
 
 echo 'Running rubocop...'
-if [[ -x "$(which rubocop 2>/dev/null)" ]]; then
+if [[ -x "$(command -v rubocop 2>/dev/null)" ]]; then
   git diff-index --cached --name-only --diff-filter=ACM $against \
     | bin/helpers/pipe_to_rubocop.sh
 fi

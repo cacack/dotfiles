@@ -11,7 +11,7 @@ fi
 exec 1>&2
 
 echo 'Running shellcheck...'
-if [[ -x "$(which shellcheck 2>/dev/null)" ]]; then
+if [[ -x "$(command -v shellcheck 2>/dev/null)" ]]; then
   git diff-index --cached --name-only --diff-filter=ACM -z $against \
     | bin/helpers/pipe_to_shellcheck.sh
 fi

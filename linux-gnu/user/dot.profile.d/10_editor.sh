@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Set the default editor to vim.
-if [ -x "$(which vim)" ]; then
+if [ -x "$(command -v vim)" ]; then
   export EDITOR=vim
-elif [ -x "$(which vi)" ]; then
+elif [ -x "$(command -v vi)" ]; then
   export EDITOR=vi
 fi
 export VISUAL=$EDITOR
