@@ -122,7 +122,7 @@ export EDITOR=$(type vim vi nano pico 2>/dev/null | sed 's/ .*$//;q')
 export VISUAL="$EDITOR"
 
 # Perfer less with specific options.
-if [[ $(which less) ]]; then
+if [[ $(command -v less) ]]; then
   PAGER="less -FwXR"
   MANPAGER="$PAGER"
 else

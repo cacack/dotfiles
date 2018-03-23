@@ -11,7 +11,7 @@ fi
 exec 1>&2
 
 echo 'Running ansible-lint...'
-if [[ -x "$(which ansible-lint 2>/dev/null)" ]]; then
+if [[ -x "$(command -v ansible-lint 2>/dev/null)" ]]; then
   git diff-index --cached --name-only --diff-filter=ACM $against \
     | bin/helpers/pipe_to_ansible_lint.sh
 fi

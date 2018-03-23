@@ -11,7 +11,7 @@ fi
 exec 1>&2
 
 echo 'Running yamllint...'
-if [[ -x "$(which yamllint 2>/dev/null)" ]]; then
+if [[ -x "$(command -v yamllint 2>/dev/null)" ]]; then
   git diff-index --cached --name-only --diff-filter=ACM -z $against \
     | bin/helpers/pipe_to_yamllint.sh
 fi

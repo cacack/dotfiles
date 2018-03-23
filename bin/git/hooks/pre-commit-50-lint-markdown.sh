@@ -11,7 +11,7 @@ fi
 exec 1>&2
 
 echo 'Running mdl...'
-if [[ -x "$(which mdl 2>/dev/null)" ]]; then
+if [[ -x "$(command -v mdl 2>/dev/null)" ]]; then
   git diff-index --cached --name-only --diff-filter=ACM -z ${against} \
     | bin/helpers/pipe_to_mdl.sh
 fi
