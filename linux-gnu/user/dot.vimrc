@@ -116,6 +116,8 @@ set spelllang=en_us
 hi clear SpellBad
 hi SpellBad cterm=underline ctermfg=red
 
+autocmd FileType yaml,ruby,python autocmd BufWritePre <buffer> %s/\s\+$//e
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Old and unused conf
 
