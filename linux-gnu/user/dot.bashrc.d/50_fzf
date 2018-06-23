@@ -1,1 +1,13 @@
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Setup fzf
+# ---------
+if [[ ! "$PATH" == */home/cac21/devel/others/fzf/bin* ]]; then
+  export PATH="$PATH:/home/cac21/devel/others/fzf/bin"
+fi
+
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/home/cac21/devel/others/fzf/shell/completion.bash" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/home/cac21/devel/others/fzf/shell/key-bindings.bash"
