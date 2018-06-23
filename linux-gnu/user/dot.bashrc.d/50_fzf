@@ -1,13 +1,21 @@
-# Setup fzf
-# ---------
-if [[ ! "$PATH" == */home/cac21/devel/others/fzf/bin* ]]; then
-  export PATH="$PATH:/home/cac21/devel/others/fzf/bin"
+if [[ ! -v fzf ]]; then
+  if [[ ! "$PATH" == */home/cac21/devel/others/fzf/bin* ]]; then
+    export PATH="$PATH:/home/cac21/devel/others/fzf/bin"
+  fi
 fi
 
-# Auto-completion
-# ---------------
-[[ $- == *i* ]] && source "/home/cac21/devel/others/fzf/shell/completion.bash" 2> /dev/null
+if [[ $- == *i* ]]; then
+  # Auto-completion
+  if [[ -f /usr/share/fzf/completion.bash ]]; then
+    source /usr/share/fzf/completion.bash
+  elif [[ -f /home/cac21/devel/others/fzf/shell/completion.bash ]]; then
+    source /home/cac21/devel/others/fzf/shell/completion.bash
+  fi
 
-# Key bindings
-# ------------
-source "/home/cac21/devel/others/fzf/shell/key-bindings.bash"
+  # Key bindings
+  if [[ -f /usr/share/fzf/key-bindings.bash ]]; then
+    source /usr/share/fzf/key-bindings.bash
+  elif [[ -f /home/cac21/devel/others/fzf/shell/key-bindings.bash ]]; then
+    source /home/cac21/devel/others/fzf/shell/key-bindings.bash
+  fi
+fi
