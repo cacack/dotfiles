@@ -59,6 +59,7 @@ I've borrowed/learned a thing or two from the following folks:
 
 * [cowboy/dotfiles](https://github.com/cowboy/dotfiles)
 * [rtomayko/dotfiles](https://github.com/rtomayko/dotfiles)
+* [hamvocke/dotfiles](https://github.com/hamvocke/dotfiles)
 
 More attributions may be found throughout the files contained within this
 repository..
