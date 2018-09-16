@@ -8,6 +8,8 @@
     disabledPackages: [
       "atom-beautify"
       "rubo-format"
+      "linter-pep8"
+      "linter-pycodestyle"
     ]
     projectHome: "/home/cac21/devel"
     telemetryConsent: "limited"
@@ -17,7 +19,7 @@
     ]
   editor:
     fontFamily: "Meslo LG S DZ"
-    fontSize: 10
+    fontSize: 15
     invisibles: {}
     showIndentGuide: true
     showInvisibles: true
