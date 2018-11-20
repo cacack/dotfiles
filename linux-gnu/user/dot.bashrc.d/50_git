@@ -1,1 +1,1 @@
-[ -e ~/.dotfiles/linux-gnu/user/dot.config/git-completion.bash ] && source ~/.dotfiles/linux-gnu/user/dot.config/git-completion.bash
+[ -f ~/.dotfiles/linux-gnu/user/dot.config/git-completion.bash ] && source ~/.dotfiles/linux-gnu/user/dot.config/git-completion.bash
