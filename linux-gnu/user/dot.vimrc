@@ -117,7 +117,17 @@ set spelllang=en_us
 hi clear SpellBad
 hi SpellBad cterm=underline ctermfg=red
 
-autocmd FileType yaml,ruby,python autocmd BufWritePre <buffer> %s/\s\+$//e
+" Strip trailing whitespace
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+command! TrimWhitespace call TrimWhitespace()
+command! StripWhitespace call TrimWhitespace()
+
+"autocmd FileType c,cpp,java,php,ruby,python,sh autocmd BufWritePre <buffer> :call TrimWhitespace()
+autocmd BufWritePre * :call TrimWhitespace()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Old and unused conf
