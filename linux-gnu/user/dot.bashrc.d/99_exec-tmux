@@ -3,6 +3,10 @@
 ################################################################################
 # TMUX
 
+fix_ssh_auth_sock() {
+  eval $(tmux show-environment | grep ^SSH_AUTH_SOCK)
+}
+
 # The last thing is to execute tmux
 if [ -z $TMUX ] && [ $TERM != "screen*" ] && [ -z $SSH_TTY ] && [ ! -r "$HOME/.notmux" ]; then
   # Only automatically connect to the default tmux session once.
@@ -10,6 +14,7 @@ if [ -z $TMUX ] && [ $TERM != "screen*" ] && [ -z $SSH_TTY ] && [ ! -r "$HOME/.n
   if [[ $? -ne 0 ]]; then
     # I cannot get 'exec tmux ...' to work so fudge it by launching it regularly
     # then exiting afterwards.
+    eval "$(tmux show-environment -s SSH_AUTH_SOCK)"
     tmux -2 attach-session -t default 2>/dev/null || tmux -2 new-session -s default
     exit 0
   fi
