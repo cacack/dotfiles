@@ -26,6 +26,13 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
 Plugin 'sudar/vim-arduino-syntax'
 Plugin 'aliou/bats.vim'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'nvie/vim-flake8'
 
 call vundle#end()
 
@@ -63,6 +70,7 @@ let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
 if has('syntax')
+  let python_highlight_all=1
 	syntax on                       " enable syntax highlighting
 	if &term =~ '256color'          " if 256color is part of our term name
 		set t_Co=256                  " enable 256-color mode
@@ -78,6 +86,11 @@ if has('syntax')
 		silent! colorscheme apprentice " use the blue colorscheme
 	endif
 endif
+
+" Enable background transparency
+hi Normal guibg=NONE ctermbg=NONE
+"hi Normal ctermfg=255 ctermbg=none
+"hi NonText ctermfg=250 ctermbg=none
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -113,6 +126,14 @@ set formatoptions=tcrql         " t - autowrap to textwidth
                                 " r - autoinsert comment leader with <Enter>
                                 " q - allow formatting of comments with :gq
                                 " l - don't format already long lines
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" Enable folding with the spacebar
+nnoremap <space> za
+
+" Spell checking
 set spelllang=en_us
 hi clear SpellBad
 hi SpellBad cterm=underline ctermfg=red
@@ -126,8 +147,34 @@ endfun
 command! TrimWhitespace call TrimWhitespace()
 command! StripWhitespace call TrimWhitespace()
 
+" Trim whitespace from all file types on write
 "autocmd FileType c,cpp,java,php,ruby,python,sh autocmd BufWritePre <buffer> :call TrimWhitespace()
 autocmd BufWritePre * :call TrimWhitespace()
+
+" Python overrides, configurations, tweaks
+" Override indentation settings for python files based on PEP 8 standards
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+" Tweak auto-complete
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Old and unused conf
