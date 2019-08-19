@@ -35,6 +35,7 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'nvie/vim-flake8'
 
 call vundle#end()
+filetype plugin indent on    " re-enable filetype plugin after Vundle init
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Console UI and text display
@@ -150,17 +151,6 @@ command! StripWhitespace call TrimWhitespace()
 " Trim whitespace from all file types on write
 "autocmd FileType c,cpp,java,php,ruby,python,sh autocmd BufWritePre <buffer> :call TrimWhitespace()
 autocmd BufWritePre * :call TrimWhitespace()
-
-" Python overrides, configurations, tweaks
-" Override indentation settings for python files based on PEP 8 standards
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
 
 " Tweak auto-complete
 let g:ycm_autoclose_preview_window_after_completion=1
