@@ -1,5 +1,5 @@
 [Configuration]
-FontName=M+ 1mn 8
+FontName=mplus Nerd Font 8
 MiscAlwaysShowTabs=FALSE
 MiscBell=FALSE
 MiscBordersDefault=TRUE
@@ -34,5 +34,8 @@ ColorForeground=#d3d3d7d7cfcf
 ColorBackground=#1d1d1f1f2121
 MiscShowRelaunchDialog=TRUE
 MiscNewTabAdjacent=FALSE
-BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
 BackgroundDarkness=0.900000
+MiscSearchDialogOpacity=100
+MiscShowUnsafePasteDialog=TRUE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+
