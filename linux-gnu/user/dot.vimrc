@@ -135,7 +135,7 @@ set foldlevel=99
 nnoremap <space> za
 
 " Spell checking
-set spelllang=en_us
+set spell spelllang=en_us
 hi clear SpellBad
 hi SpellBad cterm=underline ctermfg=red
 
