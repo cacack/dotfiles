@@ -6,7 +6,8 @@ alias mv='mv -i'
 alias cp='cp -i'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-alias ls='ls -F --color=auto'
+#alias ls='ls -F --color=auto'
+alias ls='lsd'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='la -l'
