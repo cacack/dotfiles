@@ -34,6 +34,10 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'nvie/vim-flake8'
 
+" AWS / CloudFormation
+Plugin 'speshak/vim-cfn'
+Plugin 'hashivim/vim-terraform'
+
 call vundle#end()
 filetype plugin indent on    " re-enable filetype plugin after Vundle init
 
@@ -165,6 +169,10 @@ if 'VIRTUAL_ENV' in os.environ:
   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
   execfile(activate_this, dict(__file__=activate_this))
 EOF
+
+" Terraform tunables
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Old and unused conf
