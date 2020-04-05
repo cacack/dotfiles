@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [[ "$(umask)" != 0027 ]]; then
+  umask 0027
+fi

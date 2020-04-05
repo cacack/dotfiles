@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Pick the first available editor found.
+export EDITOR=$(type vim vi nano pico 2>/dev/null | sed 's/ .*$//;q')
+export VISUAL="$EDITOR"

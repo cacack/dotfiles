@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 if [[ -d /usr/local/go ]]; then
   export PATH=$PATH:/usr/local/go/go-1.11.4/bin
-  export GOPATH=~/devel/go
+  export GOPATH="$HOME/devel/go"
   export PATH=$PATH:$(go env GOPATH)/bin
 fi

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Perfer less with specific options.
+if [[ $(command -v less) ]]; then
+  PAGER="less -FwXR"
+  MANPAGER="$PAGER"
+else
+  PAGER="more"
+  MANPAGER="$PAGER"
+fi
+export PAGER MANPAGER
