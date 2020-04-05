@@ -11,6 +11,8 @@
 # outputting anything in those cases.
 [[ $- != *i* ]] && return
 
+#set -x
+
 # Set a few *default* things for use later by the separate configs.
 
 USE_COLORS=''
@@ -27,7 +29,7 @@ export USE_COLORS
 [ $TERM == 'xterm' ] && export TERM=xterm-256color
 
 # Source in external configs.
-for script in ${1}/*; do
+for script in ${HOME}/.bashrc.d/*; do
   # skip non-executable snippets
   [ -x "${script}" ] || continue
   # execute $script in the context of the current shell

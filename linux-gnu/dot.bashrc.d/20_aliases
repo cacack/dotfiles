@@ -6,8 +6,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-#alias ls='ls -F --color=auto'
-alias ls='lsd'
+alias ls='ls -F --color=auto'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='la -l'
@@ -15,6 +14,10 @@ alias lx='ls -X'
 alias llx='lx -l'
 alias l='ls -1'
 
+
+if hash lsd 2>/dev/null; then
+  alias ls='lsd'
+fi
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
 alias grep='grep --color=auto --exclude-dir=\.svn'
