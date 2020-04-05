@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+################################################################################
+# Bash Options
+
+#set -o vi                   # Vi mode
+shopt -s autocd             # change to named directory
+shopt -s cdable_vars        # if cd arg is not valid, assumes its a var defining a dir
+shopt -s cdspell            # autocorrects cd misspellings
+shopt -s checkjobs          # don't exit if there are backgroud jobs unless another exit is given
+shopt -s checkwinsize       # update the value of LINES and COLUMNS after each command if altered
+shopt -s cmdhist            # save multi-line commands in history as single line
+shopt -s dotglob            # include dotfiles in pathname expansion
+shopt -s expand_aliases     # expand aliases
+shopt -s extglob            # enable extended pattern-matching features
+shopt -s hostcomplete       # attempt hostname expansion when @ is at the beginning of a word
+shopt -s nocaseglob         # pathname expansion will be treated as case-insensitive
+
+# Enable programmable completion features.
+if [ -f "/etc/bash_completion" ] && [ ! `shopt -oq posix` ]; then
+    source "/etc/bash_completion"
+fi
+

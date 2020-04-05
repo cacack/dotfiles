@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Use directory colors
+[ -f ~/.dir_colors ] &&  eval $(dircolors -b ~/.dir_colors)
+
+# Define some color shortcut variables
+AB='\['
+AE='\]'
+RESET=${AB}$(tput sgr0)${AE}
+BOLD=${AB}$(tput bold)${AE}
+DIM=${AB}$(tput dim)${AE}
+BLACK=${AB}$(tput setaf 0)${AE}
+RED=${AB}$(tput setaf 1)${AE}
+GREEN=${AB}$(tput setaf 2)${AE}
+YELLOW=${AB}$(tput setaf 3)${AE}
+BLUE=${AB}$(tput setaf 4)${AE}
+PURPLE=${AB}$(tput setaf 5)${AE}
+CYAN=${AB}$(tput setaf 6)${AE}
+WHITE=${AB}$(tput setaf 7)${AE}
+
+# Set the PS1 prompt (with colors).
+export PS1="${BOLD}${GREEN}\u${RESET}${GREEN}@\h${RESET}:${BOLD}${BLUE}\W${RESET}$ "
+
+# Use more advanced "external" prompts if installed
+if hash starship 2>/dev/null; then
+  # Use starship for prompt if it exists
+  # https://starship.rs/
+  eval "$(starship init bash)"
+else
+  # otherwise fall back to liquidprompt
+  source ~/.dotfiles/liquidprompt/liquidprompt
+fi

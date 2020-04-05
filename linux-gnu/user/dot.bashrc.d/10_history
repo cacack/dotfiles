@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+################################################################################
+# HISTORY
+
+# Don't overwrite history
+shopt -s histappend
+
+# Remove previous dups from history.
+export HISTCONTROL=erasedups
+
+# Append commands to the history every time a prompt is shown,
+# instead of after closing the session.
+PROMPT_COMMAND='history -a'
+
+# Give history timestamps.
+export HISTTIMEFORMAT="[%F %T] "
+
+# Enable lots of history.
+export HISTSIZE=10000
+export HISTFILESIZE=10000
+
+# Use fzf if available
+#if hash fzf 2>/dev/null; then
+if [[ -d ${HOME}/devel/others/fzf/bin ]]; then
+  export PATH="$PATH:${HOME}/devel/others/fzf/bin"
+  # Auto-completion
+  source ${HOME}/devel/others/fzf/shell/completion.bash
+  # Key bindings
+  source ${HOME}/devel/others/fzf/shell/key-bindings.bash
+fi

@@ -1,3 +1,0 @@
-
-#[[ $- = *i* ]] && source ~/.dotfiles/liquidprompt/liquidprompt
-[[ $- = *i* ]] && eval "$(starship init bash)"
