@@ -28,6 +28,16 @@ export USE_COLORS
 # Fix term's to display more color.
 [ $TERM == 'xterm' ] && export TERM=xterm-256color
 
+# Source in external work configs if they exist
+if [[ -d ${HOME}/.bashrc_work.d ]]; then
+  for script in ${HOME}/.bashrc_work.d/*; do
+    # skip non-executable snippets
+    [ -x "${script}" ] || continue
+    # execute $script in the context of the current shell
+    . ${script}
+  done
+fi
+
 # Source in external configs.
 for script in ${HOME}/.bashrc.d/*; do
   # skip non-executable snippets
