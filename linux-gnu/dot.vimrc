@@ -131,6 +131,8 @@ set formatoptions=tcrql         " t - autowrap to textwidth
                                 " r - autoinsert comment leader with <Enter>
                                 " q - allow formatting of comments with :gq
                                 " l - don't format already long lines
+set autochdir                   " cd into dir of file being edited
+
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
