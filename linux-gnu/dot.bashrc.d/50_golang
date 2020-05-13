@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-if [[ -d /usr/local/go ]]; then
-  export PATH=$PATH:/usr/local/go/go-1.11.4/bin
-  export GOPATH="$HOME/devel/go"
-  export PATH=$PATH:$(go env GOPATH)/bin
-fi
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
+export GOPATH="$HOME/devel/go"
+
+#if [[ -d /usr/local/go ]]; then
+#  export PATH=$PATH:/usr/local/go/go-1.11.4/bin
+#  export PATH=$PATH:$(go env GOPATH)/bin
+#fi
