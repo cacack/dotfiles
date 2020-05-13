@@ -2,6 +2,11 @@
 truncation_length = 0
 truncate_to_repo = false
 
+[env_var]
+variable = "OS_CLOUD_PROJECT"
+style = "bold yellow"
+symbol = "  "
+
 [username]
 show_always = true
 
@@ -9,7 +14,7 @@ show_always = true
 ssh_only = false
 
 [aws]
-symbol = " "
+symbol = "  "
 
 [battery]
 full_symbol = ""
