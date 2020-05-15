@@ -2,7 +2,9 @@
 
 export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
-eval "$(goenv init -)"
+if hash goenv 1>/dev/null 2>&1; then
+  eval "$(goenv init -)"
+fi
 
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$PATH:$GOPATH/bin"
