@@ -28,5 +28,7 @@ if hash starship 2>/dev/null; then
   eval "$(starship init bash)"
 else
   # otherwise fall back to liquidprompt
-  source ~/.dotfiles/liquidprompt/liquidprompt
+  if [[ -f ~/.dotfiles/liquidprompt/liquidprompt ]]; then
+    source ~/.dotfiles/liquidprompt/liquidprompt
+  fi
 fi
