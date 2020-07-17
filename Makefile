@@ -1,83 +1,40 @@
-PYTHON_VERSION := 3.8.2
+################################################################################
+# Variables
+
+PYTHON_VERSION := 3.8.3
+SHELLCHECK_VERSION := 0.7.1
 
 
-.PHONY: list list-targets
-list: list-targets
-list-targets:
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null \
-		| awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
-		| sort \
-		| egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
-
+# Source the modular make files
+include .make.d/*.mk
 
 ################################################################################
 ## Development targets
 
-# Setup development environment
-setup: install-deps sync-modules update-ansible-roles
+print-version: $(PRINT_VERSION)
 
-# Install dependencies
-install-deps:
-	@echo "You'll need to manually install pyenv first to get the ball rolling."
+# Setup development dependencies
+setup: $(SETUP)
 
-# Update dependencies
-update: update-python update-ansible-roles
-update-python: update-python-version update-modules sync-modules
-
-update-python-version:
-	@echo
-	sed -i 's/python:.*/python:$(PYTHON_VERSION)/g' .gitlab-ci.yml
-	pyenv local $(PYTHON_VERSION)
-	pipenv --python $(PYTHON_VERSION)
-
-update-modules:
-	@echo
-	pipenv lock --dev
-
-sync-modules:
-	@echo
-	pipenv sync --dev
-
-update-ansible-roles:
-	@echo
-	#cd ansible; pipenv run ansible-galaxy install -v -r requirements.yml -f --ignore-errors
+# Update development dependencies
+update: $(UPDATE)
 
 # Apply code fix-ups
-fixup:
+fixup: $(FIXUP)
 
-fixup: fixup-python
-fixup-changed: fixup-python-changed
-
-fixup-python:
-	@echo
-	pipenv run isort --recursive
-	pipenv run black .
-
-clean:
-	@echo This target is not implemented
+# Clean up things from the development process
+clean: $(CLEAN)
 
 
 ################################################################################
 ## Lint targets
+lint: $(LINT)
 
-lint: lint-whitespace lint-yaml lint-ansible lint-shellcheck lint-python
-lint-changed: lint-whitespace lint-yaml-changed lint-ansible-changed lint-shellcheck-changed lint-python-changed
+# dockerized execution
+lint-dockerized: $(LINT_DOCKERIZED)
 
-lint-whitespace:
-	git diff --check HEAD --
+unit-test: $(UNIT_TEST)
 
-lint-yaml:
-	git grep -I --name-only --null -e '' \
-		| grep -EzZ '.*\.ya?ml$$' \
-		| xargs -r0 pipenv run yamllint -c "$(CURDIR)/.yamllint.yml"
+acceptance-test: $(ACCEPTANCE_TEST)
 
-lint-ansible:
-	git grep -I --name-only --null -e '' \
-		| grep -EzZ '.*\.ya?ml$$' \
-		| xargs -r0 pipenv run ansible-lint --exclude=platform-emaas-k8s-monitoring/
-
-lint-shellcheck:
-	git grep -I --name-only --null -e '' \
-		| xargs --null --max-lines=1 file --mime-type \
-		| sed --quiet 's,: *text/x-shellscript$$,,p' \
-		| xargs --no-run-if-empty shellcheck -x
+run: $(RUN)
