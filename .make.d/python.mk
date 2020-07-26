@@ -18,11 +18,13 @@ SETUP += setup-pyenv setup-python setup-pipenv setup-python-modules
 .PHONY: setup-pyenv
 setup-pyenv:
 	@echo
-	@ if ! hash pyenv 1>/dev/null 2>&1; then \
-			echo "ERROR! pyenv missing." >&2 ;\
-			echo "See https://confluence.cas.org/display/SOLP/Use+pyenv for help installing" >&2 ;\
-			exit 1 ;\
-		fi
+	if ! hash pyenv 1>/dev/null 2>&1; then \
+		git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv \
+		echo 'export PYENV_ROOT="$${HOME}/.pyenv"' >> ${HOME}/.bashrc \
+		echo 'export PATH="$${PYENV_ROOT}/bin:$${PATH}"' >> ${HOME}/.bashrc \
+		echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$$(pyenv init -)"\nfi'>> ${HOME}/.bashrc \
+	fi
+
 
 .PHONY: setup-python
 setup-python: setup-pyenv
