@@ -1,0 +1,7 @@
+---
+
+- hosts: "{{ host }}"
+
+  roles:
+    - bootstrap-common
+    - desktop-common

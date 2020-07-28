@@ -1,7 +1,7 @@
 ################################################################################
 # Variables
 
-PYTHON_VERSION := 3.8.3
+PYTHON_VERSION := 3.8.5
 SHELLCHECK_VERSION := 0.7.1
 
 
@@ -38,3 +38,10 @@ unit-test: $(UNIT_TEST)
 acceptance-test: $(ACCEPTANCE_TEST)
 
 run: $(RUN)
+
+do-bootstrap:
+	cd $(ANSIBLE_DIR); pipenv run ansible-playbook \
+		--connection="local" \
+		--inventory="localhost," \
+		--ask-become-pass \
+		bootstrap.yml

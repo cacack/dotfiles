@@ -1,0 +1,12 @@
+---
+
+- hosts: "{{ host }}"
+
+  roles:
+    - bootstrap-common
+    - role: lsd
+      tags:
+        - lsd
+    - role: pyenv
+      tags:
+        - pyenv
