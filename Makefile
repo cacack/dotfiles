@@ -14,7 +14,10 @@ include .make.d/*.mk
 print-version: $(PRINT_VERSION)
 
 # Setup development dependencies
-setup: $(SETUP)
+setup: setup-dirs $(SETUP)
+
+setup-dirs:
+	mkdir ${HOME}/bin
 
 # Update development dependencies
 update: $(UPDATE)
