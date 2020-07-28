@@ -1,0 +1,36 @@
+---
+
+- name: bootstrap-common
+  src: git@git.theclonchs.com:chris/ansible-role-bootstrap-common.git
+  scm: git
+  version: master
+
+- name: bootstrap-dependencies
+  src: git@git.theclonchs.com:chris/ansible-role-bootstrap-dependencies.git
+  scm: git
+  version: master
+
+- name: chruby
+  src: git@github.com:cacack/ansible-role-chruby.git
+  scm: git
+  version: master
+
+- name: desktop-common
+  src: git@git.theclonchs.com:chris/ansible-role-desktop-common.git
+  scm: git
+  version: master
+
+- name: lsd
+  src: git@git.theclonchs.com:chris/ansible-role-lsd.git
+  scm: git
+  version: master
+
+- name: pyenv
+  src: git@git.theclonchs.com:chris/ansible-role-pyenv.git
+  scm: git
+  version: master
+
+- name: starship
+  src: git@git.theclonchs.com:chris/ansible-role-starship.git
+  scm: git
+  version: master
