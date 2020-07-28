@@ -3,6 +3,7 @@
 
 SHELLCHECK_VERSION ?= 0.7.1
 
+# https://github.com/koalaman/shellcheck/releases/download/v0.7.1/shellcheck-v0.7.1.linux.x86_64.tar.xz
 SHELLCHECK_URL := https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).linux.x86_64.tar.xz
 
 ################################################################################
@@ -19,7 +20,7 @@ SETUP += setup-shellcheck
 .PHONY: setup-shellcheck
 setup-shellcheck:
 	@echo
-	wget -O shellcheck.tar.xz $(SHELLCHECK_URL)
+	curl -L --output shellcheck.tar.xz $(SHELLCHECK_URL)
 	tar -xvf shellcheck.tar.xz --directory=${HOME}/bin --mode=0755 --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
 	rm shellcheck.tar.xz
 
