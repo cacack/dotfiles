@@ -15,7 +15,7 @@ setup-ansible-roles: setup-python-modules
 UPDATE += update-ansible-roles
 
 .PHONY: update-ansible-roles
-update-ansible-roles: update-python-modules
+update-ansible-roles:
 	@echo
 	cd $(ANSIBLE_PATH); pipenv run ansible-galaxy install -v -r requirements.yml -f
 
