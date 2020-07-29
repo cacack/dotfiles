@@ -19,7 +19,7 @@ SETUP += setup-pyenv setup-python setup-pipenv setup-python-modules
 setup-pyenv:
 	@echo
 	if ! hash pyenv 1>/dev/null 2>&1; then \
-		git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv ;\
+		if [[ ! -d "${HOME}.pyenv" ]]; then git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv; fi ;\
 		echo 'export PYENV_ROOT="$${HOME}/.pyenv"' >> ${HOME}/.bashrc ;\
 		echo 'export PATH="$${PYENV_ROOT}/bin:$${PATH}"' >> ${HOME}/.bashrc ;\
 		echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$$(pyenv init -)"\nfi'>> ${HOME}/.bashrc ;\
