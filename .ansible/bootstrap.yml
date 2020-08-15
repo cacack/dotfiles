@@ -3,7 +3,15 @@
 - hosts: "{{ host }}"
 
   roles:
-    - bootstrap-common
+
+    - role: bootstrap-common
+      tags:
+        - common
+
     - role: lsd
       tags:
         - lsd
+
+    - role: starship
+      tags:
+        - starship
