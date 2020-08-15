@@ -43,7 +43,7 @@ acceptance-test: $(ACCEPTANCE_TEST)
 
 run: $(RUN)
 
-do-bootstrap: setup-ansible-roles
+do-bootstrap: update-ansible-roles
 	cd $(ANSIBLE_PATH); pipenv run ansible-playbook \
 		--connection="local" \
 		--inventory="localhost," \
