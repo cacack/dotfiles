@@ -15,24 +15,30 @@ set rtp+=~/.vim/bundle/Vundle.vim  " set the runtime path to include Vundle
 call vundle#begin()                " initailize Vundle
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+Plugin 'tpope/vim-sensible'
+Plugin 'scrooloose/nerdtree'
 Plugin 'editorconfig/editorconfig-vim'
-"Plugin 'chase/vim-ansible-yaml'
-Plugin 'endel/vim-github-colorscheme'
+"Plugin 'endel/vim-github-colorscheme'
 Plugin 'romainl/Apprentice'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'rodjek/vim-puppet'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
-Plugin 'sudar/vim-arduino-syntax'
-Plugin 'aliou/bats.vim'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdtree'
+"Plugin 'ctrlpvim/ctrlp.vim'
+
+"Plugin 'chase/vim-ansible-yaml'
+Plugin 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
+Plugin 'sudar/vim-arduino-syntax'
+"Plugin 'aliou/bats.vim'
+
+" Python
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'nvie/vim-flake8'
+
+" Puppet
+Plugin 'rodjek/vim-puppet'
 
 " AWS / CloudFormation
 Plugin 'speshak/vim-cfn'
@@ -45,7 +51,7 @@ filetype plugin indent on    " re-enable filetype plugin after Vundle init
 " Console UI and text display
 
 "set re=1                           " ??
-set cmdheight=2                     " explicitly set the height of the command line
+"set cmdheight=2                     " explicitly set the height of the command line
 set laststatus=2                    " always display the status line
 set showcmd                         " Show (partial) command in status line
 "set number                         " show line numbers
