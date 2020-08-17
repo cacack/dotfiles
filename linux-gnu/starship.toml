@@ -1,5 +1,5 @@
 [directory]
-truncation_length = 0
+truncation_length = 3
 truncate_to_repo = false
 
 [env_var]
@@ -12,6 +12,11 @@ show_always = true
 
 [hostname]
 ssh_only = false
+
+[character]
+symbol = "❯"
+error_symbol = "✖"
+use_symbol_for_status = true
 
 [aws]
 symbol = "  "
