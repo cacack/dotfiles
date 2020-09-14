@@ -1,0 +1,61 @@
+directory: ~/shared/music/flac
+#library: ~/etc/beets.db
+library: ~/shared/music/beets.db
+art_filename: folder
+paths:
+  default: %bucket{%the{$albumartist}}/%the{%asciify{$albumartist}}/%asciify{$album} [$year]/$track. %asciify{$title}
+  comp: other/compilations/%the{%asciify{${album}}} [${year}]/${track}. %the{%asciify{${title}}}
+  albumtype:soundtrack: other/soundtracks/%the{%asciify{${album}}} [${year}]/${track}. %the{%asciify{${title}}}
+import:
+  write: yes
+  move: yes
+
+# Plugins
+#plugins: info convert fetchart embedart copyartifacts replaygain web bucket the badfiles discogs importadded
+plugins: info convert fetchart embedart replaygain web bucket the badfiles discogs importadded
+
+bucket:
+  bucket_alpha: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+convert:
+  #quiet: yes
+  dest: ~/shared/music/transcoded/
+  copy_album_art: yes
+  album_art_maxwidth: 600
+  never_convert_lossy_files: yes
+  format: ogg
+  formats:
+    ogg:
+      command: oggenc -Q -q 6 -o $dest $source
+      extension: ogg
+
+fetchart:
+  auto: yes
+  minwidth: 500
+  #maxwidth: 1000
+  #enforce_ratio: 0.5%
+  enforce_ratio: 75px
+  #enforce_ratio: no
+  cover_names: folder cover front art album
+  sources: filesystem coverart amazon albumart
+
+embedart:
+  auto: yes
+  compare_threshold: 10
+  ifempty: yes
+  maxwidth: 600
+
+copyartifacts:
+  extensions: .jpg
+  print_ignored: yes
+
+replaygain:
+  #backend: bs1770gain
+  backend: ffmpeg
+  auto: yes
+
+#importadded:
+#  preserve_mtimes: yes
+
+discogs:
+  user_token: XJVhGIeipLdQzutKghlTRTpYbXZFAjSpNhBLgtGO
