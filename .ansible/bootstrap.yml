@@ -2,6 +2,10 @@
 
 - hosts: "{{ host }}"
 
+  vars:
+    lsd_path: "/usr/local/bin"
+    starship_path: "/usr/local/bin"
+
   roles:
 
     - role: bootstrap-common
