@@ -28,4 +28,7 @@ if [[ -d ${HOME}/devel/others/fzf/bin ]]; then
   source ${HOME}/devel/others/fzf/shell/completion.bash
   # Key bindings
   source ${HOME}/devel/others/fzf/shell/key-bindings.bash
+elif hash fzf 2>/dev/null; then
+  source /usr/local/lib/fzf-completion.bash
+  source /usr/local/lib/fzf-key-bindings.bash
 fi
