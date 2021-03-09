@@ -3,6 +3,10 @@
 
 PYTHON_VERSION := 3.8.5
 SHELLCHECK_VERSION := 0.7.1
+KITTY_VERSION := 0.19.3
+STARSHIP_VERSION := 0.50.0
+LSD_VERSION := 0.19.0
+NVM_VERSION := 0.37.2
 ANSIBLE_PATH := .ansible
 
 FZF_VERSION := 0.25.1
@@ -63,3 +67,32 @@ do-bootstrap: update-ansible-roles
 		--extra-vars="host=localhost" \
 		--ask-become-pass \
 		bootstrap.yml
+
+.PHONY: setup-kitty
+setup-kitty:
+	@echo
+	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
+	tar -x -C ~/bin/ -f kitty.txz bin/kitty
+	chmod 755 ~/bin/kitty
+	rm kitty.txz
+
+.PHONY: setup-starship
+setup-starship:
+	@echo
+	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
+	tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
+	chmod 775 /usr/local/bin/starship
+	rm starship.tar.gz
+
+.PHONY: setup-lsd
+setup-lsd:
+	@echo
+	wget -O lsd.tar.gz https://github.com/Peltoche/lsd/releases/download/$(LSD_VERSION)/lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu.tar.gz
+	tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
+	chmod 775 /usr/local/bin/lsd
+	rm lsd.tar.gz
+
+.PHONY: setup-nvm
+setup-nvm:
+	@echo
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash

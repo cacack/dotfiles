@@ -36,9 +36,7 @@ Plugin 'sudar/vim-arduino-syntax'
 " Python
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'nvie/vim-flake8'
-
-" Puppet
-Plugin 'rodjek/vim-puppet'
+Plugin 'psf/black'
 
 " AWS / CloudFormation
 Plugin 'speshak/vim-cfn'
@@ -132,7 +130,7 @@ set colorcolumn=80
 set textwidth=80                " we like 80 columns
 set showmatch                   " show matching brackets
 set pastetoggle=<F11>           " use <F11> to toggle between paste and nopaste
-set formatoptions=tcrql         " t - autowrap to textwidth
+set formatoptions=crql          " t - autowrap to textwidth
                                 " c - autowrap comments to textwidth
                                 " r - autoinsert comment leader with <Enter>
                                 " q - allow formatting of comments with :gq
@@ -181,6 +179,9 @@ EOF
 " Terraform tunables
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
+
+" Python tunables
+autocmd BufWritePre *.py execute ':Black'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Old and unused conf

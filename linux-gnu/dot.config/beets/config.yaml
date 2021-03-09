@@ -1,6 +1,6 @@
 directory: ~/shared/music/flac
-#library: ~/etc/beets.db
-library: ~/shared/music/beets.db
+library: ~/.config/beets/beets.db
+#library: ~/shared/music/beets.db
 art_filename: folder
 paths:
   default: %bucket{%the{$albumartist}}/%the{%asciify{$albumartist}}/%asciify{$album} [$year]/$track. %asciify{$title}
@@ -50,7 +50,6 @@ copyartifacts:
   print_ignored: yes
 
 replaygain:
-  #backend: bs1770gain
   backend: ffmpeg
   auto: yes
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ -n "$BASH_VERSION" ] || [ -n "$ZSH_VERSION" ]; then
-  if [ -r ${HOME}/.pyenv ]; then
+  if [ -r "${HOME}/.pyenv" ]; then
     export PYTHON_CONFIGURE_OPTS="--enable-shared"
     export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="${HOME}/.pyenv/bin:$PATH"
@@ -10,3 +10,5 @@ if [ -n "$BASH_VERSION" ] || [ -n "$ZSH_VERSION" ]; then
     fi
   fi
 fi
+
+export PATH="$HOME/.poetry/bin:$PATH"
