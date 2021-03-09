@@ -6,5 +6,6 @@ multi/atom/blob-store
 multi/atom/.apm/
 multi/atom/packages/
 linux-gnu/user/dot.vim/.netrwhist
+linux-gnu/dot.vim/black
 
 .DS_Store
