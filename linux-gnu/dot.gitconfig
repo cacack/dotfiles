@@ -14,5 +14,8 @@
 [include]
   path = ~/.config/git/aliases
   path = ~/.config/git.local
+[credential]
+	helper = !aws codecommit credential-helper $@
+	UseHttpPath = true
 [remote "origin"]
 	prune = true
