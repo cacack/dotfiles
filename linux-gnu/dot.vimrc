@@ -3,47 +3,43 @@
 
 scriptencoding utf-8
 set encoding=utf-8
+set nocompatible                   " break away from old vi compatibility
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vundle
-" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-" vim +PluginInstall +qall
-set nocompatible                   " break away from old vi compatibility
-filetype off                       " required at this point for vundle
-
-set rtp+=~/.vim/bundle/Vundle.vim  " set the runtime path to include Vundle
-call vundle#begin()                " initailize Vundle
+" vim-plug
+" vim +PlugInstall
+call plug#begin('~/.vim/plugged')
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-Plugin 'tpope/vim-sensible'
-Plugin 'scrooloose/nerdtree'
-Plugin 'editorconfig/editorconfig-vim'
-"Plugin 'endel/vim-github-colorscheme'
-Plugin 'romainl/Apprentice'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'Valloric/YouCompleteMe'
-"Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'gmarik/Vundle.vim'
+Plug 'tpope/vim-sensible'
+Plug 'scrooloose/nerdtree'
+Plug 'editorconfig/editorconfig-vim'
+"Plug 'endel/vim-github-colorscheme'
+Plug 'romainl/Apprentice'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tmhedberg/SimpylFold'
+Plug 'vim-syntastic/syntastic'
+Plug 'Valloric/YouCompleteMe', { 'commit':'d98f896' }
+"Plug 'ctrlpvim/ctrlp.vim'
 
-"Plugin 'chase/vim-ansible-yaml'
-Plugin 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
-Plugin 'sudar/vim-arduino-syntax'
-"Plugin 'aliou/bats.vim'
+"Plug 'chase/vim-ansible-yaml'
+Plug 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
+Plug 'sudar/vim-arduino-syntax'
+"Plug 'aliou/bats.vim'
 
 " Python
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'nvie/vim-flake8'
-Plugin 'psf/black'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'nvie/vim-flake8'
+Plug 'psf/black'
 
 " AWS / CloudFormation
 Plugin 'speshak/vim-cfn'
 Plugin 'hashivim/vim-terraform'
+call plug#end()
 
-call vundle#end()
-filetype plugin indent on    " re-enable filetype plugin after Vundle init
+"filetype plugin indent on    " re-enable filetype plugin after Vundle init
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Console UI and text display
