@@ -21,6 +21,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tmhedberg/SimpylFold'
 Plug 'vim-syntastic/syntastic'
+Plug 'myint/syntastic-extras'  " Adds additional "basic" filetype checkers
 Plug 'Valloric/YouCompleteMe', { 'commit':'d98f896' }
 "Plug 'ctrlpvim/ctrlp.vim'
 
@@ -158,6 +159,21 @@ command! StripWhitespace call TrimWhitespace()
 "autocmd FileType c,cpp,java,php,ruby,python,sh autocmd BufWritePre <buffer> :call TrimWhitespace()
 autocmd BufWritePre * :call TrimWhitespace()
 
+" Tune syntasic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Enable additional checkers
+let g:syntastic_make_checkers = ['gnumake']
+let g:syntastic_json_checkers = ['json_tool']
+let g:syntastic_yaml_checkers = ['pyyaml']
+
 " Tweak auto-complete
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -178,30 +194,3 @@ let g:terraform_align=1
 
 " Python tunables
 autocmd BufWritePre *.py execute ':Black'
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Old and unused conf
-
-" Automatic toggle of paste/nopaste modes
-" https://coderwall.com/p/if9mda
-"function! WrapForTmux(s)
-"  if !exists('$TMUX')
-"    return a:s
-"  endif
-
-"  let tmux_start = "\<Esc>Ptmux;"
-"  let tmux_end = "\<Esc>\\"
-
-"  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
-"endfunction
-
-"let &t_SI .= WrapForTmux("\<Esc>[?2004h")
-"let &t_EI .= WrapForTmux("\<Esc>[?2004l")
-
-"function! XTermPasteBegin()
-"  set pastetoggle=<Esc>[201~
-"  set paste
-"  return ""
-"endfunction
-
-"inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
