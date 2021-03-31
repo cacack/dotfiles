@@ -36,8 +36,8 @@ Plug 'nvie/vim-flake8'
 Plug 'psf/black'
 
 " AWS / CloudFormation
-Plugin 'speshak/vim-cfn'
-Plugin 'hashivim/vim-terraform'
+Plug 'speshak/vim-cfn'
+Plug 'hashivim/vim-terraform'
 call plug#end()
 
 "filetype plugin indent on    " re-enable filetype plugin after Vundle init
