@@ -194,3 +194,4 @@ let g:terraform_align=1
 
 " Python tunables
 autocmd BufWritePre *.py execute ':Black'
+let g:black_linelength=150
