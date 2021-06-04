@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# Start ssh-agent and load SSH key
+# https://help.github.com/articles/working-with-ssh-key-passphrases/#auto-launching-ssh-agent-on-msysgit
+################################################################################
+
+# Note: ~/.ssh/environment should not be used, as it
+#       already has a different purpose in SSH.
+
+env="${HOME}/.ssh/agent.env"
+
+# Note: Don't bother checking SSH_AGENT_PID. It's not used
+#       by SSH itself, and it might even be incorrect
+#       (for example, when using agent-forwarding over SSH).
+
+agent_is_running() {
+  if [ -S "$SSH_AUTH_SOCK" ]; then
+    # ssh-add returns:
+    #   0 = agent running, has keys
+    #   1 = agent running, no keys
+    #   2 = agent not running
+    ssh-add -l >/dev/null 2>&1 || [ $? -eq 1 ]
+  else
+    false
+  fi
+}
+
+agent_has_keys() {
+  ssh-add -l >/dev/null 2>&1
+}
+
+agent_add_keys() {
+  for key in ~/.ssh/*.pub; do
+    [ -f "${key%%.pub}" ] && ssh-add -t 24h "${key%%.pub}"
+  done
+}
+
+agent_load_env() {
+  # shellcheck disable=SC1090
+  . "$env" >/dev/null
+}
+
+agent_start() {
+  (umask 077; ssh-agent >"$env")
+  # shellcheck disable=SC1090
+  . "$env" >/dev/null
+}
+
+if ! agent_is_running; then
+  agent_load_env
+fi
+
+# if your keys are not stored in ~/.ssh/id_rsa or ~/.ssh/id_dsa, you'll need
+# to paste the proper path after ssh-add
+if ! agent_is_running; then
+  agent_start
+  agent_add_keys
+elif ! agent_has_keys; then
+  agent_add_keys
+fi
+
+unset env

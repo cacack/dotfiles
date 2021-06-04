@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Make some possibly destructive commands more interactive.
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+
+# Add some easy shortcuts for formatted directory listings and add a touch of color.
+alias ls='ls -F --color=auto'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='la -l'
+alias lx='ls -X'
+alias llx='lx -l'
+alias l='ls -1'
+
+
+if hash lsd 2>/dev/null; then
+  alias ls='lsd'
+fi
+# Make grep more user friendly by highlighting matches
+# and exclude grepping through .svn folders.
+alias grep='grep --color=auto --exclude-dir=\.svn'
+
+alias vi='vim'
+
+# Enable 256 color and use wrapped SSH bin.
+alias ssh='TERM=xterm-256color ssh'
+
+# Easy way to set application "defaults"
+alias dvgrab='dvgrab --autosplit --timestamp --format dv2 --opendml --size 0'

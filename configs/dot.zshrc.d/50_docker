@@ -1,0 +1,2 @@
+[[ -f ~/.dotfiles/linux-gnu/user/dot.config/docker-compose-completion.bash ]] \
+  && source ~/.dotfiles/linux-gnu/user/dot.config/docker-compose-completion.bash
