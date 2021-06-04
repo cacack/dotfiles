@@ -1,0 +1,11 @@
+---
+
+- name: Symlink liquidprompt configs
+  file:
+    state: link
+    src: "{{ dotfiles_linux_user_dir }}/{{ item.src }}"
+    dest: "~/{{ item.dest }}"
+    force: yes
+  with_items:
+     - { src: 'dot.config/liquidprompt', dest: '.config/liquidprompt' }
+     - { src: 'dot.config/liquidpromptrc', dest: '.config/liquidpromptrc' }

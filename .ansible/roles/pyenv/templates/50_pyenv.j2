@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -n "$BASH_VERSION" ]; then
+  if [ -r {{ pyenv_path }}  ]; then
+    export PYENV_ROOT="{{ pyenv_path }}"
+    export PATH="{{ pyenv_path }}/bin:$PATH"
+    if hash pyenv 1>/dev/null 2>&1; then
+      eval "$(pyenv init -)"
+    fi
+  fi
+fi

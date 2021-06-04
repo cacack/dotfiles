@@ -1,0 +1,31 @@
+---
+
+- name: Ensure XFCE DE config directory exists
+  file:
+    path: ~/.config/xfce4/xfconf/xfce-perchannel-xml
+    state: directory
+
+- name: Symlink XFCE DE configurations
+  file:
+    src: "{{dotfiles_linux_user_dir}}/dot.config/xfce4/{{item}}"
+    dest: "~/.config/xfce4/{{item}}"
+    state: link
+    force: true
+  with_items:
+    - xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+    - xfconf/xfce-perchannel-xml/xfce4-panel.xml
+    - xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+    - xfconf/xfce-perchannel-xml/xsettings.xml
+    - panel/xfce4-orageclock-plugin-9.rc
+
+- name: Ensure XFCE Terminal config directory exists
+  file:
+    path: ~/.config/xfce4/terminal
+    state: directory
+
+- name: Symlink XFCE Terminal configuration
+  file:
+    src: "{{dotfiles_linux_user_dir}}/terminalrc"
+    dest: ~/.config/xfce4/terminal/terminalrc
+    state: link
+    force: true

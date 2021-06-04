@@ -1,0 +1,81 @@
+---
+
+.alpine_install_standard_packages: &alpine_install_standard_packages |
+  apk update
+  apk add \
+    bash \
+    coreutils \
+    curl \
+    findutils \
+    git \
+    grep
+
+stages:
+  - checks
+  - lint
+  - test
+
+################################################################################
+# Checks
+check_nonascii_filenames:
+  stage: checks
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - bin/check_for_nonascii_filenames.sh
+
+check_whitespace_errors:
+  stage: checks
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - bin/check_for_whitespace_errors.sh
+
+################################################################################
+# Lint
+lint_yaml:
+  stage: lint
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - apk add python
+    - curl https://bootstrap.pypa.io/get-pip.py | python
+    - pip install yamllint
+    - bin/lint_yaml.sh
+
+lint_markdown:
+  stage: lint
+  image: ruby:2.3-alpine
+  script:
+    - *alpine_install_standard_packages
+    - gem install mdl
+    - bin/lint_markdown.sh
+
+ansible_lint:
+  stage: lint
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - apk add ansible
+    - curl https://bootstrap.pypa.io/get-pip.py | python
+    - pip install ansible-lint
+    - bin/lint_ansible.sh
+
+shellcheck:
+  stage: test
+  image: alpine:3.7
+  script:
+    - *alpine_install_standard_packages
+    - curl -sL https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz | tar -xvJ -C ~/
+    - mv ~/shellcheck-latest/shellcheck /usr/bin/
+    - bin/run_shellcheck.sh
+
+################################################################################
+# Tests
+rubocop:
+  stage: test
+  image: ruby:2.3-alpine
+  script:
+    - *alpine_install_standard_packages
+    - gem install rubocop
+    - bin/run_rubocop.sh

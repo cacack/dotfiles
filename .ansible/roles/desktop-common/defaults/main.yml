@@ -1,0 +1,7 @@
+---
+
+dotfiles_base_dir: "~/.dotfiles"
+dotfiles_linux_user_dir: "{{dotfiles_base_dir}}/linux-gnu/user"
+dotfiles_multi_dir: "{{dotfiles_base_dir}}/multi"
+
+devel_home_base_dir: "~/devel/home"

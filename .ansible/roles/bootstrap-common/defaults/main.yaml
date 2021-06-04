@@ -1,0 +1,9 @@
+---
+
+dotfiles_base_dir: "~/.dotfiles"
+dotfiles_linux_user_dir: "{{ dotfiles_base_dir }}/linux-gnu"
+dotfiles_multi_dir: "{{ dotfiles_base_dir }}/multi"
+
+dotfiles_git_url: "git@git.theclonchs.com:chris/dotfiles.git"
+
+dotfiles_config_dir: "{{ dotfiles_base_dir }}/configs"

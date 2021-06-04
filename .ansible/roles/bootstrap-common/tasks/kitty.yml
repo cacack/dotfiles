@@ -1,0 +1,7 @@
+---
+
+- name: Symlink Kitty configuration file
+  file:
+    state: link
+    src: "{{ dotfiles_linux_user_dir }}/kitty.conf"
+    dest: ~/.config/kitty/kitty.conf

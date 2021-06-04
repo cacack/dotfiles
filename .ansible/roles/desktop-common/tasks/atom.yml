@@ -1,0 +1,7 @@
+---
+
+- name: Symlink Atom configuration
+  file:
+    state: link
+    src: "{{dotfiles_multi_dir}}/atom"
+    dest: ~/.atom

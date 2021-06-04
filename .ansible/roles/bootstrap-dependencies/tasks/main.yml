@@ -1,0 +1,4 @@
+---
+
+- name: Include OS-specific dependencies
+  include_tasks: "{{ ansible_distribution|lower }}.yaml"

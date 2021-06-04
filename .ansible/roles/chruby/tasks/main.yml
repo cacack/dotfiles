@@ -1,0 +1,22 @@
+---
+
+- name: Ensure build directory exists
+  file:
+    path:  "{{ chruby_build_path }}"
+    state: directory
+
+- name: Include chruby_install
+  import_tasks: chruby_install.yml
+  tags: ansible-chruby
+
+- name: Include ruby_install
+  import_tasks: ruby_install.yml
+  tags: ansible-chruby
+
+- name: Include ruby_config
+  import_tasks: ruby_config.yml
+  tags: ansible-chruby
+
+- name: Include remove_old_rubies
+  import_tasks: remove_old_rubies.yml
+  tags: ansible-chruby
