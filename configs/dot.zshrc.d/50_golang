@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+if hash goenv 1>/dev/null 2>&1; then
+  eval "$(goenv init -)"
+fi
+
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
+export GOPATH="$HOME/devel/go"
+
+#if [[ -d /usr/local/go ]]; then
+#  export PATH=$PATH:/usr/local/go/go-1.11.4/bin
+#  export PATH=$PATH:$(go env GOPATH)/bin
+#fi
