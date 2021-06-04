@@ -1,0 +1,38 @@
+---
+
+- name: Create home directories
+  file:
+    path: "~/{{ item }}"
+    state: directory
+  with_items:
+    - desktop
+    - documents
+    - downloads
+    - music
+    - pictures
+    - public
+    - templates
+    - videos
+  tags:
+    - "common"
+    - "directories"
+
+- name: Configure XDG user directories
+  copy:
+    src: user-dirs.dirs
+    dest: ~/.config/user-dirs.dirs
+    force: yes
+
+- name: Remove old user XDG directories
+  file:
+    path: "~/{{ item }}"
+    state: absent
+  with_items:
+    - Desktop
+    - Documents
+    - Downloads
+    - Music
+    - Pictures
+    - Public
+    - Templates
+    - Videos

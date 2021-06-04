@@ -1,0 +1,1 @@
+/home/cac21/shared  -fstype=cifs,user,soft,intr,credentials=/root/home.auth,rw,uid=12136,gid=1000 ://cube/shared

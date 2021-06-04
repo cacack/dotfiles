@@ -1,0 +1,6 @@
+---
+
+lsd_version: 0.17.0
+lsd_release_url: "https://github.com/Peltoche/lsd/releases/download/{{ lsd_version }}/lsd-{{ lsd_version }}-x86_64-unknown-linux-gnu.tar.gz"
+lsd_path: "{{ ansible_env.HOME }}/bin"
+lsd_owner: "{{ ansible_env.USER }}"

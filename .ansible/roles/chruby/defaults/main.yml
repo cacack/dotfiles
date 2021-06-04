@@ -1,0 +1,19 @@
+---
+
+chruby_build_path:            ~/tmp/build
+chruby_rubies_path:           /opt/rubies
+
+chruby_chruby_version:        0.3.9
+chruby_chruby_checksum:       7220a96e355b8a613929881c091ca85ec809153988d7d691299e0a16806b42fd
+chruby_chruby_exec_command:   /usr/local/bin/chruby-exec
+chruby_chruby_url:            "https://github.com/postmodern/chruby/archive/v{{ chruby_chruby_version }}.tar.gz"
+
+chruby_ruby_install_version:  0.6.1
+chruby_ruby_install_checksum: b3adf199f8cd8f8d4a6176ab605db9ddd8521df8dbb2212f58f7b8273ed85e73
+chruby_ruby_install_command:  /usr/local/bin/ruby-install
+
+chruby_ruby_version:          ruby-2.3.3
+
+# These ruby versions will be removed if they are found:
+chruby_outdated_ruby_versions:
+  - ruby-2.3.1

@@ -1,0 +1,45 @@
+# file: chruby/tasks/chruby.yml
+
+- name: Stat build path
+  stat:
+    path: "{{ chruby_build_path }}"
+  register: chruby_build
+
+- name: Determine if chruby is installed
+  stat:
+    path: "{{ chruby_chruby_exec_command }}"
+  register: chruby_exec
+
+- name: Get installed chruby version
+  shell: /usr/local/bin/chruby-exec --version
+  when: chruby_exec.stat.exists
+  register: installed_chruby_version
+
+- name: Download chruby
+  get_url:
+    url: "{{ chruby_chruby_url }}"
+    dest: "{{ chruby_build_path }}/chruby-{{ chruby_chruby_version }}.tar.gz"
+    sha256sum: "{{ chruby_chruby_checksum }}"
+  when: not chruby_exec.stat.exists || chruby_chruby_version not in installed_chruby_version.stdout.split()[2]
+  register: chruby_downloaded
+
+- name: Unarchive chruby
+  unarchive:
+    src: "{{ chruby_build_path }}/chruby-{{ chruby_chruby_version }}.tar.gz"
+    dest: "{{ chruby_build_path }}"
+    copy: no
+  when: chruby_downloaded.changed
+  register: chruby_unarchived
+
+- name: Install chruby
+  make:
+    chdir: "{{ chruby_build.stat.path }}/chruby-{{ chruby_chruby_version }}"
+    target: install
+  become: yes
+  when: chruby_unarchived.changed
+
+- name: Configure shell
+  template:
+    src: 'chruby.sh.j2'
+    dest: '~/.profile.d/50_chruby.sh'
+    mode: 0750

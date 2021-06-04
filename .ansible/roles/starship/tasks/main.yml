@@ -1,0 +1,10 @@
+---
+
+- name: "Download and unarchive Starship"
+  unarchive:
+    src: "{{ starship_release_url }}"
+    remote_src: true
+    dest: "{{ starship_path }}"
+    mode: 0755
+    owner: "{{ starship_owner }}"
+  become: true

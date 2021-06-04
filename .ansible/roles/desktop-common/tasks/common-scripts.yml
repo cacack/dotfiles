@@ -1,0 +1,15 @@
+---
+
+- name: Clone git repository common-scripts
+  git:
+    repo: git@git.theclonchs.com:chris/common-scripts.git
+    dest: "{{devel_home_base_dir}}/common-scripts"
+
+- name: Symlink common-scripts to ~/bin
+  file:
+    state: link
+    src: "{{devel_home_base_dir}}/common-scripts/{{ item.src }}"
+    dest: "~/bin/{{ item.dest }}"
+  with_items:
+    - {src: 'cpmedia.sh', dest: 'cpmedia'}
+    - {src: 'mvmedia.sh', dest: 'mvmedia'}

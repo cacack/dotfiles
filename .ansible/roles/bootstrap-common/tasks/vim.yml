@@ -1,0 +1,43 @@
+---
+
+- name: Symlink Vim configuration file
+  file:
+    state: link
+    src: "{{ dotfiles_linux_user_dir }}/dot.vimrc"
+    dest: ~/.vimrc
+    force: 'yes'
+
+- name: Stat ~/.vim
+  stat:
+    path: ~/.vim
+  register: vim_dir
+
+- name: Remove previous ~/.vim directory
+  file:
+    path: ~/.vim
+    state: absent
+  when:
+    - vim_dir.stat.isdir is defined
+    - vim_dir.stat.isdir
+
+- name: Symlink Vim configuration directory
+  file:
+    state: link
+    src: "{{ dotfiles_linux_user_dir }}/dot.vim"
+    dest: ~/.vim
+    force: 'yes'
+
+- name: Clone Vundle git repo
+  git:
+    repo: https://github.com/VundleVim/Vundle.vim.git
+    clone: yes
+    dest: ~/.vim/bundle/Vundle.vim
+
+      #- name: Install Vundle plugins
+      #  shell: vim +PluginInstall +qall
+      #  register: vundle_result
+
+- name: Set editor on Debian and friends
+  shell: update-alternatives --set editor /usr/bin/vim.basic
+  become: yes
+  when: ansible_os_family == 'Debian'

@@ -1,0 +1,21 @@
+---
+
+- name: "Create temp download directory"
+  file:
+    path: "~/tmp/lsd"
+    state: directory
+
+- name: "Download and unarchive LSD"
+  unarchive:
+    src: "{{ lsd_release_url }}"
+    remote_src: true
+    dest: "~/tmp/lsd"
+
+- name: "Copy binary to ~/bin/"
+  copy:
+    src: "~/tmp/lsd/lsd-{{ lsd_version }}-x86_64-unknown-linux-gnu/lsd"
+    dest: "{{ lsd_path }}/lsd"
+    remote_src: true
+    mode: 0755
+    owner: "{{ lsd_owner }}"
+  become: true

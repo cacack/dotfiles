@@ -1,0 +1,11 @@
+---
+
+- name: Symlink git configs
+  file:
+    state: link
+    src: "{{ dotfiles_linux_user_dir }}/{{ item.src }}"
+    dest: "~/{{ item.dest }}"
+    force: 'yes'
+  with_items:
+    - { src: 'dot.gitconfig', dest: '.gitconfig' }
+    - { src: 'dot.config/git', dest: '.config/git' }

@@ -1,0 +1,51 @@
+---
+
+# defaults file for pyenv
+pyenv_path: "{{ ansible_env.HOME }}/.pyenv"
+pyenv_owner: "{{ ansible_env.USER }}"
+pyenv_bashrc_path: "~/.bashrc.d"
+pyenv_config_path: "{{ pyenv_bashrc_path }}/50_pyenv"
+pyenv_update_git_install: yes
+pyenv_enable_autocompletion: yes
+pyenv_python_versions:
+  - 3.8.5
+pyenv_update: yes
+
+# additional options for the build process, e.g "--enable-shared"
+pyenv_python_configure_opts: ""
+
+pyenv_debian_packages:
+  - build-essential
+  - git
+  # On Ubuntu 12.04 build may fail with the following error:
+  #   python-build: wget (< 1.14) doesn't support Server Name Indication.
+  #   Please install curl (>= 7.18.1) and try again
+  - curl
+  - libssl-dev
+  - libbz2-dev
+  - libsqlite3-dev
+  - libreadline-dev
+  - zlib1g-dev
+  - wget
+  - llvm
+  - libncurses5-dev
+  - xz-utils
+  - tk-dev
+  - libxml2-dev
+  - libxmlsec1-dev
+  - libffi-dev
+pyenv_redhat_packages:
+  - make
+  - git
+  - gcc
+  - libselinux-python
+  - zlib-devel
+  - openssl-devel
+  - bzip2-devel
+  - readline-devel
+  - libffi-devel
+  - sqlite-devel
+  - gdbm-devel
+pyenv_osx_packages:
+  - readline
+  - xz

@@ -1,0 +1,34 @@
+# file: chruby/tasks/ruby-install.yml
+- name: Ensure rubies directory exists
+  file:
+    path: "{{ chruby_rubies_path }}"
+    state: directory
+  become: yes
+
+- name: Determine if ruby-install is installed
+  stat:
+    path: "{{ chruby_ruby_install_command }}"
+  register: ruby_install_exec
+
+- name: Download ruby-install
+  get_url:
+    url: "https://github.com/postmodern/ruby-install/archive/v{{ chruby_ruby_install_version }}.tar.gz"
+    dest: "{{ chruby_build_path }}/ruby-install-{{chruby_ruby_install_version}}.tar.gz"
+    sha256sum: "{{ chruby_ruby_install_checksum }}"
+  when: not ruby_install_exec.stat.exists
+  register: ruby_install_downloaded
+
+- name: Unarchive ruby-install
+  unarchive:
+    src: "{{ chruby_build_path }}/ruby-install-{{chruby_ruby_install_version}}.tar.gz"
+    dest: "{{ chruby_build_path }}"
+    copy: no
+  when: ruby_install_downloaded.changed
+  register: ruby_install_unarchived
+
+- name: Make install ruby-install
+  make:
+    chdir: "{{ chruby_build.stat.path }}/ruby-install-{{ chruby_ruby_install_version }}"
+    target: install
+  become: yes
+  when: ruby_install_unarchived.changed

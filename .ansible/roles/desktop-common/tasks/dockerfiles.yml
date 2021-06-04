@@ -1,0 +1,8 @@
+---
+
+- name: Clone dockerfiles repository
+  git:
+    repo: git@github.com:cacack/dockerfiles.git
+    dest: "{{devel_home_base_dir}}/dockerfiles"
+    accept_hostkey: 'yes'
+    update: 'yes'

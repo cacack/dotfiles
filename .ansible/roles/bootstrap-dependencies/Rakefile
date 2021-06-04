@@ -1,0 +1,115 @@
+task default: :validate
+
+desc 'Run everything'
+task all: %i[
+  init
+  checks
+  lint
+  test
+]
+
+desc 'Run all init tasks'
+task init: %i[
+  init:author
+  init:hooks
+  init:ansible:roles
+]
+
+desc 'Run all checks tasks'
+task check: %i[
+  check:nonascii
+  check:whitespace
+]
+
+desc 'Run all lint tasks'
+task lint: %i[
+  lint:markdown
+  lint:yaml
+  lint:ansible
+  lint:ruby
+  lint:shell
+]
+
+desc 'Run all validation tasks'
+task validate: %i[
+  check
+  lint
+]
+
+################################################################################
+# Init
+namespace :init do
+  desc 'Configure the git author (if needed)'
+  task :author do
+    puts "\nConfigure git author.."
+    sh 'bin/git/set-git-author.sh'
+  end
+
+  desc 'Initialize git hooks'
+  task :hooks do
+    puts "\nSetting up githooks.."
+    sh 'bin/git/init-hooks.sh'
+  end
+
+  namespace :ansible do
+    desc 'Initialize ansible roles'
+    task :roles do
+      Dir.glob('requirements.y*ml').each do |file|
+        if File.readable?(file)
+          puts "\nInstalling Ansible roles.."
+          sh "ansible-galaxy install -r #{file}"
+        end
+      end
+    end
+  end # namespace end: ansible
+end # namepace end: init
+
+################################################################################
+# Checks
+namespace :check do
+  desc 'Check for non-ASCII filenames'
+  task :nonascii do
+    puts "\nChecking for non-ASCII filenames.."
+    sh 'bin/check_for_nonascii_filenames.sh'
+  end
+
+  desc 'Check for whitespace errors'
+  task :whitespace do
+    puts "\nChecking for whitespace errors.."
+    sh 'bin/check_for_whitespace_errors.sh'
+  end
+end # namespace end: check
+
+################################################################################
+# Lint
+namespace :lint do
+  desc 'Lint markdown files'
+  task :markdown do
+    puts "\nLinting markdown files.."
+    sh 'bin/lint_markdown.sh'
+  end
+
+  desc 'Lint yaml files'
+  task :yaml do
+    puts "\nLinting yaml files.."
+    sh 'bin/lint_yaml.sh'
+  end
+
+  desc 'Lint ansible code'
+  task :ansible do
+    puts "\nLinting ansible code.."
+    sh 'bin/lint_ansible.sh'
+  end
+
+  desc 'Lint ruby code'
+  task :ruby do
+    puts "\nLinting ruby code.."
+    sh 'bin/run_rubocop.sh'
+  end
+
+  desc 'Lint shell code'
+  task :shell do
+    puts "\nLinting shell code.."
+    sh 'bin/run_shellcheck.sh'
+  end
+end # namespace end: lint

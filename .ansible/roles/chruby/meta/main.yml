@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: betterplace developers
+  description: Install ruby via chruby and ruby-install
+  company: betterplace
+  license: Apache V2.0
+  min_ansible_version: 1.2
+  categories:
+  - ruby
+  platforms:
+  - name: EL
+    versions:
+    - 6
+dependencies: []

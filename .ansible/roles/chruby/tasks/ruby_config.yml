@@ -1,0 +1,17 @@
+- name: Determine if the specified ruby version is installed
+  stat:
+    path: "{{ chruby_rubies_path }}/{{ chruby_ruby_version }}"
+  register: ruby_version_dir
+
+- name: Install ruby_version if necessary
+  command: '{{ chruby_ruby_install_command }} ruby {{ chruby_ruby_version|replace("ruby-", "") }}'
+  when: not ruby_version_dir.stat.exists
+  become: yes
+
+- name: Install bundler
+  gem:
+    executable: "{{ chruby_chruby_exec_command }} {{ chruby_ruby_version }} -- gem"
+    name: bundler
+    state: present
+    #user_install: no
+  #become: yes

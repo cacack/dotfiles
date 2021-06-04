@@ -1,0 +1,21 @@
+---
+
+- name: Add home automounts
+  copy: src={{item}}
+        dest=/etc/{{item}}
+  with_items:
+    - auto.home
+  sudo: yes
+  notify: Restart autofs
+
+- name: Enable auto.home automounts
+  sudo: yes
+  lineinfile:
+    dest: /etc/auto.master
+    line: /-                      /etc/auto.home --timeout=30 --ghost
+    state: present
+    backup: yes
+    create: yes
+    insertafter: EOF
+  notify: Restart autofs
+

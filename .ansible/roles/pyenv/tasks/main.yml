@@ -1,0 +1,7 @@
+---
+
+- name: "Include OS specific tasks"
+  include: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Include the installation tasks"
+  include: install.yml

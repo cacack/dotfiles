@@ -1,0 +1,7 @@
+- name: Remove all outdated_ruby_versions
+  file:
+    name: "{{ chruby_rubies_path }}/{{item}}"
+    state: absent
+  with_items: "{{ chruby_outdated_ruby_versions }}"
+  become: yes
+  when: chruby_outdated_ruby_versions is defined
