@@ -37,6 +37,35 @@ setup-fzf:
 	sudo chmod 644 /usr/local/lib/fzf-*
 	sudo chown root:root /usr/local/lib/fzf-*
 
+.PHONY: setup-kitty
+setup-kitty:
+	@echo
+	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
+	tar -x -C ~/bin/ -f kitty.txz bin/kitty
+	chmod 755 ~/bin/kitty
+	rm kitty.txz
+
+.PHONY: setup-starship
+setup-starship:
+	@echo
+	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
+	tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
+	chmod 775 /usr/local/bin/starship
+	rm starship.tar.gz
+
+.PHONY: setup-lsd
+setup-lsd:
+	@echo
+	wget -O lsd.tar.gz https://github.com/Peltoche/lsd/releases/download/$(LSD_VERSION)/lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu.tar.gz
+	tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
+	chmod 775 /usr/local/bin/lsd
+	rm lsd.tar.gz
+
+.PHONY: setup-nvm
+setup-nvm:
+	@echo
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
+
 # Update development dependencies
 update: $(UPDATE)
 
@@ -67,32 +96,3 @@ do-bootstrap:
 		--extra-vars="host=localhost" \
 		--ask-become-pass \
 		bootstrap.yml
-
-.PHONY: setup-kitty
-setup-kitty:
-	@echo
-	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
-	tar -x -C ~/bin/ -f kitty.txz bin/kitty
-	chmod 755 ~/bin/kitty
-	rm kitty.txz
-
-.PHONY: setup-starship
-setup-starship:
-	@echo
-	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
-	tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
-	chmod 775 /usr/local/bin/starship
-	rm starship.tar.gz
-
-.PHONY: setup-lsd
-setup-lsd:
-	@echo
-	wget -O lsd.tar.gz https://github.com/Peltoche/lsd/releases/download/$(LSD_VERSION)/lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu.tar.gz
-	tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
-	chmod 775 /usr/local/bin/lsd
-	rm lsd.tar.gz
-
-.PHONY: setup-nvm
-setup-nvm:
-	@echo
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
