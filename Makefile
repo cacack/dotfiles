@@ -121,8 +121,24 @@ acceptance-test: $(ACCEPTANCE_TEST)
 
 run: $(RUN)
 
-do-bootstrap:
-	cd $(ANSIBLE_PATH); pipenv run ansible-playbook \
+.PHONY: bootstrap
+bootstrap: setup-poetry
+	@echo
+	if ! hash pyenv 1>/dev/null 2>&1; then \
+		if [[ ! -d "${HOME}.pyenv" ]]; then \
+			git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv ;\
+		else \
+			cd "${HOME}/.pyenv" && git pull ;\
+		fi ;\
+		export PYENV_ROOT="$${HOME}/.pyenv" ;\
+		export PATH="$${PYENV_ROOT}/bin:$${PATH}" ;\
+		eval "$$(pyenv init --path)" ;\
+	fi ;\
+	cd "${HOME}/.pyenv" && git pull ;\
+	pyenv install --skip-existing $(shell cat .python-version) ;\
+	pyenv rehash ;\
+	poetry install ;\
+	cd $(ANSIBLE_PATH); poetry run ansible-playbook \
 		--connection="local" \
 		--inventory="localhost," \
 		--extra-vars="host=localhost" \
