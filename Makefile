@@ -10,6 +10,7 @@ NVM_VERSION := 0.37.2
 ANSIBLE_PATH := .ansible
 
 FZF_VERSION := 0.27.2
+NERD_FONT_VERSION := 2.1.0
 
 
 # Source the modular make files
@@ -65,6 +66,37 @@ setup-lsd:
 setup-nvm:
 	@echo
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
+
+.PHONY: setup-fonts
+setup-fonts: setup-font-3270 setup-font-hack setup-font-meslo setup-font-mplus
+
+.PHONY: setup-font-3270
+setup-font-3270:
+	@echo
+	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/3270.zip
+	unzip -o -d ${HOME}/.fonts font.zip
+	rm font.zip
+
+.PHONY: setup-font-hack
+setup-font-hack:
+	@echo
+	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Hack.zip
+	unzip -o -d ${HOME}/.fonts font.zip
+	rm font.zip
+
+.PHONY: setup-font-meslo
+setup-font-meslo:
+	@echo
+	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Meslo.zip
+	unzip -o -d ${HOME}/.fonts font.zip
+	rm font.zip
+
+.PHONY: setup-font-mplus
+setup-font-mplus:
+	@echo
+	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/MPlus.zip
+	unzip -o -d ${HOME}/.fonts font.zip
+	rm font.zip
 
 # Update development dependencies
 update: $(UPDATE)
