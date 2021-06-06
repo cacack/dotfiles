@@ -1,15 +1,15 @@
 ################################################################################
 # Variables
 
-PYTHON_VERSION := 3.8.5
-SHELLCHECK_VERSION := 0.7.1
-KITTY_VERSION := 0.19.3
-STARSHIP_VERSION := 0.50.0
-LSD_VERSION := 0.19.0
+PYTHON_VERSION := 3.8.10
+SHELLCHECK_VERSION := 0.7.2
+KITTY_VERSION := 0.20.3
+STARSHIP_VERSION := 0.54.0
+LSD_VERSION := 0.20.1
 NVM_VERSION := 0.37.2
 ANSIBLE_PATH := .ansible
 
-FZF_VERSION := 0.25.1
+FZF_VERSION := 0.27.2
 
 
 # Source the modular make files
