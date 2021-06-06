@@ -22,7 +22,7 @@ setup-pyenv:
 		if [[ ! -d "${HOME}.pyenv" ]]; then git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv; fi ;\
 		echo 'export PYENV_ROOT="$${HOME}/.pyenv"' >> ${HOME}/.bashrc ;\
 		echo 'export PATH="$${PYENV_ROOT}/bin:$${PATH}"' >> ${HOME}/.bashrc ;\
-		echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$$(pyenv init -)"\nfi'>> ${HOME}/.bashrc ;\
+		echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$$(pyenv init --path)"\nfi'>> ${HOME}/.bashrc ;\
 	fi
 
 
@@ -32,6 +32,13 @@ setup-python: setup-pyenv
 	source ${HOME}/.bashrc ;\
 	pyenv install --skip-existing $(shell cat .python-version) ;\
 	pyenv rehash
+
+.PHONY: setup-poetry
+setup-poetry:
+	@echo
+	if ! hash poetry 1>/dev/null 2>&1; then \
+		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - ;\
+	fi
 
 .PHONY: setup-pipenv
 setup-pipenv: setup-python
