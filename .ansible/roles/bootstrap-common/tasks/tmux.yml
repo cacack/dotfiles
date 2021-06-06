@@ -3,5 +3,5 @@
 - name: Symlink Tmux configuration file
   file:
     state: link
-    src: "{{ dotfiles_linux_user_dir }}/dot.tmux.conf"
+    src: "{{ dotfiles_config_dir }}/dot.tmux.conf"
     dest: ~/.tmux.conf

@@ -3,7 +3,7 @@
 - name: Symlink Vim configuration file
   file:
     state: link
-    src: "{{ dotfiles_linux_user_dir }}/dot.vimrc"
+    src: "{{ dotfiles_config_dir }}/dot.vimrc"
     dest: ~/.vimrc
     force: 'yes'
 
@@ -23,19 +23,19 @@
 - name: Symlink Vim configuration directory
   file:
     state: link
-    src: "{{ dotfiles_linux_user_dir }}/dot.vim"
+    src: "{{ dotfiles_config_dir }}/dot.vim"
     dest: ~/.vim
     force: 'yes'
 
-- name: Clone Vundle git repo
-  git:
-    repo: https://github.com/VundleVim/Vundle.vim.git
-    clone: yes
-    dest: ~/.vim/bundle/Vundle.vim
+#- name: Clone Vundle git repo
+#  git:
+#    repo: https://github.com/VundleVim/Vundle.vim.git
+#    clone: yes
+#    dest: ~/.vim/bundle/Vundle.vim
 
-      #- name: Install Vundle plugins
-      #  shell: vim +PluginInstall +qall
-      #  register: vundle_result
+#- name: Install Vundle plugins
+#  shell: vim +PluginInstall +qall
+#  register: vundle_result
 
 - name: Set editor on Debian and friends
   shell: update-alternatives --set editor /usr/bin/vim.basic
