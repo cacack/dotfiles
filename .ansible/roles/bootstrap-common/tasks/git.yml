@@ -3,7 +3,7 @@
 - name: Symlink git configs
   file:
     state: link
-    src: "{{ dotfiles_linux_user_dir }}/{{ item.src }}"
+    src: "{{ dotfiles_config_dir }}/{{ item.src }}"
     dest: "~/{{ item.dest }}"
     force: 'yes'
   with_items:

@@ -7,10 +7,6 @@
     dest: "~/{{ item.dest }}"
     force: yes
   with_items:
-     - { src: "{{ dotfiles_linux_user_dir }}/dot.bashrc", dest: ".bashrc" }
-     - { src: "{{ dotfiles_linux_user_dir }}/dot.bashrc.d", dest: ".bashrc.d" }
-     - { src: "{{ dotfiles_linux_user_dir }}/dot.bash_aliases", dest: ".bash_aliases" }
-     - { src: "{{ dotfiles_linux_user_dir }}/dot.profile", dest: ".profile" }
      - { src: "{{ dotfiles_config_dir }}/dot.zshenv", dest: ".zshenv" }
      - { src: "{{ dotfiles_config_dir }}/dot.zshrc", dest: ".zshrc" }
      - { src: "{{ dotfiles_config_dir }}/dot.zshrc.d", dest: ".zshrc.d" }

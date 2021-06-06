@@ -14,19 +14,8 @@
     - "common"
     - "directories"
 
-      #- name: Clone .dotfiles repository
-      #  git:
-      #    repo: "{{ dotfiles_git_url }}"
-      #    dest: "{{ dotfiles_base_dir }}"
-      #    recursive: yes
-      #    accept_hostkey: yes
-      #    update: yes
-
 - name: Include shell config
   include_tasks: "shell.yml"
-
-- name: Include liquidprompt config
-  include_tasks: "liquidprompt.yml"
 
 - name: Include git config
   include_tasks: "git.yml"
@@ -34,5 +23,5 @@
 - name: Include tmux config
   include_tasks: "tmux.yml"
 
-#- name: Include vim config
-#include_tasks: "vim.yml"
+- name: Include vim config
+  include_tasks: "vim.yml"

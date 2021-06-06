@@ -12,10 +12,10 @@
       tags:
         - common
 
-    - role: lsd
-      tags:
-        - lsd
-
-    - role: starship
-      tags:
-        - starship
+#    - role: lsd
+#      tags:
+#        - lsd
+#
+#    - role: starship
+#      tags:
+#        - starship
