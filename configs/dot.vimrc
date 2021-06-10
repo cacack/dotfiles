@@ -5,12 +5,19 @@ scriptencoding utf-8
 set encoding=utf-8
 set nocompatible                   " break away from old vi compatibility
 
+" Install vim-plug automatically
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug
 " vim +PlugInstall
 call plug#begin('~/.vim/plugged')
 " let Vundle manage Vundle, required
-Plug 'gmarik/Vundle.vim'
+"Plug 'gmarik/Vundle.vim'
 Plug 'tpope/vim-sensible'
 Plug 'scrooloose/nerdtree'
 Plug 'editorconfig/editorconfig-vim'
