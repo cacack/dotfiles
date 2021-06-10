@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 # Start ssh-agent and load SSH key
 # https://help.github.com/articles/working-with-ssh-key-passphrases/#auto-launching-ssh-agent-on-msysgit
 ################################################################################
