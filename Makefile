@@ -135,6 +135,7 @@ bootstrap: setup-poetry
 		eval "$$(pyenv init --path)" ;\
 	fi ;\
 	cd "${HOME}/.pyenv" && git pull ;\
+	cd - ;\
 	pyenv install --skip-existing $(shell cat .python-version) ;\
 	pyenv rehash ;\
 	poetry install ;\
