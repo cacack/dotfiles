@@ -13,7 +13,7 @@ alias llx='lx -l'
 alias l='ls -1'
 
 
-if hash lsd 2>/dev/null; then
+if (( $+commands[lsd] )); then
   alias ls='lsd'
 fi
 # Make grep more user friendly by highlighting matches
