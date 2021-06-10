@@ -10,3 +10,14 @@
      - { src: "{{ dotfiles_config_dir }}/dot.zshenv", dest: ".zshenv" }
      - { src: "{{ dotfiles_config_dir }}/dot.zshrc", dest: ".zshrc" }
      - { src: "{{ dotfiles_config_dir }}/dot.zshrc.d", dest: ".zshrc.d" }
+
+- name: Register current SSS overrides
+  command: "sss_override user-show {{ ansible_user_id }}"
+  register: current_sss_overrides
+  changed_when: false
+  become: true
+
+- name: Set user's shell to zsh
+  command: "sss_override user-add {{ ansible_user_id }} --shell /bin/zsh"
+  when: current_sss_overrides.stdout.find("/bin/zsh") == -1
+  become: true
