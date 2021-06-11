@@ -44,6 +44,10 @@ agent_start() {
   . "$env" >/dev/null
 }
 
+fix_ssh_auth_sock() {
+  eval $(tmux show-environment | grep ^SSH_AUTH_SOCK)
+}
+
 if ! agent_is_running; then
   agent_load_env
 fi
