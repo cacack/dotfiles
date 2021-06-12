@@ -1,5 +1,9 @@
 ---
 
+- name: "Gather package facts"
+  package_facts:
+    manager: "auto"
+
 - name: Create base directories
   file:
     path: "~/{{ item }}"

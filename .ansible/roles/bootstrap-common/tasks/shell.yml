@@ -11,13 +11,28 @@
      - { src: "{{ dotfiles_config_dir }}/dot.zshrc", dest: ".zshrc" }
      - { src: "{{ dotfiles_config_dir }}/dot.zshrc.d", dest: ".zshrc.d" }
 
+- name: Install oh-my-zsh
+  git:
+    repo: git@github.com:ohmyzsh/ohmyzsh.git
+    dest: ~/.oh-my-zsh
+
 - name: Register current SSS overrides
   command: "sss_override user-show {{ ansible_user_id }}"
   register: current_sss_overrides
   changed_when: false
+  when: "'sssd' in ansible_facts.packages"
+  become: true
+
+- name: Override user's shell to zsh in SSSD
+  command: "sss_override user-add {{ ansible_user_id }} --shell /bin/zsh"
+  when:
+    - "'sssd' in ansible_facts.packages"
+    - current_sss_overrides.stdout.find("/bin/zsh") == -1
   become: true
 
 - name: Set user's shell to zsh
-  command: "sss_override user-add {{ ansible_user_id }} --shell /bin/zsh"
-  when: current_sss_overrides.stdout.find("/bin/zsh") == -1
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: "/bin/zsh"
+  when: "'sssd' not in ansible_facts.packages"
   become: true

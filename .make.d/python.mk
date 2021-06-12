@@ -37,7 +37,7 @@ setup-python: setup-pyenv
 setup-poetry:
 	@echo
 	if ! hash poetry 1>/dev/null 2>&1; then \
-		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - ;\
+		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - ;\
 	fi
 
 .PHONY: setup-pipenv
