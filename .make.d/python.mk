@@ -18,12 +18,8 @@ SETUP += setup-pyenv setup-python setup-pipenv setup-python-modules
 .PHONY: setup-pyenv
 setup-pyenv:
 	@echo
-	if ! hash pyenv 1>/dev/null 2>&1; then \
-		if [[ ! -d "${HOME}.pyenv" ]]; then git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv; fi ;\
-		echo 'export PYENV_ROOT="$${HOME}/.pyenv"' >> ${HOME}/.bashrc ;\
-		echo 'export PATH="$${PYENV_ROOT}/bin:$${PATH}"' >> ${HOME}/.bashrc ;\
-		echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$$(pyenv init --path)"\nfi'>> ${HOME}/.bashrc ;\
-	fi
+	[[ -d "${HOME}/.pyenv" ]] || git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv
+	[[ -d "${HOME}/.pyenv/plugins/pyenv-virtualenv" ]] || git clone https://github.com/pyenv/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
 
 
 .PHONY: setup-python
