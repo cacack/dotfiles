@@ -13,7 +13,8 @@
 
 - name: Install oh-my-zsh
   git:
-    repo: git@github.com:ohmyzsh/ohmyzsh.git
+    #repo: git@github.com:ohmyzsh/ohmyzsh.git
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: ~/.oh-my-zsh
 
 - name: Register current SSS overrides
