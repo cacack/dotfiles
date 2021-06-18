@@ -101,3 +101,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Configure less to not page if only one screen
+# https://stackoverflow.com/questions/48341920/git-branch-command-behaves-like-less
+export LESS="--no-init --quit-if-one-screen -R"
