@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#set -x
+
+repo_count=1
+
+while read -r dir; do
+  echo "################################################################################"
+  echo "Checking out default branch in ${dir} [${repo_count}]"
+  (
+    cd "${dir}" || return
+    default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
+    git fetch -v
+    git checkout "${default_branch}"
+    git merge --ff-only origin/master
+  )
+  repo_count=$((repo_count+1))
+  # Gitlab now rate limits 10 requests per minute per IP..
+  sleep 3
+done < <(find . \( -exec test -d '{}'/.git \; \) -print -prune)
