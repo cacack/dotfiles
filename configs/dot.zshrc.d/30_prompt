@@ -1,3 +1,5 @@
 if (( $+commands[starship] )); then
   eval "$(starship init zsh)"
 fi
+
+export SHOW_AWS_PROMPT=false
