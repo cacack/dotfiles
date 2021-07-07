@@ -105,3 +105,6 @@ source $ZSH/oh-my-zsh.sh
 # Configure less to not page if only one screen
 # https://stackoverflow.com/questions/48341920/git-branch-command-behaves-like-less
 export LESS="--no-init --quit-if-one-screen -R"
+
+# Disable sharing of history except when spawning a new shell
+setopt nosharehistory
