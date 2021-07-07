@@ -11,7 +11,7 @@ while read -r dir; do
     default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
     git fetch -v
     git checkout "${default_branch}"
-    git merge --ff-only origin/master
+    git merge --ff-only "origin/${default_branch}"
   )
   repo_count=$((repo_count+1))
   # Gitlab now rate limits 10 requests per minute per IP..

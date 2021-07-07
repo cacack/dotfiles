@@ -5,6 +5,7 @@ if [[ -n "$BASH_VERSION" ]] || [[ -n "$ZSH_VERSION" ]]; then
     export PATH="${HOME}/.pyenv/bin:$PATH"
     if (( $+commands[pyenv] )); then
       eval "$(pyenv init --path)"
+      eval "$(pyenv init -)"
       eval "$(pyenv virtualenv-init -)"
     fi
   fi
