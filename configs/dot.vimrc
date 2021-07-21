@@ -202,3 +202,6 @@ let g:terraform_align=1
 " Python tunables
 autocmd BufWritePre *.py execute ':Black'
 let g:black_linelength=150
+
+" AWS tunables
+let g:syntastic_cloudformation_checkers = ['cfn_lint']
