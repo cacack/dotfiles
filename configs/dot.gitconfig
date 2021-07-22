@@ -21,3 +21,5 @@
 	prune = true
 [init]
 	defaultBranch = main
+[core]
+	autocrlf = input
