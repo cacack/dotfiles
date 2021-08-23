@@ -3,8 +3,8 @@
 
 PYTHON_VERSION := 3.8.10
 SHELLCHECK_VERSION := 0.7.2
-KITTY_VERSION := 0.20.3
-STARSHIP_VERSION := 0.54.0
+KITTY_VERSION := 0.23.1
+STARSHIP_VERSION := 0.56.0
 LSD_VERSION := 0.20.1
 NVM_VERSION := 0.37.2
 ANSIBLE_PATH := .ansible
@@ -42,7 +42,7 @@ setup-fzf:
 setup-kitty:
 	@echo
 	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
-	tar -x -C ~/bin/ -f kitty.txz bin/kitty
+	tar -xv -C ~/bin/ --strip-components 1 -f kitty.txz bin/kitty
 	chmod 755 ~/bin/kitty
 	rm kitty.txz
 
@@ -50,8 +50,8 @@ setup-kitty:
 setup-starship:
 	@echo
 	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
-	tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
-	chmod 775 /usr/local/bin/starship
+	sudo tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
+	sudo chmod 775 /usr/local/bin/starship
 	rm starship.tar.gz
 
 .PHONY: setup-lsd
