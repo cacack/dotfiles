@@ -4,6 +4,7 @@
 repo_count=1
 
 while read -r dir; do
+  echo
   echo "################################################################################"
   echo "Checking out default branch in ${dir} [${repo_count}]"
   (
@@ -15,5 +16,5 @@ while read -r dir; do
   )
   repo_count=$((repo_count+1))
   # Gitlab now rate limits 10 requests per minute per IP..
-  sleep 3
+  sleep 5
 done < <(find . \( -exec test -d '{}'/.git \; \) -print -prune)
