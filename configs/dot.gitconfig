@@ -6,7 +6,7 @@
 
 [diff]
 	renames = true
-  tool = vimdiff
+	tool = vimdiff
 
 [user]
 	name = Chris Clonch
@@ -24,3 +24,7 @@
 [core]
 	autocrlf = input
 	editor = vim
+[difftool]
+	prompt = false
+[alias]
+	vimdiff = difftool
