@@ -205,3 +205,6 @@ let g:black_linelength=150
 
 " AWS tunables
 let g:syntastic_cloudformation_checkers = ['cfn_lint']
+
+" JSON
+autocmd FileType json setlocal shiftwidth=2 softtabstop=2 expandtab
