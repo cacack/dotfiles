@@ -1,15 +1,15 @@
 ################################################################################
 # Variables
 
-PYTHON_VERSION := 3.8.10
-SHELLCHECK_VERSION := 0.7.2
+PYTHON_VERSION := 3.9.7
+SHELLCHECK_VERSION := 0.8.0
 KITTY_VERSION := 0.23.1
-STARSHIP_VERSION := 0.56.0
+STARSHIP_VERSION := 1.0.0
 LSD_VERSION := 0.20.1
-NVM_VERSION := 0.37.2
+NVM_VERSION := 0.39.0
 ANSIBLE_PATH := .ansible
 
-FZF_VERSION := 0.27.2
+FZF_VERSION := 0.28.0
 NERD_FONT_VERSION := 2.1.0
 
 
