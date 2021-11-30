@@ -2,18 +2,21 @@
 #set -x
 
 repo_count=1
+tmp_base_dir="${HOME}/tmp/gitstats"
 
 while read -r dir; do
   repo_name=$(basename "${dir}")
   echo
   echo "################################################################################"
-  echo "Checking out default branch in ${repo_name} [${repo_count}]"
+  echo "Generating stats for ${repo_name} [${repo_count}]"
   (
     cd "${dir}" || exit
     default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
-    git fetch -v || exit
-    git checkout "${default_branch}"
-    git merge --ff-only "origin/${default_branch}"
+    git fetch >/dev/null 2>&1 || exit
+
+    repo_stat_dir="${tmp_base_dir}/${repo_name}"
+    mkdir -p "${repo_stat_dir}"
+    gitstats . "${repo_stat_dir}"
   )
   repo_count=$((repo_count+1))
   # Gitlab now rate limits 10 requests per minute per IP..
