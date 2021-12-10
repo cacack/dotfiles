@@ -2,10 +2,10 @@
 truncation_length = 3
 truncate_to_repo = false
 
-[env_var]
-variable = "OS_CLOUD_PROJECT"
-style = "bold yellow"
-symbol = "  "
+#[env_var]
+#variable = "OS_CLOUD_PROJECT"
+#style = "bold yellow"
+#symbol = "  "
 
 [username]
 show_always = true
@@ -17,46 +17,5 @@ ssh_only = false
 success_symbol = "❯"
 error_symbol = "✖"
 
-[aws]
-symbol = "  "
-
-[battery]
-full_symbol = ""
-charging_symbol = ""
-discharging_symbol = ""
-
-[conda]
-symbol = " "
-
-[git_branch]
-symbol = " "
-
-[golang]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[java]
-symbol = " "
-
-[memory_usage]
-symbol = " "
-
-[nodejs]
-symbol = " "
-
-[package]
-symbol = " "
-
-[php]
-symbol = " "
-
-[python]
-symbol = " "
-
-[ruby]
-symbol = " "
-
-[rust]
-symbol = " "
+#[aws]
+#symbol = "  "
