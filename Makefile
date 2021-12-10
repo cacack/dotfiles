@@ -62,6 +62,11 @@ setup-lsd:
 	chmod 775 /usr/local/bin/lsd
 	rm lsd.tar.gz
 
+.PHONY: setup-nvim-plug
+setup-nvim-plug:
+	@echo
+	curl -fLo ${HOME}/.local/share}/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 .PHONY: setup-nvm
 setup-nvm:
 	@echo

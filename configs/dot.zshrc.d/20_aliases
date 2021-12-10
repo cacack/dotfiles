@@ -20,7 +20,12 @@ fi
 # and exclude grepping through .svn folders.
 alias grep='grep --color=auto --exclude-dir=\.svn'
 
-alias vi='vim'
+if type nvim > /dev/null 2>&1; then
+  alias vi='nvim'
+  alias vim='nvim'
+else
+  alias vi='vim'
+fi
 
 # Enable 256 color and use wrapped SSH bin.
 alias ssh='TERM=xterm-256color ssh'

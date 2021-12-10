@@ -1,5 +1,12 @@
 ---
 
+- name: Symlink NeoVim configuration directory
+  file:
+    state: link
+    src: "{{ dotfiles_config_dir }}/dot.config/nvim"
+    dest: ~/.config/nvim
+    force: 'yes'
+
 - name: Symlink Vim configuration file
   file:
     state: link
