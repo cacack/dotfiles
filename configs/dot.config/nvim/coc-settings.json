@@ -6,5 +6,18 @@
     "json"
   ],
   "python.linting.flake8Enabled": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": [
+        "serve"
+      ],
+      "filetypes": [
+        "terraform",
+        "tf"
+      ],
+      "initializationOptions": {}
+    }
+  }
 }
