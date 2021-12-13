@@ -38,10 +38,10 @@ Plug 'sbdchd/neoformat'               " Formatting
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  " LSP
 
 " Languages
-Plug 'nvie/vim-flake8'         " Python
-Plug 'psf/black'               " Python
-Plug 'speshak/vim-cfn'         " CloudFormation
-Plug 'hashivim/vim-terraform'  " Terraform
+"Plug 'nvie/vim-flake8'         " Python
+"Plug 'psf/black'               " Python
+"Plug 'speshak/vim-cfn'         " CloudFormation
+"Plug 'hashivim/vim-terraform'  " Terraform
 
 call plug#end()
 
