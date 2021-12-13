@@ -62,10 +62,16 @@ setup-lsd:
 	chmod 775 /usr/local/bin/lsd
 	rm lsd.tar.gz
 
+.PHONY: setup-nvim
+setup-nvim:
+	@echo
+	curl -fLo ${HOME}/bin/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+	chmod 755 ${HOME}/bin/nvim.appimage
+
 .PHONY: setup-nvim-plug
 setup-nvim-plug:
 	@echo
-	curl -fLo ${HOME}/.local/share}/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	curl -fLo ${HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 .PHONY: setup-nvm
 setup-nvm:
