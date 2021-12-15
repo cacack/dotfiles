@@ -37,11 +37,9 @@ Plug 'neomake/neomake'                " Syntax/linting
 Plug 'sbdchd/neoformat'               " Formatting
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  " LSP
 
-" Languages
-"Plug 'nvie/vim-flake8'         " Python
-"Plug 'psf/black'               " Python
-"Plug 'speshak/vim-cfn'         " CloudFormation
-"Plug 'hashivim/vim-terraform'  " Terraform
+" Languages (not available via LSP)
+Plug 'speshak/vim-cfn'         " CloudFormation
+Plug 'hashivim/vim-terraform'  " Terraform
 
 call plug#end()
 
@@ -171,7 +169,7 @@ nnoremap <silent>bd :BufferLineSortByDirectory<CR>
 "nnoremap <silent><mymap> :lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Tree
+" nvim-tree
 lua << EOF
 require("nvim-tree").setup {
   open_on_setup       = false,
@@ -180,3 +178,9 @@ EOF
 nnoremap <C-n> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" coc-spell-checker
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
