@@ -1,20 +1,19 @@
 ################################################################################
 # Variables
 
-PYTHON_VERSION := 3.9.7
+PYTHON_VERSION := 3.10.2
 SHELLCHECK_VERSION := 0.8.0
-KITTY_VERSION := 0.23.1
-STARSHIP_VERSION := 1.0.0
-LSD_VERSION := 0.20.1
-NVM_VERSION := 0.39.0
-ANSIBLE_PATH := .ansible
-
-FZF_VERSION := 0.28.0
+KITTY_VERSION := 0.24.1
+STARSHIP_VERSION := 1.2.1
+LSD_VERSION := 0.21.0
+NVM_VERSION := 0.39.1
+FZF_VERSION := 0.29.0
 NERD_FONT_VERSION := 2.1.0
 
+ANSIBLE_PATH := .ansible
 
 # Source the modular make files
-include .make.d/*.mk
+#include .make.d/*.mk
 
 ################################################################################
 ## Development targets
@@ -24,8 +23,35 @@ print-version: $(PRINT_VERSION)
 # Setup development dependencies
 setup: setup-dirs $(SETUP)
 
+setup-desktop: setup-dirs setup-configs setup-progs setup-fonts
+
 setup-dirs:
-	mkdir -p ${HOME}/bin
+	mkdir -p ${HOME}/{.fonts,bin,desktop,devel,documents,downloads,music,pictures,public,templates,video}
+	ln -sf ${HOME}/.dotfiles/configs/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
+	rm -rf ${HOME}/{Desktop,Documents,Downloads,Music,Pictures,Public,Templates,Video}
+	xdg-user-dirs-update
+
+setup-configs: setup-tmux-config setup-zsh-config
+
+setup-tmux-config:
+	@echo
+	ln -sf ${HOME}/.dotfiles/configs/dot.tmux.conf ${HOME}/.tmux.conf
+
+setup-alacritty-config:
+	@echo
+	ln -sf ${HOME}/.dotfiles/configs/dot.config/alacritty ${HOME}/.config/alacritty
+
+setup-zsh-config:
+	@echo
+	ln -sf ${HOME}/.dotfiles/configs/dot.zshenv ${HOME}/.zshenv
+	ln -sf ${HOME}/.dotfiles/configs/dot.zshrc ${HOME}/.zshrc
+	ln -sf ${HOME}/.dotfiles/configs/dot.zshrc.d ${HOME}/.zshrc.d
+	[[ -d "${HOME}/.oh-my-zsh" ]] || git clone https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
+	sudo sss_override user-add cac21 --shell /bin/zsh
+	sudo systemctl restart sssd
+	rm -f ${HOME}/{.bashrc,.bash_history,.bash_logout,.bash_profile}
+
+setup-progs: setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvim-plug
 
 .PHONY: setup-fzf
 setup-fzf:
@@ -42,9 +68,14 @@ setup-fzf:
 setup-kitty:
 	@echo
 	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
-	tar -xv -C ~/bin/ --strip-components 1 -f kitty.txz bin/kitty
-	chmod 755 ~/bin/kitty
+	sudo tar -xv -C /usr/local/bin/ --strip-components 1 -f kitty.txz bin/kitty
+	sudo chmod 755 /usr/local/bin/kitty
 	rm kitty.txz
+
+.PHONY: setup-alacritty
+setup-alacritty:
+	@echo
+	sudo dnf install alacritty
 
 .PHONY: setup-starship
 setup-starship:
@@ -58,8 +89,8 @@ setup-starship:
 setup-lsd:
 	@echo
 	wget -O lsd.tar.gz https://github.com/Peltoche/lsd/releases/download/$(LSD_VERSION)/lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu.tar.gz
-	tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
-	chmod 775 /usr/local/bin/lsd
+	sudo tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
+	sudo chmod 775 /usr/local/bin/lsd
 	rm lsd.tar.gz
 
 .PHONY: setup-nvim
@@ -109,31 +140,28 @@ setup-font-mplus:
 	unzip -o -d ${HOME}/.fonts font.zip
 	rm font.zip
 
-# Update development dependencies
-update: $(UPDATE)
-
-# Apply code fix-ups
-fixup: $(FIXUP)
-
-# Clean up things from the development process
-clean: $(CLEAN)
 
 
 ################################################################################
 ## Lint targets
-lint: $(LINT)
 
-# dockerized execution
-lint-dockerized: $(LINT_DOCKERIZED)
 
-unit-test: $(UNIT_TEST)
+################################################################################
+## Run targets
 
-acceptance-test: $(ACCEPTANCE_TEST)
+.PHONY: setup-poetry
+setup-poetry:
+	@echo
+	if ! hash poetry 1>/dev/null 2>&1; then \
+		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - ;\
+	fi
 
-run: $(RUN)
+.PHONY: setup-python-build-dependencies
+setup-python-build-dependencies:
+	sudo dnf install make gcc zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel libffi-devel xz-devel
 
-.PHONY: bootstrap
-bootstrap: setup-poetry
+.PHONY: setup-pyenv
+setup-pyenv: setup-python-build-dependencies
 	@echo
 	if ! hash pyenv 1>/dev/null 2>&1; then \
 		if [[ ! -d "${HOME}.pyenv" ]]; then \
@@ -148,6 +176,14 @@ bootstrap: setup-poetry
 	cd "${HOME}/.pyenv" && git pull ;\
 	cd - ;\
 	pyenv install --skip-existing $(shell cat .python-version) ;\
+	pyenv rehash
+
+.PHONY: bootstrap
+bootstrap: setup-poetry setup-pyenv
+	@echo
+	export PATH="${HOME}/.pyenv/bin:${HOME}/.local/bin:${PATH}" ;\
+	eval "$(pyenv init --path)" ;\
+	eval "$(pyenv init -)" ;\
 	pyenv rehash ;\
 	poetry install ;\
 	cd $(ANSIBLE_PATH); poetry run ansible-playbook \
@@ -156,3 +192,8 @@ bootstrap: setup-poetry
 		--extra-vars="host=localhost" \
 		--ask-become-pass \
 		bootstrap.yml
+
+.PHONY: update-python-version
+update-python-version:
+	@echo
+	echo $(PYTHON_VERSION) > .python-version

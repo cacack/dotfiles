@@ -1,6 +1,7 @@
 directory: ~/shared/music/flac
-library: ~/.config/beets/beets.db
-#library: ~/shared/music/beets.db
+library: ~/cloud/data/beets.db
+#library: ~/.config/beets/beets.db
+
 art_filename: folder
 paths:
   default: %bucket{%the{$albumartist}}/%the{%asciify{$albumartist}}/%asciify{$album} [$year]/$track. %asciify{$title}

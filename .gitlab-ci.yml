@@ -31,7 +31,7 @@ check_for_whitespace_errors:
 
 yamllint:
   stage: lint
-  image: artifactory.cloud.cas.org/docker-hub/python:3.8.10
+  image: artifactory.cloud.cas.org/docker-hub/python:3.9.10
   tags:
     - docker
   script:
@@ -40,7 +40,7 @@ yamllint:
 
 ansible-lint:
   stage: lint
-  image: artifactory.cloud.cas.org/docker-hub/python:3.8.10
+  image: artifactory.cloud.cas.org/docker-hub/python:3.9.10
   tags:
     - docker
   script:

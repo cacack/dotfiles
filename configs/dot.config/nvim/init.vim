@@ -28,6 +28,7 @@ Plug 'sainnhe/sonokai'
 Plug 'arcticicestudio/nord-vim'
 
 " Make it an IDE
+Plug 'moll/vim-bbye'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'akinsho/bufferline.nvim'
 Plug 'scrooloose/nerdtree'            " 
@@ -76,6 +77,10 @@ endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
+
+" Source config files
+source $HOME/.config/nvim/coc.vim
+
 set showmatch               " show matching
 set ignorecase              " case insensitive
 set mouse=v                 " middle-click paste with
@@ -117,6 +122,7 @@ let mapleader = ";"                       " Set leader to ;
 nnoremap <leader>sv :source $MYVIMRC<CR>  " Map ;sv to reload config
 
 map <C-n> :NERDTreeToggle<CR>             " Toggle NERDTree
+map <C-d> :Bwipeout<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tunables

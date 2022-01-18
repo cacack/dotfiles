@@ -19,5 +19,10 @@
       ],
       "initializationOptions": {}
     }
+  },
+  "typescript.format.enabled": true,
+  "markdownlint.config": {
+    "default": true,
+    "line_length": true
   }
 }

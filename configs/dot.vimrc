@@ -32,12 +32,17 @@ Plug 'myint/syntastic-extras'  " Adds additional "basic" filetype checkers
 Plug 'Valloric/YouCompleteMe', { 'commit':'d98f896' }
 "Plug 'ctrlpvim/ctrlp.vim'
 
+"Plug 'cyberkov/openhab-vim'
+
 "Plug 'chase/vim-ansible-yaml'
 Plug 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
 Plug 'sudar/vim-arduino-syntax'
 "Plug 'aliou/bats.vim'
 
 " Python
+"Plug 'jmcantrell/vim-virtualenv'
+"Plug 'PieterjanMontens/vim-pipenv'
+Plug 'sansyrox/vim-python-virtualenv'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
 Plug 'psf/black'
@@ -185,26 +190,29 @@ let g:syntastic_yaml_checkers = ['pyyaml']
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+" Python tunables
 " virtualenv support
-py3 << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
+"py3 << EOF
+"import os
+"import sys
+"if 'VIRTUAL_ENV' in os.environ:
+"  project_base_dir = os.environ['VIRTUAL_ENV']
+"  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"  execfile(activate_this, dict(__file__=activate_this))
+"EOF
+
+autocmd BufWritePre *.py execute ':Black'
+let g:black_linelength=150
 
 " Terraform tunables
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
 
-" Python tunables
-autocmd BufWritePre *.py execute ':Black'
-let g:black_linelength=150
-
 " AWS tunables
 let g:syntastic_cloudformation_checkers = ['cfn_lint']
+
+" https://stackoverflow.com/a/32858266/947815
+let g:syntastic_ignore_files = ['cas-vpc.yaml','network-tgw.template', 'network-dx.template', 'manifest.yaml']
 
 " JSON
 autocmd FileType json setlocal shiftwidth=2 softtabstop=2 expandtab
