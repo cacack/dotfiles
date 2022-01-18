@@ -8,4 +8,6 @@ multi/atom/packages/
 linux-gnu/user/dot.vim/.netrwhist
 linux-gnu/dot.vim/black
 
+configs/dot.config/coc/extensions/node_modules/*
+
 .DS_Store
