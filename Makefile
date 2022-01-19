@@ -127,28 +127,28 @@ setup-fonts: setup-font-3270 setup-font-hack setup-font-meslo setup-font-mplus
 setup-font-3270:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/3270.zip
-	unzip -o -d ${HOME}/.fonts font.zip
+	unzip -o -d ${HOME}/.local/share/fonts font.zip
 	rm font.zip
 
 .PHONY: setup-font-hack
 setup-font-hack:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Hack.zip
-	unzip -o -d ${HOME}/.fonts font.zip
+	unzip -o -d ${HOME}/.local/share/fonts font.zip
 	rm font.zip
 
 .PHONY: setup-font-meslo
 setup-font-meslo:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Meslo.zip
-	unzip -o -d ${HOME}/.fonts font.zip
+	unzip -o -d ${HOME}/.local/share/fonts font.zip
 	rm font.zip
 
 .PHONY: setup-font-mplus
 setup-font-mplus:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/MPlus.zip
-	unzip -o -d ${HOME}/.fonts font.zip
+	unzip -o -d ${HOME}/.local/share/fonts font.zip
 	rm font.zip
 
 
