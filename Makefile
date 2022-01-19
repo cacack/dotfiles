@@ -109,6 +109,17 @@ setup-nvm:
 	@echo
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
 
+.PHONY: setup-aws-cli
+setup-aws-cli:
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+	unzip awscliv2.zip
+	./aws/install --install-dir ~/.aws-cli --bin-dir ${HOME}/.local/bin
+	rm -rf awscliv2.zip aws
+
+
+################################################################################
+# Fonts
+
 .PHONY: setup-fonts
 setup-fonts: setup-font-3270 setup-font-hack setup-font-meslo setup-font-mplus
 
