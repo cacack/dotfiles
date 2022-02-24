@@ -12,6 +12,13 @@ NERD_FONT_VERSION := 2.1.0
 
 ANSIBLE_PATH := .ansible
 
+BASE_DIR := ${HOME}
+RELATIVE_BIN_DIR := $(BASE_DIR)/bin
+
+DOTFILES_CONFIG_DIR := ${HOME}/.dotfiles/configs
+USER_BIN_DIR := ${HOME}/.local/bin
+USER_FONT_DIR := ${HOME}/.local/share/fonts
+
 # Source the modular make files
 #include .make.d/*.mk
 
@@ -26,8 +33,9 @@ setup: setup-dirs $(SETUP)
 setup-desktop: setup-dirs setup-configs setup-progs setup-fonts
 
 setup-dirs:
-	mkdir -p ${HOME}/{.fonts,bin,desktop,devel,documents,downloads,music,pictures,public,templates,video}
-	ln -sf ${HOME}/.dotfiles/configs/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
+	mkdir -p ${HOME}/{desktop,devel,documents,downloads,music,pictures,public,templates,video}
+	mkdir -p ${HOME}/.local/{bin,shared/fonts}
+	ln -sf ${DOTFILES_CONFIG_DIR}/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
 	rm -rf ${HOME}/{Desktop,Documents,Downloads,Music,Pictures,Public,Templates,Video}
 	xdg-user-dirs-update
 
@@ -35,17 +43,17 @@ setup-configs: setup-tmux-config setup-zsh-config
 
 setup-tmux-config:
 	@echo
-	ln -sf ${HOME}/.dotfiles/configs/dot.tmux.conf ${HOME}/.tmux.conf
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.tmux.conf ${HOME}/.tmux.conf
 
 setup-alacritty-config:
 	@echo
-	ln -sf ${HOME}/.dotfiles/configs/dot.config/alacritty ${HOME}/.config/alacritty
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.config/alacritty ${HOME}/.config/alacritty
 
 setup-zsh-config:
 	@echo
-	ln -sf ${HOME}/.dotfiles/configs/dot.zshenv ${HOME}/.zshenv
-	ln -sf ${HOME}/.dotfiles/configs/dot.zshrc ${HOME}/.zshrc
-	ln -sf ${HOME}/.dotfiles/configs/dot.zshrc.d ${HOME}/.zshrc.d
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshenv ${HOME}/.zshenv
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc ${HOME}/.zshrc
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc.d ${HOME}/.zshrc.d
 	[[ -d "${HOME}/.oh-my-zsh" ]] || git clone https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
 	sudo sss_override user-add cac21 --shell /bin/zsh
 	sudo systemctl restart sssd
@@ -56,13 +64,15 @@ setup-progs: setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvi
 .PHONY: setup-fzf
 setup-fzf:
 	@echo
-	curl -s -J -L -o fzf.tar.gz https://github.com/junegunn/fzf/releases/download/$(FZF_VERSION)/fzf-$(FZF_VERSION)-linux_amd64.tar.gz
-	sudo tar -xzf fzf.tar.gz -C /usr/local/bin
-	rm fzf.tar.gz
-	sudo curl -s -J -L -o /usr/local/lib/fzf-completion.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash
-	sudo curl -s -J -L -o /usr/local/lib/fzf-key-bindings.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash
-	sudo chmod 644 /usr/local/lib/fzf-*
-	sudo chown root:root /usr/local/lib/fzf-*
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	${HOME}/.fzf/install
+	#curl -s -J -L -o fzf.tar.gz https://github.com/junegunn/fzf/releases/download/$(FZF_VERSION)/fzf-$(FZF_VERSION)-linux_amd64.tar.gz
+	#sudo tar -xzf fzf.tar.gz -C /usr/local/bin
+	#rm fzf.tar.gz
+	#sudo curl -s -J -L -o /usr/local/lib/fzf-completion.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash
+	#sudo curl -s -J -L -o /usr/local/lib/fzf-key-bindings.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash
+	#sudo chmod 644 /usr/local/lib/fzf-*
+	#sudo chown root:root /usr/local/lib/fzf-*
 
 .PHONY: setup-kitty
 setup-kitty:
@@ -71,6 +81,10 @@ setup-kitty:
 	sudo tar -xv -C /usr/local/bin/ --strip-components 1 -f kitty.txz bin/kitty
 	sudo chmod 755 /usr/local/bin/kitty
 	rm kitty.txz
+
+.PHONY: setup-kitty-config
+setup-kitty-config:
+	ln -sf $(DOTFILES_CONFIG_DIR)/kitty.conf ${HOME}/.config/kitty/kitty.conf
 
 .PHONY: setup-alacritty
 setup-alacritty:
@@ -84,6 +98,7 @@ setup-starship:
 	sudo tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
 	sudo chmod 775 /usr/local/bin/starship
 	rm starship.tar.gz
+	ln -sf $(DOTFILES_CONFIG_DIR)/starship.toml ${HOME}/.config/starship.toml
 
 .PHONY: setup-lsd
 setup-lsd:
@@ -93,11 +108,11 @@ setup-lsd:
 	sudo chmod 775 /usr/local/bin/lsd
 	rm lsd.tar.gz
 
-.PHONY: setup-nvim
-setup-nvim:
+.PHONY: setup-neovim
+setup-neovim:
 	@echo
-	curl -fLo ${HOME}/bin/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-	chmod 755 ${HOME}/bin/nvim.appimage
+	curl -fLo ${USER_BIN_DIR}/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+	chmod 755 ${USER_BIN_DIR}/bin/nvim.appimage
 
 .PHONY: setup-nvim-plug
 setup-nvim-plug:
@@ -113,7 +128,7 @@ setup-nvm:
 setup-aws-cli:
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
-	./aws/install --install-dir ~/.aws-cli --bin-dir ${HOME}/.local/bin
+	./aws/install --install-dir ~/.aws-cli --bin-dir ${USER_BIN_DIR}
 	rm -rf awscliv2.zip aws
 
 
@@ -127,28 +142,28 @@ setup-fonts: setup-font-3270 setup-font-hack setup-font-meslo setup-font-mplus
 setup-font-3270:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/3270.zip
-	unzip -o -d ${HOME}/.local/share/fonts font.zip
+	unzip -o -d ${USER_FONT_DIR} font.zip
 	rm font.zip
 
 .PHONY: setup-font-hack
 setup-font-hack:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Hack.zip
-	unzip -o -d ${HOME}/.local/share/fonts font.zip
+	unzip -o -d ${USER_FONT_DIR} font.zip
 	rm font.zip
 
 .PHONY: setup-font-meslo
 setup-font-meslo:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Meslo.zip
-	unzip -o -d ${HOME}/.local/share/fonts font.zip
+	unzip -o -d ${USER_FONT_DIR} font.zip
 	rm font.zip
 
 .PHONY: setup-font-mplus
 setup-font-mplus:
 	@echo
 	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/MPlus.zip
-	unzip -o -d ${HOME}/.local/share/fonts font.zip
+	unzip -o -d ${USER_FONT_DIR} font.zip
 	rm font.zip
 
 
