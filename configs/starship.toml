@@ -8,14 +8,15 @@ truncate_to_repo = false
 #symbol = "  "
 
 [username]
+format = "[$user]($style)@"
 show_always = true
 
 [hostname]
 ssh_only = false
 
-[character]
-success_symbol = "❯"
-error_symbol = "✖"
+#[character]
+#success_symbol = "❯"
+#error_symbol = "✖"
 
 #[aws]
 #symbol = "  "

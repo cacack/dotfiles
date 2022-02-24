@@ -52,7 +52,7 @@ set background=dark            " use dark backgrounds
 if has('termguicolors')
   set termguicolors
 endif
-let g:gruvbox_italics=1
+let g:gruvbox_italics=2
 let g:gruvbox_italicize_strings=1
 let g:gruvbox_filetype_hi_groups = 1
 let g:gruvbox_plugin_hi_groups = 1
