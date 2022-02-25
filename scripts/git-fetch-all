@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+while read -r dir; do
+  echo "################################################################################"
+  echo "Fetching updates for ${dir}"
+  (
+    cd "${dir}" || return
+    git fetch --prune
+  )
+done < <(find . \( -exec test -d '{}'/.git \; \) -print -prune)

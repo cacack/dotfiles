@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
+git branch --merged "${default_branch}" | grep -v "${default_branch}" | xargs -r -n 1 git branch -d

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+while read -r dir; do
+  echo "Checking out master in ${dir}"
+  (
+    cd "${dir}" || return
+    git fetch --prune
+    git branch --merged master | grep -v master | xargs -r -n 1 git branch -d
+  )
+done < <(find . \( -exec test -d '{}'/.git \; \) -print -prune)
