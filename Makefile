@@ -9,6 +9,7 @@ LSD_VERSION := 0.21.0
 NVM_VERSION := 0.39.1
 FZF_VERSION := 0.29.0
 NERD_FONT_VERSION := 2.1.0
+CLOUD_NUKE_VERSION := 0.10.0
 
 ANSIBLE_PATH := .ansible
 
@@ -112,7 +113,7 @@ setup-lsd:
 setup-neovim:
 	@echo
 	curl -fLo ${USER_BIN_DIR}/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-	chmod 755 ${USER_BIN_DIR}/bin/nvim.appimage
+	chmod 755 ${USER_BIN_DIR}/nvim.appimage
 
 .PHONY: setup-nvim-plug
 setup-nvim-plug:
@@ -130,6 +131,11 @@ setup-aws-cli:
 	unzip awscliv2.zip
 	./aws/install --install-dir ~/.aws-cli --bin-dir ${USER_BIN_DIR}
 	rm -rf awscliv2.zip aws
+
+.PHONY: setup-cloud-nuke
+setup-cloud-nuke:
+	curl -fLo ${USER_BIN_DIR}/cloud-nuke "https://github.com/gruntwork-io/cloud-nuke/releases/download/v0.10.0/cloud-nuke_linux_amd64"
+	chmod 755 ${USER_BIN_DIR}/cloud-nuke
 
 
 ################################################################################

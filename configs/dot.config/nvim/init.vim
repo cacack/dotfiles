@@ -130,8 +130,18 @@ map <C-d> :Bwipeout<CR>
 autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
 
 " Terraform tunables
+silent! autocmd! filetypedetect BufRead,BufNewFile *.tf
+autocmd BufRead,BufNewFile *.hcl set filetype=hcl
+autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl
+autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform
+autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
+
+"lua << EOF
+"require'lspconfig'.terraformls.setup{}
+"require'lspconfig'.tflint.setup{}
+"EOF
 
 " NeoFormat
 "let g:neoformat_enabled_python = ['black']
