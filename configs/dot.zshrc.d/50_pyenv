@@ -6,6 +6,8 @@ if [[ -n "$BASH_VERSION" ]] || [[ -n "$ZSH_VERSION" ]]; then
     if (( $+commands[pyenv] )); then
       eval "$(pyenv init --path)"
       eval "$(pyenv init -)"
+    fi
+    if [[ -r "$(pyenv root)/plugins/pyenv-virtualenv" ]]; then
       eval "$(pyenv virtualenv-init -)"
     fi
   fi

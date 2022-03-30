@@ -209,6 +209,7 @@ setup-pyenv: setup-python-build-dependencies
 	cd - ;\
 	pyenv install --skip-existing $(shell cat .python-version) ;\
 	pyenv rehash
+	git clone https://github.com/pyenv/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
 
 .PHONY: bootstrap
 bootstrap: setup-poetry setup-pyenv
