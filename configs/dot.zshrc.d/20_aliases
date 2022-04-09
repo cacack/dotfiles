@@ -20,11 +20,11 @@ fi
 # and exclude grepping through .svn folders.
 alias grep='grep --color=auto --exclude-dir=\.svn'
 
-if type nvim.appimage > /dev/null 2>&1; then
+if (( $+commands[nvim.appimage] )); then
   alias vi='nvim.appimage'
   alias vim='nvim.appimage'
   alias nvim='nvim.appimage'
-elif type nvim > /dev/null 2>&1; then
+elif (( $+commands[nvim] )); then
   alias vi='nvim'
   alias vim='nvim'
 else

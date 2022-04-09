@@ -11,6 +11,8 @@ FZF_VERSION := 0.29.0
 NERD_FONT_VERSION := 2.1.0
 CLOUD_NUKE_VERSION := 0.10.0
 
+UNAME := $(shell uname)
+
 ANSIBLE_PATH := .ansible
 
 BASE_DIR := ${HOME}
@@ -18,7 +20,14 @@ RELATIVE_BIN_DIR := $(BASE_DIR)/bin
 
 DOTFILES_CONFIG_DIR := ${HOME}/.dotfiles/configs
 USER_BIN_DIR := ${HOME}/.local/bin
+
+# OS-based directories
+ifeq ($(UNAME), Linux)
 USER_FONT_DIR := ${HOME}/.local/share/fonts
+endif
+ifeq ($(UNAME), Darwin)
+USER_FONT_DIR := ${HOME}/Library/Fonts
+endif
 
 # Source the modular make files
 #include .make.d/*.mk
@@ -42,6 +51,7 @@ setup-dirs:
 
 setup-configs: setup-tmux-config setup-zsh-config
 
+# macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
 setup-tmux-config:
 	@echo
 	ln -sf ${DOTFILES_CONFIG_DIR}/dot.tmux.conf ${HOME}/.tmux.conf
@@ -56,8 +66,8 @@ setup-zsh-config:
 	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc ${HOME}/.zshrc
 	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc.d ${HOME}/.zshrc.d
 	[[ -d "${HOME}/.oh-my-zsh" ]] || git clone https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
-	sudo sss_override user-add cac21 --shell /bin/zsh
-	sudo systemctl restart sssd
+	#sudo sss_override user-add cac21 --shell /bin/zsh
+	#sudo systemctl restart sssd
 	rm -f ${HOME}/{.bashrc,.bash_history,.bash_logout,.bash_profile}
 
 setup-progs: setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvim-plug
@@ -99,6 +109,11 @@ setup-starship:
 	sudo tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
 	sudo chmod 775 /usr/local/bin/starship
 	rm starship.tar.gz
+	ln -sf $(DOTFILES_CONFIG_DIR)/starship.toml ${HOME}/.config/starship.toml
+
+.PHONY: setup-starship-config
+setup-starship-config:
+	@echo
 	ln -sf $(DOTFILES_CONFIG_DIR)/starship.toml ${HOME}/.config/starship.toml
 
 .PHONY: setup-lsd
@@ -147,31 +162,45 @@ setup-fonts: setup-font-3270 setup-font-hack setup-font-meslo setup-font-mplus
 .PHONY: setup-font-3270
 setup-font-3270:
 	@echo
-	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/3270.zip
-	unzip -o -d ${USER_FONT_DIR} font.zip
-	rm font.zip
+	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete.otf
+
+.PHONY: setup-font-firacode
+setup-font-firacode:
+	@echo
+	curl -fLo "$(USER_FONT_DIR)/Fira Code Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/Fira Code Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
 
 .PHONY: setup-font-hack
 setup-font-hack:
 	@echo
-	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Hack.zip
-	unzip -o -d ${USER_FONT_DIR} font.zip
-	rm font.zip
+	curl -fLo "$(USER_FONT_DIR)/Hack Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf
+
+.PHONY: setup-font-jetbrains
+setup-font-jetbrains:
+	@echo
+	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf
 
 .PHONY: setup-font-meslo
 setup-font-meslo:
 	@echo
-	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/Meslo.zip
-	unzip -o -d ${USER_FONT_DIR} font.zip
-	rm font.zip
+	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Regular/complete/Meslo%20LG%20M%20DZ%20Regular%20Nerd%20Font%20Complete.ttf
 
 .PHONY: setup-font-mplus
 setup-font-mplus:
 	@echo
-	wget -O font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/MPlus.zip
+	curl -fLo font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/MPlus.zip
 	unzip -o -d ${USER_FONT_DIR} font.zip
 	rm font.zip
 
+.PHONY: setup-font-mononoki
+setup-font-mononoki:
+	@echo
+	curl -fLo "$(USER_FONT_DIR)/mononoki Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Regular/complete/mononoki-Regular%20Nerd%20Font%20Complete.ttf
+
+.PHONY: setup-font-proggy
+setup-font-proggy:
+	@echo
+	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete.ttf
 
 
 ################################################################################
