@@ -1,3 +1,4 @@
+REL|RELATIVE_BIN_DIR|around|
 SHELL|SHELLCHECK_VERSION|around|
 AN|ANSIBLE_PATH|around|
 echo|echo|around|

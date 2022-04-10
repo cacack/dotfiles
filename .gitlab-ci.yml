@@ -4,7 +4,6 @@ variables:
   ALPINE_IMAGE: alpine:3.15
   PYTHON_IMAGE: python:3.10
   POETRY_VERSION: 1.1.13
-  SHELLCHECK_VERSION: 0.8.0
 
 # Reusable chunks of code
 .bootstrap_poetry: &bootstrap_poetry |
@@ -64,6 +63,5 @@ shellcheck:
     - docker
   script:
     - *alpine_setup
-    - curl -sL https://storage.googleapis.com/shellcheck/shellcheck-v${SHELLCHECK_VERSION}.linux-x86_64 -o /usr/bin/shellcheck
-    - chmod 755 /usr/bin/shellcheck
+    - make setup-shellcheck BASE_DIR=/usr/local
     - make lint-shellcheck

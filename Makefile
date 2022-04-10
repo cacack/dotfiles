@@ -15,7 +15,7 @@ UNAME := $(shell uname)
 
 ANSIBLE_PATH := .ansible
 
-BASE_DIR := ${HOME}
+BASE_DIR ?= ${HOME}
 RELATIVE_BIN_DIR := $(BASE_DIR)/bin
 
 DOTFILES_CONFIG_DIR := ${HOME}/.dotfiles/configs
@@ -40,8 +40,8 @@ SHELLCHECK_URL := https://github.com/koalaman/shellcheck/releases/download/v$(SH
 .PHONY: setup-shellcheck
 setup-shellcheck:
 	@echo
-	curl -L --output shellcheck.tar.xz $(SHELLCHECK_URL)
-	tar -xvf shellcheck.tar.xz --directory=${HOME}/bin --mode=0755 --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
+	curl -fLo shellcheck.tar.xz $(SHELLCHECK_URL)
+	tar -xvf shellcheck.tar.xz --directory=$(RELATIVE_BIN_DIR) --mode=0755 --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
 	rm shellcheck.tar.xz
 
 .PHONY: lint-whitespace
