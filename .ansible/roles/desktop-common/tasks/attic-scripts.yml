@@ -1,19 +1,21 @@
 ---
+
 - name: Clone git repository attic-scripts
   git:
     repo: git@git.theclonchs.com:chris/attic-scripts.git
-    dest: "{{devel_home_base_dir}}/attic-scripts"
+    dest: "{{ devel_home_base_dir }}/attic-scripts"
     accept_hostkey: yes
     update: no
 
 - name: Update git repository attic-scripts
   git:
     repo: git@git.theclonchs.com:chris/attic-scripts.git
-    dest: "{{devel_home_base_dir}}/attic-scripts"
+    dest: "{{ devel_home_base_dir }}/attic-scripts"
     accept_hostkey: yes
     update: yes
   when: update|bool
-  tags: [ "update" ]
+  tags:
+    - "update"
 
 #- name: Symlink common-scripts to ~/bin
 #  file:

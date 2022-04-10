@@ -4,7 +4,7 @@ library: ~/cloud/data/beets.db
 
 art_filename: folder
 paths:
-  default: %bucket{%the{$albumartist}}/%the{%asciify{$albumartist}}/%asciify{$album} [$year]/$track. %asciify{$title}
+  default: "%bucket{%the{$albumartist}}/%the{%asciify{$albumartist}}/%asciify{$album} [$year]/$track. %asciify{$title}"
   comp: other/compilations/%the{%asciify{${album}}} [${year}]/${track}. %the{%asciify{${title}}}
   albumtype:soundtrack: other/soundtracks/%the{%asciify{${album}}} [${year}]/${track}. %the{%asciify{${title}}}
 import:

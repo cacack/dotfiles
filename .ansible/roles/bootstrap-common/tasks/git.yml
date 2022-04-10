@@ -7,5 +7,5 @@
     dest: "~/{{ item.dest }}"
     force: 'yes'
   with_items:
-    - { src: 'dot.gitconfig', dest: '.gitconfig' }
-    - { src: 'dot.config/git', dest: '.config/git' }
+    - {src: 'dot.gitconfig', dest: '.gitconfig'}
+    - {src: 'dot.config/git', dest: '.config/git'}

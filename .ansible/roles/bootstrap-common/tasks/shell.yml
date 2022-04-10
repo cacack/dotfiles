@@ -7,9 +7,9 @@
     dest: "~/{{ item.dest }}"
     force: yes
   with_items:
-     - { src: "{{ dotfiles_config_dir }}/dot.zshenv", dest: ".zshenv" }
-     - { src: "{{ dotfiles_config_dir }}/dot.zshrc", dest: ".zshrc" }
-     - { src: "{{ dotfiles_config_dir }}/dot.zshrc.d", dest: ".zshrc.d" }
+    - {src: "{{ dotfiles_config_dir }}/dot.zshenv", dest: ".zshenv"}
+    - {src: "{{ dotfiles_config_dir }}/dot.zshrc", dest: ".zshrc"}
+    - {src: "{{ dotfiles_config_dir }}/dot.zshrc.d", dest: ".zshrc.d"}
 
 - name: Install oh-my-zsh
   git:

@@ -4,4 +4,3 @@
     state: link
     src: "{{dotfiles_multi_dir}}/geany"
     dest: ~/.config/geany
-

@@ -2,7 +2,7 @@
 
 - name: Ensure build directory exists
   file:
-    path:  "{{ chruby_build_path }}"
+    path: "{{ chruby_build_path }}"
     state: directory
 
 - name: Include chruby_install

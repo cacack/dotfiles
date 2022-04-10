@@ -1,7 +1,7 @@
 ---
 
 - name: Import tasks
-  import_tasks: 
+  import_tasks:
     - automounts.yml
     - xdg.yml
     - dockerfiles.yml
