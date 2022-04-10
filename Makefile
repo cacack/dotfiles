@@ -130,6 +130,13 @@ setup-neovim:
 	curl -fLo ${USER_BIN_DIR}/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 	chmod 755 ${USER_BIN_DIR}/nvim.appimage
 
+.PHONY: setup-nvim-config
+setup-nvim-config:
+	@echo
+	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/nvim ${HOME}/.config/nvim
+	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/coc ${HOME}/.config/coc
+	cd ${HOME}/.config/coc/extensions; yarn install
+
 .PHONY: setup-nvim-plug
 setup-nvim-plug:
 	@echo

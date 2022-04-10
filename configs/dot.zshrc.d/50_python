@@ -13,4 +13,8 @@ if [[ -n "$BASH_VERSION" ]] || [[ -n "$ZSH_VERSION" ]]; then
   fi
 fi
 
-export PATH="$HOME/.poetry/bin:$PATH"
+if [[ "${OSTYPE}" == "linux"* ]]; then
+  export PATH="$HOME/.poetry/bin:$PATH"
+elif [[ "${OSTYPE}" == "darwin"* ]]; then
+  export PATH="${HOME}/Library/Python/3.10/bin:$PATH"
+fi
