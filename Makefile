@@ -30,7 +30,7 @@ USER_FONT_DIR := ${HOME}/Library/Fonts
 endif
 
 # Source the modular make files
-#include .make.d/*.mk
+include .make.d/*.mk
 
 ################################################################################
 ## Development targets
@@ -38,7 +38,7 @@ endif
 print-version: $(PRINT_VERSION)
 
 # Setup development dependencies
-setup: setup-dirs $(SETUP)
+#setup: setup-dirs $(SETUP)
 
 setup-desktop: setup-dirs setup-configs setup-progs setup-fonts
 
@@ -50,6 +50,10 @@ setup-dirs:
 	xdg-user-dirs-update
 
 setup-configs: setup-tmux-config setup-zsh-config
+
+setup-git-config:
+	@echo
+	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/git ${HOME}/.config/git.d
 
 # macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
 setup-tmux-config:

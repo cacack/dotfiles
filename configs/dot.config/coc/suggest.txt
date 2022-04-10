@@ -1,1 +1,3 @@
+|aliases|file|
+DOT|DOTFILES_CONFIG_DIR|around|
 env|getenv|pyright|f

@@ -6,7 +6,7 @@ authors = ["Chris Clonch <chris@theclonchs.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 ansible = "^4.8.0"
 
 [tool.poetry.dev-dependencies]
