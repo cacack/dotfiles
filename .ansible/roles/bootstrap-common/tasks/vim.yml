@@ -5,14 +5,14 @@
     state: link
     src: "{{ dotfiles_config_dir }}/dot.config/nvim"
     dest: ~/.config/nvim
-    force: 'yes'
+    force: true
 
 - name: Symlink Vim configuration file
   file:
     state: link
     src: "{{ dotfiles_config_dir }}/dot.vimrc"
     dest: ~/.vimrc
-    force: 'yes'
+    force: true
 
 - name: Stat ~/.vim
   stat:
@@ -32,19 +32,9 @@
     state: link
     src: "{{ dotfiles_config_dir }}/dot.vim"
     dest: ~/.vim
-    force: 'yes'
-
-#- name: Clone Vundle git repo
-#  git:
-#    repo: https://github.com/VundleVim/Vundle.vim.git
-#    clone: yes
-#    dest: ~/.vim/bundle/Vundle.vim
-
-#- name: Install Vundle plugins
-#  shell: vim +PluginInstall +qall
-#  register: vundle_result
+    force: true
 
 - name: Set editor on Debian and friends
-  shell: update-alternatives --set editor /usr/bin/vim.basic
-  become: yes
+  command: update-alternatives --set editor /usr/bin/vim.basic
+  become: true
   when: ansible_os_family == 'Debian'

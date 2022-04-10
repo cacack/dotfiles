@@ -57,6 +57,7 @@ ansible-lint:
   script:
     - *bootstrap_poetry
     - make lint-ansible
+  allow_failure: true
 
 shellcheck:
   stage: lint

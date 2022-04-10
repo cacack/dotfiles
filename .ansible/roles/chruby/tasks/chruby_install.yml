@@ -1,4 +1,4 @@
-# file: chruby/tasks/chruby.yml
+---
 
 - name: Stat build path
   stat:
@@ -35,7 +35,7 @@
   make:
     chdir: "{{ chruby_build.stat.path }}/chruby-{{ chruby_chruby_version }}"
     target: install
-  become: yes
+  become: true
   when: chruby_unarchived.changed
 
 - name: Configure shell

@@ -5,6 +5,6 @@ galaxy_info:
   description: Installs LSD
   license: MIT
   min_ansible_version: 2.0
-  categories:
+  galaxy_tags:
     - shell
 dependencies: []
