@@ -1,11 +1,17 @@
 ---
 
-# Reusable chunks of code
-.bootstrap_pipenv_dev: &bootstrap_pipenv_dev |
-  pip install pipenv
-  pipenv sync --dev  # sync is preferred over install --ignore-pipfile
+variables:
+  ALPINE_IMAGE: alpine:3.15
+  PYTHON_IMAGE: python:3.10
+  POETRY_VERSION: 1.1.13
 
-.alpine_install_standard_packages: &alpine_install_standard_packages |
+# Reusable chunks of code
+.bootstrap_poetry: &bootstrap_poetry |
+  pip install "poetry==$POETRY_VERSION"
+  pip install "poetry-dynamic-versioning"
+  #poetry config experimental.new-installer false  # per https://github.com/python-poetry/poetry/issues/3199
+
+.alpine_setup: &alpine_setup |
   apk update
   apk add \
     bash \
@@ -22,37 +28,37 @@ stages:
 # Check for whitespace failures.
 check_for_whitespace_errors:
   stage: lint
-  image: artifactory.cloud.cas.org/docker-hub/alpine:3.13
+  image: $ALPINE_IMAGE
   tags:
     - docker
   script:
-    - *alpine_install_standard_packages
+    - *alpine_setup
     - make lint-whitespace
 
 yamllint:
   stage: lint
-  image: artifactory.cloud.cas.org/docker-hub/python:3.9.10
+  image: $PYTHON_IMAGE
   tags:
     - docker
   script:
-    - *bootstrap_pipenv_dev
+    - *bootstrap_poetry
     - make lint-yaml
 
 ansible-lint:
   stage: lint
-  image: artifactory.cloud.cas.org/docker-hub/python:3.9.10
+  image: $PYTHON_IMAGE
   tags:
     - docker
   script:
-    - *bootstrap_pipenv_dev
+    - *bootstrap_poetry
     - make lint-ansible
 
 shellcheck:
   stage: lint
-  image: artifactory.cloud.cas.org/docker-hub/alpine:3.13
+  image: $ALPINE_IMAGE
   tags:
     - docker
   script:
-    - *alpine_install_standard_packages
+    - *alpine_setup
     - curl -sL https://storage.googleapis.com/shellcheck/shellcheck-v0.7.2.linux-x86_64 -o /usr/bin/shellcheck
     - make lint-shellcheck
