@@ -81,16 +81,7 @@ LINT += lint-yaml lint-pipenv-check lint-black lint-flake8 lint-isort \
 .PHONY: lint-yaml
 lint-yaml:
 	@echo
-	git grep -I --name-only --null -e '' \
-		| grep -EzZ '.*\.ya?ml$$' \
-		| xargs -r0 pipenv run yamllint -c "$(CURDIR)/.yamllint.yml"
-
-.PHONY: lint-yaml-changed
-lint-yaml-changed:
-	@echo
-	git diff --name-only --diff-filter=ACM -z origin/master..HEAD \
-		| grep -EzZ '.*\.ya?ml$$' \
-		| xargs -r0 pipenv run yamllint -c "$(CURDIR)/.yamllint.yml"
+	poetry run yamllint .
 
 .PHONY: lint-pipenv-check
 lint-pipenv-check:

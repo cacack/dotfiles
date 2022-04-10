@@ -26,9 +26,7 @@ LINT += lint-ansible
 .PHONY: lint-ansible
 lint-ansible:
 	@echo
-	git grep -I --name-only --null -e '' \
-		| grep -EzZ '.*\.ya?ml$$' \
-		| xargs -r0 pipenv run ansible-lint
+	poetry run ansible-lint
 
 .PHONY: lint-ansible-changed
 lint-ansible-changed:

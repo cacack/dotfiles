@@ -30,10 +30,42 @@ USER_FONT_DIR := ${HOME}/Library/Fonts
 endif
 
 # Source the modular make files
-include .make.d/*.mk
+#include .make.d/*.mk
+
+SHELLCHECK_URL := https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).linux.x86_64.tar.xz
 
 ################################################################################
 ## Development targets
+
+.PHONY: setup-shellcheck
+setup-shellcheck:
+	@echo
+	curl -L --output shellcheck.tar.xz $(SHELLCHECK_URL)
+	tar -xvf shellcheck.tar.xz --directory=${HOME}/bin --mode=0755 --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
+	rm shellcheck.tar.xz
+
+.PHONY: lint-whitespace
+lint-whitespace:
+	@echo
+	git diff --check HEAD --
+
+.PHONY: lint-shellcheck
+lint-shellcheck:
+	@echo
+	git grep -I --name-only --null -e '' \
+    | xargs --null --max-lines=1 file --mime-type \
+    | sed --quiet 's,: *text/x-shellscript$$,,p' \
+    | xargs --no-run-if-empty shellcheck -x
+
+.PHONY: lint-yaml
+lint-yaml:
+	@echo
+	poetry run yamllint .
+
+.PHONY: lint-ansible
+lint-ansible:
+	@echo
+	poetry run ansible-lint $(ANSIBLE_PATH)
 
 print-version: $(PRINT_VERSION)
 

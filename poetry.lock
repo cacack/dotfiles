@@ -1,21 +1,36 @@
 [[package]]
 name = "ansible"
-version = "4.10.0"
+version = "5.6.0"
 description = "Radically simple IT automation"
 category = "main"
 optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+python-versions = ">=3.8"
 
 [package.dependencies]
-ansible-core = ">=2.11.7,<2.12.0"
+ansible-core = ">=2.12.4,<2.13.0"
+
+[[package]]
+name = "ansible-compat"
+version = "2.0.2"
+description = "Ansible compatibility goodies"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+PyYAML = "*"
+subprocess-tee = ">=0.3.5"
+
+[package.extras]
+test = ["coverage", "flaky", "pip-tools", "pytest", "pytest-markdown", "pytest-mock", "pytest-plus"]
 
 [[package]]
 name = "ansible-core"
-version = "2.11.10"
+version = "2.12.4"
 description = "Radically simple IT automation"
 category = "main"
 optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+python-versions = ">=3.8"
 
 [package.dependencies]
 cryptography = "*"
@@ -26,26 +41,25 @@ resolvelib = ">=0.5.3,<0.6.0"
 
 [[package]]
 name = "ansible-lint"
-version = "5.4.0"
-description = "Checks playbooks for practices and behaviour that could potentially be improved"
+version = "6.0.2"
+description = "Checks playbooks for practices and behavior that could potentially be improved"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 
 [package.dependencies]
+ansible-compat = ">=2.0.2"
+ansible-core = ">=2.12.0"
 enrich = ">=1.2.6"
 packaging = "*"
 pyyaml = "*"
 rich = ">=9.5.1"
-"ruamel.yaml" = {version = ">=0.15.37,<1", markers = "python_version >= \"3.7\""}
-tenacity = "*"
+"ruamel.yaml" = ">=0.15.34,<0.18"
 wcmatch = ">=7.0"
+yamllint = ">=1.25.0"
 
 [package.extras]
-community = ["ansible (>=2.10)"]
-core = ["ansible-core (>=2.11.4)"]
-test = ["coverage (>=6.2,<6.3)", "tomli (>=1.2.3,<2.0.0)", "flaky (>=3.7.0)", "pytest (>=6.0.1)", "pytest-cov (>=2.10.1)", "pytest-xdist (>=2.1.0)", "psutil"]
-yamllint = ["yamllint (>=1.25.0)"]
+test = ["coverage (>=6.2,<6.3)", "tomli (>=1.2.3,<2.0.0)", "flaky (>=3.7.0)", "pytest (>=6.0.1)", "pytest-cov (>=2.10.1)", "pytest-plus (>=0.2)", "pytest-xdist (>=2.1.0)", "psutil", "black", "mypy", "pylint", "flake8"]
 
 [[package]]
 name = "bracex"
@@ -239,15 +253,15 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
-name = "tenacity"
-version = "8.0.1"
-description = "Retry code until it succeeds"
+name = "subprocess-tee"
+version = "0.3.5"
+description = "subprocess-tee"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-doc = ["reno", "sphinx", "tornado (>=4.5)"]
+test = ["enrich (>=1.2.6)", "mock (>=4.0.3)", "molecule (>=3.4.0)", "pytest-cov (>=2.12.1)", "pytest-plus (>=0.2)", "pytest-xdist (>=2.3.0)", "pytest (>=6.2.5)"]
 
 [[package]]
 name = "wcmatch"
@@ -275,18 +289,22 @@ pyyaml = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5a4def9b288cb474d32b7aa3df18edb80a85c005d0a0fe77f1866248b72fdfef"
+content-hash = "581206e3caed60f605795da74b6580d8a6036e98f73bd6b8086556533b11ffbc"
 
 [metadata.files]
 ansible = [
-    {file = "ansible-4.10.0.tar.gz", hash = "sha256:88af9479e81a3931bb3a1b8c4eeb252cd4f38c03daafd6a5aa120d6b0d70d45c"},
+    {file = "ansible-5.6.0.tar.gz", hash = "sha256:acd30731434154da376ceeeb416ee1541cdfb8ea3c648023a55a34cb3ecaf9f3"},
+]
+ansible-compat = [
+    {file = "ansible-compat-2.0.2.tar.gz", hash = "sha256:c651995dc323ef145bab857fee6540febc881fb71b7feafe8163d49e273163a5"},
+    {file = "ansible_compat-2.0.2-py3-none-any.whl", hash = "sha256:456acfa7af04cafb1b80c96f143658b353a6164d5ec1442c7961a4eb052be136"},
 ]
 ansible-core = [
-    {file = "ansible-core-2.11.10.tar.gz", hash = "sha256:a0fba319963ff83c249bd0531b0b87d67e3ac0723f9cbf24b96790ff3774a897"},
+    {file = "ansible-core-2.12.4.tar.gz", hash = "sha256:827af75985a6f04b980bd371027bf038cb187640628557298acb9983a8f2c2da"},
 ]
 ansible-lint = [
-    {file = "ansible-lint-5.4.0.tar.gz", hash = "sha256:2160a60b4ab034c04006d701a1779340ffb0f6e28f030ff8de958e1062a88962"},
-    {file = "ansible_lint-5.4.0-py3-none-any.whl", hash = "sha256:fb57755825b50da88c226052772bd843d37714155b504175912daac0e186e8c0"},
+    {file = "ansible-lint-6.0.2.tar.gz", hash = "sha256:b539bc22d13e6de0cc2e25758e1d28b2bc01561a414ae37ceda3708b5a2a79ed"},
+    {file = "ansible_lint-6.0.2-py3-none-any.whl", hash = "sha256:94b981384b222b436533283dbaa2c13ccf1e81558d89955951ff9921c352a770"},
 ]
 bracex = [
     {file = "bracex-2.2.1-py3-none-any.whl", hash = "sha256:096c4b788bf492f7af4e90ef8b5bcbfb99759ae3415ea1b83c9d29a5ed8f9a94"},
@@ -514,9 +532,9 @@ rich = [
     {file = "ruamel.yaml.clib-0.2.6-cp39-cp39-win_amd64.whl", hash = "sha256:825d5fccef6da42f3c8eccd4281af399f21c02b32d98e113dbc631ea6a6ecbc7"},
     {file = "ruamel.yaml.clib-0.2.6.tar.gz", hash = "sha256:4ff604ce439abb20794f05613c374759ce10e3595d1867764dd1ae675b85acbd"},
 ]
-tenacity = [
-    {file = "tenacity-8.0.1-py3-none-any.whl", hash = "sha256:f78f4ea81b0fabc06728c11dc2a8c01277bfc5181b321a4770471902e3eb844a"},
-    {file = "tenacity-8.0.1.tar.gz", hash = "sha256:43242a20e3e73291a28bcbcacfd6e000b02d3857a9a9fff56b297a27afdc932f"},
+subprocess-tee = [
+    {file = "subprocess-tee-0.3.5.tar.gz", hash = "sha256:ff5cced589a4b8ac973276ca1ba21bb6e3de600cde11a69947ff51f696efd577"},
+    {file = "subprocess_tee-0.3.5-py3-none-any.whl", hash = "sha256:d34186c639aa7f8013b5dfba80e17f52589539137c9d9205f2ae1c1bd03549e1"},
 ]
 wcmatch = [
     {file = "wcmatch-8.3-py3-none-any.whl", hash = "sha256:7141d2c85314253f16b38cb3d6cc0fb612918d407e1df3ccc2be7c86cc259c22"},

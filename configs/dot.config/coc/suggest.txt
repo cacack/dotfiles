@@ -1,3 +1,6 @@
+AN|ANSIBLE_PATH|around|
+echo|echo|around|
+echo|echo|around|
 |aliases|file|
 DOT|DOTFILES_CONFIG_DIR|around|
 env|getenv|pyright|f
