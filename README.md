@@ -24,10 +24,10 @@ makes use of those and will set up that environment first.
 * [starship](https://github.com/starship/starship)
 * [lsd](https://github.com/Peltoche/lsd)
 * [fzf](https://github.com/junegunn/fzf)
-* [vim](https://www.vim.org/)
+* [neovim](https://neovim.io)
 
 ## License
 
-Copyright (c) Chris Clonch. Distributed under an [MIT License][].
+Copyright (c) 2022, Chris Clonch. Distributed under an [MIT License][].
 
 [MIT License]: http://www.opensource.org/licenses/MIT
