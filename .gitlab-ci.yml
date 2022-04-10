@@ -65,4 +65,5 @@ shellcheck:
   script:
     - *alpine_setup
     - curl -sL https://storage.googleapis.com/shellcheck/shellcheck-v${SHELLCHECK_VERSION}.linux-x86_64 -o /usr/bin/shellcheck
+    - chmod 755 /usr/bin/shellcheck
     - make lint-shellcheck
