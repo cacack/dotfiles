@@ -120,3 +120,12 @@ export LESS="--no-init --quit-if-one-screen -R"
 #setopt share_history
 
 export PATH="${HOME}/.local/bin:$PATH"
+
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+  # Get list of gnubin directories
+  export GNUBINS="$(find /usr/local/opt -type d -follow -name gnubin -print)";
+  
+  for bindir in ${GNUBINS[@]}; do
+    export PATH=$bindir:$PATH;
+  done
+fi
