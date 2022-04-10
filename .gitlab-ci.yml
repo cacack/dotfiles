@@ -23,7 +23,8 @@ variables:
     grep \
     jq \
     make \
-    sed
+    sed \
+    tar
 
 stages:
   - lint
