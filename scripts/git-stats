@@ -11,7 +11,6 @@ while read -r dir; do
   echo "Generating stats for ${repo_name} [${repo_count}]"
   (
     cd "${dir}" || exit
-    default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
     git fetch >/dev/null 2>&1 || exit
 
     repo_stat_dir="${tmp_base_dir}/${repo_name}"

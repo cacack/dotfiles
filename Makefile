@@ -24,15 +24,17 @@ USER_BIN_DIR := ${HOME}/.local/bin
 # OS-based directories
 ifeq ($(UNAME), Linux)
 USER_FONT_DIR := ${HOME}/.local/share/fonts
+OS := linux
 endif
 ifeq ($(UNAME), Darwin)
 USER_FONT_DIR := ${HOME}/Library/Fonts
+OS := darwin
 endif
 
 # Source the modular make files
 #include .make.d/*.mk
 
-SHELLCHECK_URL := https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).linux.x86_64.tar.xz
+SHELLCHECK_URL := https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).$(OS).x86_64.tar.xz
 
 ################################################################################
 ## Development targets
@@ -54,6 +56,7 @@ lint-whitespace:
 lint-shellcheck:
 	@echo
 	git grep -I --name-only --null -e '' \
+		| grep -z -v -e '.ansible' -e 'attic' \
     | xargs --null --max-lines=1 file --mime-type \
     | sed --quiet 's,: *text/x-shellscript$$,,p' \
     | xargs --no-run-if-empty shellcheck -x

@@ -125,7 +125,7 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   # Get list of gnubin directories
   export GNUBINS="$(find /usr/local/opt -type d -follow -name gnubin -print)";
   
-  for bindir in ${GNUBINS[@]}; do
-    export PATH=$bindir:$PATH;
+  for bindir in $(find /usr/local/opt -type d -follow -name gnubin -print); do
+    export PATH="${bindir}:${PATH}"
   done
 fi
