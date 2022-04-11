@@ -204,7 +204,7 @@ setup-cloud-nuke:
 # Fonts
 
 .PHONY: setup-fonts
-setup-fonts: setup-font-3270 setup-font-hack setup-font-meslo setup-font-mplus
+setup-fonts: setup-font-3270 setup-font-firacode setup-font-hack setup-font-jetbrains setup-font-meslo setup-font-mononoki setup-font-proggy
 
 .PHONY: setup-font-3270
 setup-font-3270:
