@@ -210,6 +210,7 @@ setup-fonts: setup-font-3270 setup-font-firacode setup-font-hack setup-font-jetb
 setup-font-3270:
 	@echo
 	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete.otf
+	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete Mono.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete%20Mono.otf
 
 .PHONY: setup-font-firacode
 setup-font-firacode:
@@ -221,16 +222,19 @@ setup-font-firacode:
 setup-font-hack:
 	@echo
 	curl -fLo "$(USER_FONT_DIR)/Hack Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/Hack Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
 
 .PHONY: setup-font-jetbrains
 setup-font-jetbrains:
 	@echo
 	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
 
 .PHONY: setup-font-meslo
 setup-font-meslo:
 	@echo
 	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Regular/complete/Meslo%20LG%20M%20DZ%20Regular%20Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Regular/complete/Meslo%20LG%20M%20DZ%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
 
 .PHONY: setup-font-mplus
 setup-font-mplus:
@@ -243,11 +247,13 @@ setup-font-mplus:
 setup-font-mononoki:
 	@echo
 	curl -fLo "$(USER_FONT_DIR)/mononoki Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Regular/complete/mononoki-Regular%20Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/mononoki Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Regular/complete/mononoki-Regular%20Nerd%20Font%20Complete%20Mono.ttf
 
 .PHONY: setup-font-proggy
 setup-font-proggy:
 	@echo
-	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%21Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete%20Mono.ttf
 
 
 ################################################################################
