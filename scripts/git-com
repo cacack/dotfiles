@@ -17,5 +17,5 @@ while read -r dir; do
   )
   repo_count=$((repo_count+1))
   # Gitlab now rate limits 10 requests per minute per IP..
-  sleep 3
+  sleep 6
 done < <(find . \( -exec test -d '{}'/.git \; \) -print -prune)

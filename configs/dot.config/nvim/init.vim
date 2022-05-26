@@ -39,7 +39,7 @@ Plug 'sbdchd/neoformat'               " Formatting
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  " LSP
 
 " Languages (not available via LSP)
-Plug 'speshak/vim-cfn'         " CloudFormation
+"Plug 'speshak/vim-cfn'         " CloudFormation
 Plug 'hashivim/vim-terraform'  " Terraform
 
 call plug#end()
@@ -144,6 +144,7 @@ let g:terraform_align=1
 "EOF
 
 " NeoFormat
+"let g:neoformat_try_node_exe = 1
 "let g:neoformat_enabled_python = ['black']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
