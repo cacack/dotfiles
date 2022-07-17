@@ -3,11 +3,11 @@
 
 PYTHON_VERSION := 3.10.2
 SHELLCHECK_VERSION := 0.8.0
-KITTY_VERSION := 0.25.0
-STARSHIP_VERSION := 1.5.4
-LSD_VERSION := 0.21.0
+KITTY_VERSION := 0.25.2
+STARSHIP_VERSION := 1.9.1
+LSD_VERSION := 0.22.0
 NVM_VERSION := 0.39.1
-FZF_VERSION := 0.29.0
+FZF_VERSION := 0.30.0
 NERD_FONT_VERSION := 2.1.0
 CLOUD_NUKE_VERSION := 0.10.0
 
@@ -115,15 +115,12 @@ setup-progs: setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvi
 .PHONY: setup-fzf
 setup-fzf:
 	@echo
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	${HOME}/.fzf/install
-	#curl -s -J -L -o fzf.tar.gz https://github.com/junegunn/fzf/releases/download/$(FZF_VERSION)/fzf-$(FZF_VERSION)-linux_amd64.tar.gz
-	#sudo tar -xzf fzf.tar.gz -C /usr/local/bin
-	#rm fzf.tar.gz
-	#sudo curl -s -J -L -o /usr/local/lib/fzf-completion.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash
-	#sudo curl -s -J -L -o /usr/local/lib/fzf-key-bindings.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash
-	#sudo chmod 644 /usr/local/lib/fzf-*
-	#sudo chown root:root /usr/local/lib/fzf-*
+	#https://github.com/junegunn/fzf/releases/download/0.30.0/fzf-0.30.0-linux_amd64.tar.gz
+	wget -O fzf.tar.gz https://github.com/junegunn/fzf/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz
+	tar -xvzf fzf.tar.gz
+	cp fzf ${USER_BIN_DIR}/fzf
+	chmod 755 ${USER_BIN_DIR}/fzf
+	rm -f fzf fzf.tar.gz
 
 .PHONY: setup-kitty
 setup-kitty:
