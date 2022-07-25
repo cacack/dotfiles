@@ -76,14 +76,27 @@ print-version: $(PRINT_VERSION)
 # Setup development dependencies
 #setup: setup-dirs $(SETUP)
 
+setup-homebrew:
+	curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+	chmod 755 ./install.sh
+	./install.sh
+	rm ./install.sh
+
 setup-desktop: setup-dirs setup-configs setup-progs setup-fonts
 
 setup-dirs:
+	@echo
+	mkdir -p ${HOME}/devel
+ifeq ($(OS),linux)
 	mkdir -p ${HOME}/{desktop,devel,documents,downloads,music,pictures,public,templates,video}
 	mkdir -p ${HOME}/.local/{bin,shared/fonts}
 	ln -sf ${DOTFILES_CONFIG_DIR}/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
 	rm -rf ${HOME}/{Desktop,Documents,Downloads,Music,Pictures,Public,Templates,Video}
 	xdg-user-dirs-update
+endif
+ifeq ($(OS),darwin)
+	mkdir -p ${HOME}/.config
+endif
 
 setup-configs: setup-tmux-config setup-zsh-config
 
@@ -92,6 +105,14 @@ setup-git-config:
 	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/git ${HOME}/.config/git.d
 
 # macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
+setup-tmux:
+	@echo
+ifeq ($(OS),darwin)
+	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz
+	sudo /usr/bin/tic -xe tmux-256color terminfo.src
+	brew install tmux
+endif
+
 setup-tmux-config:
 	@echo
 	ln -sf ${DOTFILES_CONFIG_DIR}/dot.tmux.conf ${HOME}/.tmux.conf
@@ -115,23 +136,35 @@ setup-progs: setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvi
 .PHONY: setup-fzf
 setup-fzf:
 	@echo
+ifeq ($(OS),linux)
 	#https://github.com/junegunn/fzf/releases/download/0.30.0/fzf-0.30.0-linux_amd64.tar.gz
 	wget -O fzf.tar.gz https://github.com/junegunn/fzf/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz
 	tar -xvzf fzf.tar.gz
 	cp fzf ${USER_BIN_DIR}/fzf
 	chmod 755 ${USER_BIN_DIR}/fzf
 	rm -f fzf fzf.tar.gz
+endif
+ifeq ($(OS),darwin)
+	brew install fzf
+endif
 
 .PHONY: setup-kitty
 setup-kitty:
+ifeq ($(OS),linux)
 	@echo
 	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
 	sudo tar -xv -C /usr/local/bin/ --strip-components 1 -f kitty.txz bin/kitty
 	sudo chmod 755 /usr/local/bin/kitty
 	rm kitty.txz
+endif
+ifeq ($(OS),darwin)
+	@echo
+	@echo mac
+endif
 
 .PHONY: setup-kitty-config
 setup-kitty-config:
+	mkdir -p ${HOME}/.config/kitty
 	ln -sf $(DOTFILES_CONFIG_DIR)/kitty.conf ${HOME}/.config/kitty/kitty.conf
 
 .PHONY: setup-alacritty
@@ -142,11 +175,16 @@ setup-alacritty:
 .PHONY: setup-starship
 setup-starship:
 	@echo
+ifeq ($(OS),linux)
 	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
 	sudo tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
 	sudo chmod 775 /usr/local/bin/starship
 	rm starship.tar.gz
 	ln -sf $(DOTFILES_CONFIG_DIR)/starship.toml ${HOME}/.config/starship.toml
+endif
+ifeq ($(OS),darwin)
+	brew install starship
+endif
 
 .PHONY: setup-starship-config
 setup-starship-config:
@@ -156,33 +194,55 @@ setup-starship-config:
 .PHONY: setup-lsd
 setup-lsd:
 	@echo
+ifeq ($(OS),linux)
 	wget -O lsd.tar.gz https://github.com/Peltoche/lsd/releases/download/$(LSD_VERSION)/lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu.tar.gz
 	sudo tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
 	sudo chmod 775 /usr/local/bin/lsd
 	rm lsd.tar.gz
+endif
+ifeq ($(OS),darwin)
+	brew install lsd
+endif
+
+setup-nodejs:
+	@echo
+ifeq ($(OS),darwin)
+	brew install node@16 yarn
+endif
 
 .PHONY: setup-neovim
 setup-neovim:
 	@echo
+ifeq ($(OS),linux)
 	curl -fLo ${USER_BIN_DIR}/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 	chmod 755 ${USER_BIN_DIR}/nvim.appimage
+endif
+ifeq ($(OS),darwin)
+	brew install neovim
+endif
+	setup-nvim-config
 
-.PHONY: setup-nvim-config
-setup-nvim-config:
+.PHONY: setup-neovim-config
+setup-neovim-config: setup-nodejs
 	@echo
 	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/nvim ${HOME}/.config/nvim
 	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/coc ${HOME}/.config/coc
 	cd ${HOME}/.config/coc/extensions; yarn install
 
-.PHONY: setup-nvim-plug
-setup-nvim-plug:
+.PHONY: setup-neovim-plug
+setup-neovim-plug:
 	@echo
 	curl -fLo ${HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 .PHONY: setup-nvm
 setup-nvm:
 	@echo
+ifeq ($(OS),linux)
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
+endif
+ifeq ($(OS),darwin)
+	brew install nvm
+endif
 
 .PHONY: setup-aws-cli
 setup-aws-cli:
