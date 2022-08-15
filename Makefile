@@ -323,6 +323,14 @@ setup-font-proggy:
 	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%21Nerd%20Font%20Complete.ttf
 	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete%20Mono.ttf
 
+.PHONY: setup-font-glyphs
+setup-font-glyphs:
+	@echo
+	curl -fLo font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/2.2.0-RC/NerdFontsSymbolsOnly.zip
+	unzip font.zip *.ttf
+	mv *.ttf $(USER_FONT_DIR)/
+	rm font.zip
+
 
 ################################################################################
 ## Lint targets
