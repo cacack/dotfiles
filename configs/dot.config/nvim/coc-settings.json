@@ -4,8 +4,7 @@
     "css",
     "markdown",
     "json",
-    "python",
-    "yaml"
+    "python"
   ],
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "black",
