@@ -87,7 +87,7 @@ ifeq ($(DISTRO),Fedora)
 	sudo dnf install yarnpkg
 endif
 ifeq ($(DISTRO),Ubuntu)
-	sudo apt install yarnpkg
+	sudo apt install --yes --no-install-recommends yarnpkg
 endif
 ifeq ($(OS),darwin)
 	brew install yarn
