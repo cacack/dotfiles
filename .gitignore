@@ -9,5 +9,7 @@ linux-gnu/user/dot.vim/.netrwhist
 linux-gnu/dot.vim/black
 
 configs/dot.config/coc/extensions/node_modules/*
+configs/dot.config/coc/*.json
+configs/dot.config/coc/suggest.txt
 
 .DS_Store
