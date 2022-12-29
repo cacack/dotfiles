@@ -4,7 +4,7 @@
 FZF_VERSION := 0.35.1
 KITTY_VERSION := 0.26.5
 LSD_VERSION := 0.23.1
-NERD_FONT_VERSION := 2.1.0
+NERD_FONT_VERSION := 2.2.2
 NVM_VERSION := 0.39.3
 PYTHON_VERSION := 3.11.1
 SHELLCHECK_VERSION := 0.8.0
@@ -247,8 +247,8 @@ setup-fonts: setup-font-3270 setup-font-firacode setup-font-hack setup-font-jetb
 .PHONY: setup-font-3270
 setup-font-3270:
 	@echo
-	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete.otf
-	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete Mono.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete%20Mono.otf
+	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Regular/complete/IBM%203270%20Nerd%20Font%20Complete.otf
+	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete Mono.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Regular/complete/IBM%203270%20Nerd%20Font%20Complete%20Mono.otf
 
 .PHONY: setup-font-firacode
 setup-font-firacode:
@@ -300,7 +300,7 @@ setup-font-mononoki:
 .PHONY: setup-font-proggy
 setup-font-proggy:
 	@echo
-	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%21Nerd%20Font%20Complete.ttf
+	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete.ttf
 	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete%20Mono.ttf
 
 .PHONY: setup-font-glyphs
