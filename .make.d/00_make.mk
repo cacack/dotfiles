@@ -1,3 +1,6 @@
+# Enforce use of bash for make to avoid issues in Debian-based distro's that use dash.
+SHELL := /usr/bin/bash
+
 UNAME := $(shell uname)
 ARCH := $(shell uname -m)
 
