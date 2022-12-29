@@ -192,7 +192,7 @@ endif
 setup-nodejs:
 	@echo
 ifeq ($(OS),linux)
-	export NVM_DIR=${HOME}/.nvm; [ -s ${NVM_DIR}/nvm.sh ] && source ${NVM_DIR}/nvm.sh; nvm install --lts
+	export NVM_DIR=${HOME}/.nvm; [ -s ${NVM_DIR}/nvm.sh ] && source ${NVM_DIR}/nvm.sh; nvm install --lts; corepack enable; corepack prepare yarn@stable --activate
 endif
 ifeq ($(OS),darwin)
 	brew install node@16 yarn
