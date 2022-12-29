@@ -217,7 +217,7 @@ setup-neovim-config: setup-nodejs
 	@echo
 	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/nvim ${HOME}/.config/nvim
 	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/coc ${HOME}/.config/coc
-	cd ${HOME}/.config/coc/extensions; yarn install
+	nvm use --lts; cd ${HOME}/.config/coc/extensions; yarn install
 
 .PHONY: setup-neovim-plug
 setup-neovim-plug:
