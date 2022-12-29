@@ -3,11 +3,11 @@
 
 PYTHON_VERSION := 3.10.2
 SHELLCHECK_VERSION := 0.8.0
-KITTY_VERSION := 0.26.2
-STARSHIP_VERSION := 1.10.3
+KITTY_VERSION := 0.26.5
+STARSHIP_VERSION := 1.11.0
 LSD_VERSION := 0.23.1
 NVM_VERSION := 0.39.2
-FZF_VERSION := 0.33.0
+FZF_VERSION := 0.35.1
 NERD_FONT_VERSION := 2.1.0
 CLOUD_NUKE_VERSION := 0.10.0
 
@@ -211,7 +211,10 @@ ifeq ($(OS),darwin)
 endif
 
 .PHONY: setup-neovim
-setup-neovim:
+setup-neovim: install-neovim setup-neovim-config
+
+.PHONY: install-neovim
+install-neovim:
 	@echo
 ifeq ($(OS),linux)
 	curl -fLo ${USER_BIN_DIR}/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
@@ -220,7 +223,6 @@ endif
 ifeq ($(OS),darwin)
 	brew install neovim
 endif
-	setup-nvim-config
 
 .PHONY: setup-neovim-config
 setup-neovim-config: setup-nodejs

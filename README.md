@@ -8,26 +8,37 @@ My various configuration files to make ${HOME} home.
 
 ## Installation
 
-```
+### For a private system
+
+1. Generate new SSH keys.
+1. Add keys to GitLab/GitHub account.
+1. Clone repo SSH URL.
+1. Run setup.
+
+```sh
 make bootstrap
 ```
 
-I use Python and Ansible quite a bit these days, so as such, the bootstrapping
-makes use of those and will set up that environment first.
+### For a shared system
 
+1. Retrieve and run bash script.
+
+```sh
+curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash --
+```
 
 ## Tools I currently use
 
-* [kitty](https://github.com/kovidgoyal/kitty)
-* [tmux](https://github.com/tmux/tmux)
-* [zsh](https://www.zsh.org/)
-* [starship](https://github.com/starship/starship)
-* [lsd](https://github.com/Peltoche/lsd)
-* [fzf](https://github.com/junegunn/fzf)
-* [neovim](https://neovim.io)
+- [kitty](https://github.com/kovidgoyal/kitty)
+- [tmux](https://github.com/tmux/tmux)
+- [zsh](https://www.zsh.org/)
+- [starship](https://github.com/starship/starship)
+- [lsd](https://github.com/Peltoche/lsd)
+- [fzf](https://github.com/junegunn/fzf)
+- [neovim](https://neovim.io)
 
 ## License
 
 Copyright (c) 2022, Chris Clonch. Distributed under an [MIT License][].
 
-[MIT License]: http://www.opensource.org/licenses/MIT
+[mit license]: http://www.opensource.org/licenses/MIT

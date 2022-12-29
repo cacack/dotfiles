@@ -28,3 +28,5 @@
 	prompt = false
 [alias]
 	vimdiff = difftool
+	home = rev-parse --show-toplevel
+	whereami = rev-parse --abbrev-ref HEAD
