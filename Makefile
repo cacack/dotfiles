@@ -68,7 +68,7 @@ setup-sssd:
 ################################################################################
 # Programs
 
-setup-progs: setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvim-plug
+setup-progs: setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-neovim setup-neovim-plug
 
 # Homebrew is a bit special since it is a dep for other things...
 setup-homebrew:
