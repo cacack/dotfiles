@@ -68,14 +68,28 @@ setup-sssd:
 ################################################################################
 # Programs
 
-setup-progs: setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-neovim setup-neovim-plug
+setup-progs: setup-prog-deps setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-neovim setup-neovim-plug
 
-# Homebrew is a bit special since it is a dep for other things...
-setup-homebrew:
+setup-prog-deps: install-homebrew install-yarn
+
+install-homebrew:
+ifeq ($(OS),darwin)
 	curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 	chmod 755 ./install.sh
 	./install.sh
 	rm ./install.sh
+endif
+
+install-yarn:
+ifeq ($(DISTRO),Fedora)
+	sudo dnf install yarnpkg
+endif
+ifeq ($(DISTRO),Ubuntu)
+	sudo apt install yarnpkg
+endif
+ifeq ($(OS),darwin)
+	brew install yarn
+endif
 
 # macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
 setup-tmux: install-tmux setup-tmux-config
