@@ -33,11 +33,11 @@ setup-dirs:
 	@echo
 	mkdir -p ${HOME}/devel
 ifeq ($(OS),linux)
-	mkdir -p ${HOME}/{desktop,devel,documents,downloads,music,pictures,video}
+	mkdir -p ${HOME}/{desktop,documents,downloads,music,pictures,video}
 	mkdir -p ${HOME}/.local/{bin,shared/fonts}
-	ln -sf ${DOTFILES_CONFIG_DIR}/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
+	cp -f ${DOTFILES_CONFIG_DIR}/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
 	rm -rf ${HOME}/{Desktop,Documents,Downloads,Music,Pictures,Public,Templates,Video}
-	xdg-user-dirs-update
+	#xdg-user-dirs-update
 endif
 ifeq ($(OS),darwin)
 	mkdir -p ${HOME}/.config
