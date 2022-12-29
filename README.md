@@ -8,24 +8,13 @@ My various configuration files to make ${HOME} home.
 
 ## Installation
 
-### For a private system
-
-1. Generate new SSH keys.
-1. Add keys to GitLab/GitHub account.
-1. Clone repo SSH URL.
-1. Run setup.
+Retrieve and run bash script.
 
 ```sh
-make bootstrap
+curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
 ```
 
-### For a shared system
-
-1. Retrieve and run bash script.
-
-```sh
-curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash --
-```
+NOTE: this will install stuffs
 
 ## Tools I currently use
 
