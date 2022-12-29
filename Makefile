@@ -74,6 +74,7 @@ setup-prog-deps: install-homebrew install-yarn
 
 install-homebrew:
 ifeq ($(OS),darwin)
+	@echo "Installing homebrew.."
 	curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 	chmod 755 ./install.sh
 	./install.sh
@@ -81,6 +82,7 @@ ifeq ($(OS),darwin)
 endif
 
 install-yarn:
+	@echo "Installing yarn.."
 ifeq ($(DISTRO),Fedora)
 	sudo dnf install yarnpkg
 endif
