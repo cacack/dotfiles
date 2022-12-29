@@ -20,16 +20,18 @@ SETUP += setup-shellcheck
 .PHONY: setup-shellcheck
 setup-shellcheck:
 	@echo
-	curl -L --output shellcheck.tar.xz $(SHELLCHECK_URL)
-	tar -xvf shellcheck.tar.xz --directory=${HOME}/bin --mode=0755 --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
+	curl -fLo shellcheck.tar.xz $(SHELLCHECK_URL)
+	tar -xvf shellcheck.tar.xz --directory=$(BIN_DIR) --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
+	chmod 755 $(BIN_DIR)/shellcheck
 	rm shellcheck.tar.xz
+
 
 
 ################################################################################
 UPDATE += update-shellcheck
 
 .PHONY: update-shellcheck
-update-shellcheck:
+update-shellcheck: setup-shellcheck
 	@echo
 	sed -i 's/SHELLCHECK_VERSION: .*/SHELLCHECK_VERSION: "$(SHELLCHECK_VERSION)"/g' .gitlab-ci.yml
 

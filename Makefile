@@ -1,86 +1,31 @@
 ################################################################################
 # Variables
 
-PYTHON_VERSION := 3.10.2
-SHELLCHECK_VERSION := 0.8.0
-KITTY_VERSION := 0.26.5
-STARSHIP_VERSION := 1.11.0
-LSD_VERSION := 0.23.1
-NVM_VERSION := 0.39.2
 FZF_VERSION := 0.35.1
+KITTY_VERSION := 0.26.5
+LSD_VERSION := 0.23.1
 NERD_FONT_VERSION := 2.1.0
-CLOUD_NUKE_VERSION := 0.10.0
-
-UNAME := $(shell uname)
-
-ANSIBLE_PATH := .ansible
-
-BASE_DIR ?= ${HOME}/.local
-BIN_DIR := $(BASE_DIR)/bin
-
-DOTFILES_CONFIG_DIR := ${HOME}/.dotfiles/configs
-USER_BIN_DIR := ${HOME}/.local/bin
-
-# OS-based directories
-ifeq ($(UNAME), Linux)
-USER_FONT_DIR := ${HOME}/.local/share/fonts
-OS := linux
-endif
-ifeq ($(UNAME), Darwin)
-USER_FONT_DIR := ${HOME}/Library/Fonts
-OS := darwin
-endif
+NVM_VERSION := 0.39.3
+PYTHON_VERSION := 3.11.1
+SHELLCHECK_VERSION := 0.8.0
+STARSHIP_VERSION := 1.12.0
 
 # Source the modular make files
-#include .make.d/*.mk
+include .make.d/*.mk
 
-SHELLCHECK_URL := https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).$(OS).x86_64.tar.xz
 
 ################################################################################
-## Development targets
+# Development targets
 
-.PHONY: setup-shellcheck
-setup-shellcheck:
-	@echo
-	curl -fLo shellcheck.tar.xz $(SHELLCHECK_URL)
-	tar -xvf shellcheck.tar.xz --directory=$(BIN_DIR) --strip-components=1 shellcheck-v${SHELLCHECK_VERSION}/shellcheck
-	chmod 755 $(BIN_DIR)/shellcheck
-	rm shellcheck.tar.xz
-
-.PHONY: lint-whitespace
-lint-whitespace:
-	@echo
-	git diff --check HEAD --
-
-.PHONY: lint-shellcheck
-lint-shellcheck:
-	@echo
-	git grep -I --name-only --null -e '' \
-		| grep -z -v -e '.ansible' -e 'attic' \
-    | xargs --null --max-lines=1 file --mime-type \
-    | sed --quiet 's,: *text/x-shellscript$$,,p' \
-    | xargs --no-run-if-empty shellcheck -x
-
-.PHONY: lint-yaml
-lint-yaml:
-	@echo
-	poetry run yamllint .
-
-.PHONY: lint-ansible
-lint-ansible:
-	@echo
-	poetry run ansible-lint $(ANSIBLE_PATH)
+check: $(CHECK)
 
 print-version: $(PRINT_VERSION)
 
-# Setup development dependencies
-#setup: setup-dirs $(SETUP)
+lint: $(LINT)
 
-setup-homebrew:
-	curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-	chmod 755 ./install.sh
-	./install.sh
-	rm ./install.sh
+
+################################################################################
+# Dotfile targets
 
 setup-desktop: setup-dirs setup-configs setup-progs setup-fonts
 
@@ -88,7 +33,7 @@ setup-dirs:
 	@echo
 	mkdir -p ${HOME}/devel
 ifeq ($(OS),linux)
-	mkdir -p ${HOME}/{desktop,devel,documents,downloads,music,pictures,public,templates,video}
+	mkdir -p ${HOME}/{desktop,devel,documents,downloads,music,pictures,video}
 	mkdir -p ${HOME}/.local/{bin,shared/fonts}
 	ln -sf ${DOTFILES_CONFIG_DIR}/user-dirs.dirs ${HOME}/.config/user-dirs.dirs
 	rm -rf ${HOME}/{Desktop,Documents,Downloads,Music,Pictures,Public,Templates,Video}
@@ -98,14 +43,44 @@ ifeq ($(OS),darwin)
 	mkdir -p ${HOME}/.config
 endif
 
-setup-configs: setup-tmux-config setup-zsh-config
+
+################################################################################
+# Generic configs
+
+setup-configs: setup-git-config setup-zsh-config
 
 setup-git-config:
 	@echo
 	ln -sf $(DOTFILES_CONFIG_DIR)/dot.config/git ${HOME}/.config/git.d
 
+setup-zsh-config:
+	@echo
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshenv ${HOME}/.zshenv
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc ${HOME}/.zshrc
+	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc.d ${HOME}/.zshrc.d
+	[[ -d "${HOME}/.oh-my-zsh" ]] || git clone https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
+	rm -f ${HOME}/{.bashrc,.bash_history,.bash_logout,.bash_profile}
+
+setup-sssd:
+	sudo sss_override user-add ${USER} --shell /bin/zsh
+	sudo systemctl restart sssd
+
+################################################################################
+# Programs
+
+setup-progs: setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvim-plug
+
+# Homebrew is a bit special since it is a dep for other things...
+setup-homebrew:
+	curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+	chmod 755 ./install.sh
+	./install.sh
+	rm ./install.sh
+
 # macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
-setup-tmux:
+setup-tmux: install-tmux setup-tmux-config
+
+install-tmux:
 	@echo
 ifeq ($(OS),darwin)
 	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz
@@ -116,22 +91,6 @@ endif
 setup-tmux-config:
 	@echo
 	ln -sf ${DOTFILES_CONFIG_DIR}/dot.tmux.conf ${HOME}/.tmux.conf
-
-setup-alacritty-config:
-	@echo
-	ln -sf ${DOTFILES_CONFIG_DIR}/dot.config/alacritty ${HOME}/.config/alacritty
-
-setup-zsh-config:
-	@echo
-	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshenv ${HOME}/.zshenv
-	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc ${HOME}/.zshrc
-	ln -sf ${DOTFILES_CONFIG_DIR}/dot.zshrc.d ${HOME}/.zshrc.d
-	[[ -d "${HOME}/.oh-my-zsh" ]] || git clone https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
-	#sudo sss_override user-add cac21 --shell /bin/zsh
-	#sudo systemctl restart sssd
-	rm -f ${HOME}/{.bashrc,.bash_history,.bash_logout,.bash_profile}
-
-setup-progs: setup-fzf setup-kitty setup-starship setup-lsd setup-nvim setup-nvim-plug
 
 .PHONY: setup-fzf
 setup-fzf:
@@ -149,7 +108,10 @@ ifeq ($(OS),darwin)
 endif
 
 .PHONY: setup-kitty
-setup-kitty:
+setup-kitty: install-kitty setup-kitty-config
+
+.PHONY: install-kitty
+install-kitty:
 ifeq ($(OS),linux)
 	@echo
 	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
@@ -159,7 +121,7 @@ ifeq ($(OS),linux)
 endif
 ifeq ($(OS),darwin)
 	@echo
-	@echo mac
+	brew install kitty
 endif
 
 .PHONY: setup-kitty-config
@@ -167,20 +129,17 @@ setup-kitty-config:
 	mkdir -p ${HOME}/.config/kitty
 	ln -sf $(DOTFILES_CONFIG_DIR)/kitty.conf ${HOME}/.config/kitty/kitty.conf
 
-.PHONY: setup-alacritty
-setup-alacritty:
-	@echo
-	sudo dnf install alacritty
-
 .PHONY: setup-starship
-setup-starship:
+setup-starship: install-starship setup-starship-config
+
+.PHONY: install-starship
+install-starship:
 	@echo
 ifeq ($(OS),linux)
 	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
 	sudo tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
 	sudo chmod 775 /usr/local/bin/starship
 	rm starship.tar.gz
-	ln -sf $(DOTFILES_CONFIG_DIR)/starship.toml ${HOME}/.config/starship.toml
 endif
 ifeq ($(OS),darwin)
 	brew install starship
@@ -334,13 +293,6 @@ setup-font-glyphs:
 	rm font.zip
 
 
-################################################################################
-## Lint targets
-
-
-################################################################################
-## Run targets
-
 .PHONY: setup-poetry
 setup-poetry:
 	@echo
@@ -350,7 +302,12 @@ setup-poetry:
 
 .PHONY: setup-python-build-dependencies
 setup-python-build-dependencies:
+ifeq ($(DISTRO),Fedora)
 	sudo dnf install make gcc zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel libffi-devel xz-devel
+endif
+ifeq ($(DISTRO),Ubuntu)
+	sudo apt install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+endif
 
 .PHONY: setup-pyenv
 setup-pyenv: setup-python-build-dependencies
@@ -367,26 +324,6 @@ setup-pyenv: setup-python-build-dependencies
 	fi ;\
 	cd "${HOME}/.pyenv" && git pull ;\
 	cd - ;\
-	pyenv install --skip-existing $(shell cat .python-version) ;\
+	pyenv install --skip-existing $(PYTHON_VERSION) ;\
 	pyenv rehash
 	git clone https://github.com/pyenv/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
-
-.PHONY: bootstrap
-bootstrap: setup-poetry setup-pyenv
-	@echo
-	export PATH="${HOME}/.pyenv/bin:${HOME}/.local/bin:${PATH}" ;\
-	eval "$(pyenv init --path)" ;\
-	eval "$(pyenv init -)" ;\
-	pyenv rehash ;\
-	poetry install ;\
-	cd $(ANSIBLE_PATH); poetry run ansible-playbook \
-		--connection="local" \
-		--inventory="localhost," \
-		--extra-vars="host=localhost" \
-		--ask-become-pass \
-		bootstrap.yml
-
-.PHONY: update-python-version
-update-python-version:
-	@echo
-	echo $(PYTHON_VERSION) > .python-version

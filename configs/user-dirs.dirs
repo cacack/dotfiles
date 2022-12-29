@@ -5,10 +5,12 @@
 # homedir-relative path, or XDG_xxx_DIR="/yyy", where /yyy is an
 # absolute path. No other format is supported.
 #
+# NOTE: To disable a directory, point it to the homedir. If you delete it it will be recreated on the next login.
+
 XDG_DESKTOP_DIR="$HOME/desktop"
 XDG_DOWNLOAD_DIR="$HOME/downloads"
-XDG_TEMPLATES_DIR="$HOME/templates"
-XDG_PUBLICSHARE_DIR="$HOME/public"
+XDG_TEMPLATES_DIR="$HOME"
+XDG_PUBLICSHARE_DIR="$HOME"
 XDG_DOCUMENTS_DIR="$HOME/documents"
 XDG_MUSIC_DIR="$HOME/music"
 XDG_PICTURES_DIR="$HOME/picutres"
