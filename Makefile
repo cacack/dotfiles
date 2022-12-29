@@ -115,8 +115,8 @@ install-kitty:
 ifeq ($(OS),linux)
 	@echo
 	wget -O kitty.txz https://github.com/kovidgoyal/kitty/releases/download/v$(KITTY_VERSION)/kitty-$(KITTY_VERSION)-x86_64.txz
-	sudo tar -xv -C /usr/local/bin/ --strip-components 1 -f kitty.txz bin/kitty
-	sudo chmod 755 /usr/local/bin/kitty
+	tar -xv -C ${USER_BIN_DIR} --strip-components 1 -f kitty.txz bin/kitty
+	chmod 755 ${USER_BIN_DIR}/kitty
 	rm kitty.txz
 endif
 ifeq ($(OS),darwin)
@@ -137,8 +137,8 @@ install-starship:
 	@echo
 ifeq ($(OS),linux)
 	wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v$(STARSHIP_VERSION)/starship-x86_64-unknown-linux-gnu.tar.gz
-	sudo tar -x -C /usr/local/bin --overwrite -f starship.tar.gz
-	sudo chmod 775 /usr/local/bin/starship
+	tar -x -C ${USER_BIN_DIR} --overwrite -f starship.tar.gz
+	chmod 775 ${USER_BIN_DIR}/starship
 	rm starship.tar.gz
 endif
 ifeq ($(OS),darwin)
@@ -155,8 +155,8 @@ setup-lsd:
 	@echo
 ifeq ($(OS),linux)
 	wget -O lsd.tar.gz https://github.com/Peltoche/lsd/releases/download/$(LSD_VERSION)/lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu.tar.gz
-	sudo tar -x -C /usr/local/bin --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
-	sudo chmod 775 /usr/local/bin/lsd
+	tar -x -C ${USER_BIN_DIR} --overwrite --strip-components=1 -f lsd.tar.gz lsd-$(LSD_VERSION)-x86_64-unknown-linux-gnu/lsd
+	chmod 775 ${USER_BIN_DIR}/lsd
 	rm lsd.tar.gz
 endif
 ifeq ($(OS),darwin)
