@@ -68,7 +68,7 @@ setup-sssd:
 ################################################################################
 # Programs
 
-setup-progs: setup-prog-deps setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-neovim setup-neovim-plug
+setup-progs: setup-prog-deps setup-tmux setup-fzf setup-kitty setup-starship setup-lsd setup-nvm setup-nodejs setup-neovim setup-neovim-plug
 
 setup-prog-deps: install-homebrew install-yarn
 
@@ -179,8 +179,21 @@ ifeq ($(OS),darwin)
 	brew install lsd
 endif
 
+.PHONY: setup-nvm
+setup-nvm:
+	@echo
+ifeq ($(OS),linux)
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
+endif
+ifeq ($(OS),darwin)
+	brew install nvm
+endif
+
 setup-nodejs:
 	@echo
+ifeq ($(OS),linux)
+	export NVM_DIR=${HOME}/.nvm; [ -s ${NVM_DIR}/nvm.sh ] && source ${NVM_DIR}/nvm.sh; nvm install --lts
+endif
 ifeq ($(OS),darwin)
 	brew install node@16 yarn
 endif
@@ -210,16 +223,6 @@ setup-neovim-config: setup-nodejs
 setup-neovim-plug:
 	@echo
 	curl -fLo ${HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-.PHONY: setup-nvm
-setup-nvm:
-	@echo
-ifeq ($(OS),linux)
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
-endif
-ifeq ($(OS),darwin)
-	brew install nvm
-endif
 
 .PHONY: setup-aws-cli
 setup-aws-cli:
