@@ -29,3 +29,6 @@ USER_FONT_DIR := ${HOME}/Library/Fonts
 OS := darwin
 DISTRO := none
 endif
+
+# useful for debugging, just run make print-<VAR>
+print-%  : ; @echo $* = $($*)
