@@ -12,13 +12,18 @@ Install dependencies..
 
 For Ubuntu:
 ```
-sudo apt update && apt install zsh make stow
+sudo apt update && sudo apt install zsh make stow
 ```
 
 Retrieve and run bash script.
 
 ```sh
 curl -sSL https://gitlab.com/cacack/dotfiles.new/-/raw/main/install.sh | bash
+```
+
+Then change shells to zsh..
+```sh
+chsh --shell $(which zsh)
 ```
 
 ## Tools I currently use
