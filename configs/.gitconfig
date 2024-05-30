@@ -1,0 +1,34 @@
+[push]
+	default = simple
+
+[color]
+	ui = true
+
+[diff]
+	renames = true
+	tool = vimdiff
+
+[user]
+	name = Chris Clonch
+	email = chris@theclonchs.com
+
+[include]
+  path = ~/.config/git.d/aliases
+  path = ~/.config/git.local
+
+[credential]
+	helper = !aws codecommit credential-helper $@
+	UseHttpPath = true
+[remote "origin"]
+	prune = true
+[init]
+	defaultBranch = main
+[core]
+	autocrlf = input
+	editor = nvim
+[difftool]
+	prompt = false
+[alias]
+	vimdiff = difftool
+	home = rev-parse --show-toplevel
+	whereami = rev-parse --abbrev-ref HEAD
