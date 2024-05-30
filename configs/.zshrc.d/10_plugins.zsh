@@ -5,6 +5,7 @@ zinit light Aloxaf/fzf-tab
 zinit snippet OMZP::git
 zinit snippet OMZP::aws
 
+ZVM_INIT_MODE=sourcing
 zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
 
 zinit light zsh-users/zsh-syntax-highlighting
@@ -24,6 +25,6 @@ zinit light ajeetdsouza/zoxide
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-eval "$(fzf --zsh)"
+source <(fzf --zsh)
 eval "$(zoxide init --cmd cd zsh)"
 
