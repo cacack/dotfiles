@@ -12,7 +12,7 @@ Install dependencies..
 
 For Ubuntu:
 ```
-sudo apt update && apt install zsh
+sudo apt update && apt install zsh make stow
 ```
 
 Retrieve and run bash script.
