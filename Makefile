@@ -1,5 +1,13 @@
 .PHONY: install
-install: stow
+install: base-dirs stow
+
+.PHONY: base-dirs
+base-dirs:
+	@echo
+	# Creating basic directories
+	mkdir -p ${HOME}/devel
+	mkdir -p ${HOME}/.config
+	mkdir -p ${HOME}/.local/{bin,etc}
 
 .PHONY: stow
 stow:
