@@ -26,5 +26,5 @@ zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
 source <(zoxide init --cmd cd zsh)
 
-zinit ice from"gh-r" as"program"
-zinit light neovim/neovim
+# zinit ice from"gh-r" as"program" pick"nvim"
+# zinit light neovim/neovim

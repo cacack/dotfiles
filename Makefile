@@ -1,25 +1,36 @@
+################################################################################
+# Main make configuration file
+#
+# It is intended to be copied into the local repository once and local overrides
+# or customizations go into `.make.d/99_local.mk`.
+################################################################################
+
+
+# Source the modular make files
+include .make.d/*.mk
+
+
+################################################################################
+
 .PHONY: install
-install: base-dirs stow
+install: base-dirs setup-neovim stow
 
-.PHONY: base-dirs
-base-dirs:
-	@echo
-	# Creating basic directories
-	mkdir -p ${HOME}/devel
-	mkdir -p ${HOME}/.config
-	mkdir -p ${HOME}/.local/{bin,etc}
+.PHONY: install-desktop
+install-desktop: desktop-dirs fonts
 
-.PHONY: stow
-stow:
-	stow configs
+.PHONY: install-apps
+install-apps: install-app-deps setup-kitty setup-tmux setup-neovim install-aws-cli
+
+.PHONY: install-app-deps
+install-app-deps: install-homebrew install-yarn
+
+################################################################################
+
+.PHONY: update
+update: $(UPDATE)
 
 .PHONY: clean
-clean:
-	rm -f ~/.config/alacritty/alacritty.yml
-	rm -f ~/.config/git.d
-	rm -f ~/.config/lsd
-	rm -f ~/.config/nvim/lua/custom
-	rm -f ~/.config/starship.toml
-	rm -f ~/.gitconfig
-	rm -f ~/.tmux.conf
-	rm -f ~/.zshenv
+clean: $(CLEAN)
+
+.PHONY: clean-all
+clean-all: $(CLEAN_ALL) clean
