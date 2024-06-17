@@ -1,0 +1,152 @@
+#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+version = 2
+final_space = true
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+shell_integration = true
+pwd = 'osc7'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  overflow = 'hide'
+
+  [[blocks.segments]]
+    type = 'root'
+    style = 'plain'
+    foreground = 'p:diag-warning'
+    background = 'p:none'
+    template = '󱐋'
+
+  [[blocks.segments]]
+    type = 'session'
+    style = 'plain'
+    foreground_templates = ['{{ if .Root }}p:red{{ else }}p:magenta{{ end }}']
+    background = 'p:none'
+    template = '{{ if .SSHSession }} {{ end }}{{ .UserName }}@{{ .HostName }}'
+
+  [[blocks.segments]]
+    type = 'path'
+    style = 'plain'
+    foreground = 'p:blue'
+    background = 'p:none'
+    templates = ['{{ if not .Writable }} <p:yellow>{{ else }}{{ end }}', ' {{ path .Path .Location }}</>']
+
+    [blocks.segments.properties]
+      folder_separator_icon = '/'
+      home_icon = '~'
+      max_depth = 2.0
+      mixed_threshold = 5.0
+      style = 'agnoster_full'
+
+  [[blocks.segments]]
+    type = 'project'
+    style = 'plain'
+    foreground_templates = ['{{ if .Type }}', '{{ if eq .Type "node" }}#5c8763{{ end }}', '{{ if eq .Type "cargo" }}#b74f0e{{ end }}', '{{ if eq .Type "poetry" }}#4f5dd6{{ end }}', '{{ if eq .Type "php" }}#777bb3{{ end }}', '{{ if eq .Type "nuspec" }}#1188d6{{ end }}', '{{ if eq .Type "dotnet" }}#5c2992{{ end }}', '{{ if eq .Type "julia" }}#6682df{{ end }}', '{{ if eq .Type "powershell" }}#0276bc{{ end }}', '{{ else }}p:fg-dim{{ end }}']
+    background = 'p:none'
+    templates = ['{{ if .Version }} [{{ .Version }}{{ if .Name }} {{ .Name }}{{ end }}]{{ end }}']
+
+    [blocks.segments.properties]
+      always_enabled = true
+
+  [[blocks.segments]]
+    type = 'git'
+    style = 'plain'
+    templates = [' <p:special>{{ .HEAD }}</>', '{{ if or (gt .Ahead 0) (gt .Behind 0) }} <p:bright-cyan>{{ .BranchStatus }}</>{{ end }}', '{{ if .Working.Changed }} {{ .Working.String }}{{ end }}', '{{ if or (and .Working.Changed .Staging.Changed) (gt .StashCount 0) }}| {{ end }}', '{{ if (gt .Staging.Added 0) }}{{ .Staging.String }}{{ end }}', '{{ if gt .StashCount 0 }}<p:blue>*{{ .StashCount }}</>{{ end }}']
+
+    [blocks.segments.properties]
+      branch_icon = '󰊢 '
+      fetch_stash_count = true
+      fetch_status = true
+
+      [blocks.segments.properties.status_formats]
+        Added = '<p:git-added>+%d</>'
+        Deleted = '<p:git-removed>-%d</> '
+        Modified = '<p:git-changed>~%d </> '
+        Unmerged = '<p:diag-info>X%d</> '
+        Untracked = '<p:diag-warning>?%d</> '
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'right'
+
+  [[blocks.segments]]
+    type = 'executiontime'
+    style = 'plain'
+    foreground = 'p:bright-black'
+    template = ' [{{ .FormattedMs }}]'
+
+    [blocks.segments.properties]
+      always_enabled = true
+      style = 'austin'
+      threshold = 500.0
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = 'status'
+    style = 'plain'
+    foreground_templates = ['{{ if (gt .Code 0) }}p:diag-error{{ else }}p:diag-ok{{ end }}']
+    template = '({{ .Code }})'
+
+    [blocks.segments.properties]
+      always_enabled = true
+      status_separator = ' | '
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = 'p:bright-white'
+    background = 'p:none'
+    template = ' ❯'
+
+[valid_line]
+  foreground = 'p:diag-ok'
+  background = 'p:none'
+  template = '❯ '
+
+[error_line]
+  foreground = 'p:diag-error'
+  background = 'p:none'
+  template = '❯ '
+
+[transient_prompt]
+  foreground = 'p:blue'
+  background = 'p:none'
+  template = '❯ '
+
+[secondary_prompt]
+  foreground = 'p:bright-black'
+  background = 'p:none'
+  template = '...   '
+
+[palette]
+  black = '#16161D'
+  blue = '#7E9CD8'
+  bright-black = '#727169'
+  bright-blue = '#7FB4CA'
+  bright-cyan = '#7AA89F'
+  bright-green = '#98BB6C'
+  bright-magenta = '#938AA9'
+  bright-red = '#E82424'
+  bright-white = '#DCD7BA'
+  bright-yellow = '#E6C384'
+  cyan = '#6A9589'
+  diag-error = 'p:bright-red'
+  diag-hint = 'p:cyan'
+  diag-info = '#658594'
+  diag-ok = 'p:bright-green'
+  diag-warning = '#FF9E3B'
+  git-added = 'p:green'
+  git-changed = '#DCA561'
+  git-removed = 'p:red'
+  green = '#76946A'
+  magenta = '#957FB8'
+  none = 'transparent'
+  red = '#C34043'
+  special = 'p:bright-magenta'
+  white = '#C8C093'
+  yellow = '#C0A36E'
