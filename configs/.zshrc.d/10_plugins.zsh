@@ -1,7 +1,6 @@
-zinit ice depth=1
-zinit light romkatv/powerlevel10k
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# zinit ice depth=1; zinit light romkatv/powerlevel10k
+zinit ice from"gh-r" as"program" mv"posh-* -> oh-my-posh"
+zinit light JanDeDobbeleer/oh-my-posh
 
 # Setup ZSH plugins
 zinit light Aloxaf/fzf-tab
@@ -25,6 +24,3 @@ zinit light lsd-rs/lsd
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
 source <(zoxide init --cmd cd zsh)
-
-# zinit ice from"gh-r" as"program" pick"nvim"
-# zinit light neovim/neovim
