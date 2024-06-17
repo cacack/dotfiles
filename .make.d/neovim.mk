@@ -19,4 +19,4 @@ install-nvchad:
 
 .PHONY: setup-nvchad-custom-config
 setup-nvchad-custom-config:
-	stow packages/neovim
+	cd packages && stow --target=${HOME} neovim

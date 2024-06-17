@@ -26,4 +26,4 @@ setup-kitty-config:
 	@echo
 	# Symlinking kitty's config
 	mkdir -p ${HOME}/.config/kitty
-	stow packages/kitty
+	cd packages && stow --target=${HOME} kitty
