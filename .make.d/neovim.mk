@@ -6,8 +6,10 @@ install-neovim:
 	@echo
 	# Installing NeoVim
 ifeq ($(OS),linux)
-	curl -Lsf -o ${USER_BIN_DIR}/nvim.appimage --create-dirs https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-	chmod 755 ${USER_BIN_DIR}/nvim.appimage
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+	sudo rm -rf ${HOME}/.local/opt/nvim-linux64
+	sudo tar -C ${HOME}/.local/opt -xzf nvim-linux64.tar.gz
+	rm nvim-linux64.tar.gz
 endif
 ifeq ($(OS),darwin)
 	brew install neovim
