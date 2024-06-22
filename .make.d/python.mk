@@ -1,14 +1,27 @@
-setup-python: install-python
+setup-python: install-python install-pipx
 
 install-python:
 	@echo
-	# Installing yarn
+	# Installing python
 ifeq ($(DISTRO),Fedora)
 	sudo dnf install python
 endif
 ifeq ($(DISTRO),Ubuntu)
-	sudo apt install --yes --no-install-recommends python3-venv
+	sudo apt install --yes --no-install-recommends python3-venv python3-dev
 endif
 ifeq ($(OS),darwin)
 	brew install python
+endif
+
+install-pipx:
+	@echo
+	# Installing pipx
+ifeq ($(DISTRO),Fedora)
+	sudo dnf install pipx
+endif
+ifeq ($(DISTRO),Ubuntu)
+	sudo apt install --yes --no-install-recommends pipx
+endif
+ifeq ($(OS),darwin)
+	brew install pipx
 endif
