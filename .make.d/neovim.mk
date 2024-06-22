@@ -17,7 +17,8 @@ endif
 
 .PHONY: install-nvchad
 install-nvchad:
-	[[ -d ${HOME}/.config/nvim ]] || git clone https://github.com/NvChad/starter ${HOME}/.config/nvim
+	[[ -d ${HOME}/.config/nvim ]] || git clone https://github.com/NvChad/NvChad ${HOME}/.config/nvim --depth 1
+	#[[ -d ${HOME}/.config/nvim ]] || git clone https://github.com/NvChad/starter ${HOME}/.config/nvim
 
 .PHONY: setup-nvchad-custom-config
 setup-nvchad-custom-config:
