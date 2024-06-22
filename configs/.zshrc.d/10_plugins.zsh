@@ -1,4 +1,3 @@
-# zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit ice from"gh-r" as"program" mv"posh-* -> oh-my-posh"
 zinit light JanDeDobbeleer/oh-my-posh
 
@@ -20,6 +19,9 @@ source <(fzf --zsh)
 
 zinit ice from"gh-r" as"program" mv"lsd-*/lsd -> lsd"
 zinit light lsd-rs/lsd
+
+zinit ice from"gh-r" as"program"
+zinit light starship/starship
 
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide

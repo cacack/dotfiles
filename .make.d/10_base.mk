@@ -1,10 +1,4 @@
-################################################################################
-# Local overrides and customizations for Make
-#
-# It is intended to be copied into the local repository once and then modified
-# to extend as needed for the local repository.
-################################################################################
-
+CLEAN += clean-stow
 
 .PHONY: base-dirs
 base-dirs:
@@ -18,7 +12,6 @@ base-dirs:
 stow:
 	stow configs
 
-CLEAN += clean-stow
 .PHONY: clean-stow
 clean-stow:
 	rm -f ~/.config/alacritty/alacritty.yml
@@ -34,12 +27,7 @@ clean-stow:
 clean-bashrc:
 	rm -f ${HOME}/{.bashrc,.bash_history,.bash_logout,.bash_profile}
 
-################################################################################
-# Dotfile targets
-
-
 desktop-dirs: base-dirs
-desktop-dirs:
 	@echo
 ifeq ($(OS),linux)
 	# Creating desktop directories for Linux
@@ -49,13 +37,6 @@ ifeq ($(OS),linux)
 	(( $+commands[xdg-user-dirs-updates] )) && xdg-user-dirs-update
 	rm -rf ${HOME}/{Desktop,Documents,Downloads,Music,Pictures,Public,Templates,Video}
 endif
-
-setup-scripts:
-	@echo
-	for script in $(DOTFILES_SCRIPT_DIR)/*; do \
-		echo $${script##*/}; \
-		ln -nsf $${script} $(USER_BIN_DIR)/$${script##*/}; \
-	done
 
 setup-terminfo:
 ifeq ($(OS),darwin)
@@ -70,11 +51,6 @@ ifeq ($(OS),darwin)
 	/usr/bin/tic -x -o ${HOME}/.local/share/terminfo -e alacritty terminfo.src
 	rm terminfo.src
 endif
-
-################################################################################
-# Generic configs
-
-setup-base-configs: setup-git-config setup-zsh-config setup-zsh-vi-mode
 
 setup-sssd:
 	sudo sss_override user-add ${USER} --shell /bin/zsh

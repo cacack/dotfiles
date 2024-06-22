@@ -6,4 +6,3 @@ install-aws-cli:
 	unzip awscliv2.zip
 	./aws/install --install-dir $(SHARE_DIR)/aws-cli --bin-dir $(BIN_DIR) --update
 	rm -rf awscliv2.zip aws
-
