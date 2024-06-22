@@ -1,5 +1,5 @@
 .PHONY: setup-neovim
-setup-neovim: install-neovim install-nvchad setup-nvchad-custom-config
+setup-neovim: install-neovim setup-neovim-config
 
 .PHONY: install-neovim
 install-neovim:
@@ -15,10 +15,6 @@ ifeq ($(OS),darwin)
 	brew install neovim
 endif
 
-.PHONY: install-nvchad
-install-nvchad:
-	[[ -d ${HOME}/.config/nvim ]] || git clone https://github.com/NvChad/starter ${HOME}/.config/nvim
-
-.PHONY: setup-nvchad-custom-config
-setup-nvchad-custom-config:
+.PHONY: setup-neovim-config
+setup-neovim-config:
 	cd packages && stow --target=${HOME} neovim
