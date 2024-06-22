@@ -12,7 +12,7 @@ if [[ -d ${HOME}/.zshrc_work.d ]]; then
     # skip non-executable snippets
     [ -x "${script}" ] || continue
     # execute $script in the context of the current shell
-    . "${script}"
+    source "${script}"
   done
 fi
 
@@ -22,7 +22,7 @@ if [[ -d ${HOME}/.zshrc_secrets.d ]]; then
     # skip non-executable snippets
     [ -x "${script}" ] || continue
     # execute $script in the context of the current shell
-    . "${script}"
+    source "${script}"
   done
 fi
 
