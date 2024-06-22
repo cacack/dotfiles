@@ -1,5 +1,5 @@
 # macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
-setup-tmux: install-tmux setup-tmux-config
+setup-tmux: install-tmux
 
 install-tmux:
 	@echo
@@ -13,8 +13,3 @@ ifeq ($(OS),darwin)
 	rm terminfo.src
 	brew install tmux
 endif
-
-setup-tmux-config:
-	@echo
-	# Symlinking tmux config
-	ln -nsf ${DOTFILES_CONFIG_DIR}/dot.tmux.conf ${HOME}/.tmux.conf
