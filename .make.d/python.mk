@@ -1,4 +1,4 @@
-setup-python: install-python install-pipx
+setup-python: install-python install-pipx install-poetry
 
 install-python:
 	@echo
@@ -25,3 +25,7 @@ endif
 ifeq ($(OS),darwin)
 	brew install pipx
 endif
+
+install-poetry:
+	@echo
+	pipx install poetry
