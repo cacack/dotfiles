@@ -1,4 +1,4 @@
-CLEAN += clean-stow
+CLEAN += clean-stow clean-bashrc
 
 .PHONY: base-dirs
 base-dirs:
