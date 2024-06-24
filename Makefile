@@ -33,4 +33,4 @@ update: $(UPDATE)
 clean: $(CLEAN)
 
 .PHONY: clean-all
-clean-all: $(CLEAN_ALL) clean
+clean-all: clean $(CLEAN_ALL)
