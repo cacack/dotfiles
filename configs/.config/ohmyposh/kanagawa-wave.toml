@@ -125,6 +125,8 @@ pwd = 'osc7'
 
 [palette]
   black = '#16161D'
+#black = '#45454A'
+#black = '#6A6A6E'
   blue = '#7E9CD8'
   bright-black = '#727169'
   bright-blue = '#7FB4CA'
