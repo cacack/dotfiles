@@ -14,6 +14,9 @@ stow:
 
 .PHONY: clean-stow
 clean-stow:
+	stow --delete configs 2>/dev/null
+
+clean-old-configs:
 	rm -f ~/.config/alacritty/alacritty.yml
 	rm -f ~/.config/git.d
 	rm -f ~/.config/lsd
