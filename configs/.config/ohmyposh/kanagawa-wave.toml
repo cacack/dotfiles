@@ -10,6 +10,7 @@ pwd = 'osc7'
   type = 'prompt'
   alignment = 'left'
   overflow = 'hide'
+  newline = true
 
   [[blocks.segments]]
     type = 'root'
