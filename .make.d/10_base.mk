@@ -58,3 +58,6 @@ endif
 setup-sssd:
 	sudo sss_override user-add ${USER} --shell /bin/zsh
 	sudo systemctl restart sssd
+
+switch-repo-url:
+	cd ${HOME}/.dotfiles.new && git remote set-url origin git@gitlab.com:cacack/dotfiles.new.git
