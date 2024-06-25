@@ -1,4 +1,4 @@
-setup-python: install-python install-pipx install-poetry
+setup-python: install-python install-pipx install-poetry install-pyenv
 
 install-python:
 	@echo
@@ -29,3 +29,8 @@ endif
 install-poetry:
 	@echo
 	pipx install poetry
+
+install-pyenv:
+	@echo
+	# Install pyenv
+	[ -d ${HOME}/.local/opt/pyenv ] && (cd ${HOME}/.local/opt/pyenv && git pull) || git clone https://github.com/pyenv/pyenv.git ${HOME}/.local/opt/pyenv

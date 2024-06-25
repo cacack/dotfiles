@@ -26,3 +26,8 @@ zinit light starship/starship
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
 source <(zoxide init --cmd cd zsh)
+
+# Pyenv
+export PYENV_ROOT="${HOME}/.local/opt/pyenv"
+command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
+source <(pyenv init -)
