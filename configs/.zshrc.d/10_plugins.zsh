@@ -1,5 +1,5 @@
-zinit ice from"gh-r" as"program" mv"posh-* -> oh-my-posh"
-zinit light JanDeDobbeleer/oh-my-posh
+# zinit ice from"gh-r" as"program" mv"posh-* -> oh-my-posh"
+# zinit light JanDeDobbeleer/oh-my-posh
 
 # Setup ZSH plugins
 zinit light Aloxaf/fzf-tab
