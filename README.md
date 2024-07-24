@@ -11,6 +11,7 @@ My various configuration files to make ${HOME} home.
 Install dependencies..
 
 For Ubuntu:
+
 ```
 sudo apt update && sudo apt install zsh make stow
 ```
@@ -22,9 +23,16 @@ curl -sSL https://gitlab.com/cacack/dotfiles.new/-/raw/main/install.sh | bash
 ```
 
 Then change shells to zsh..
+
 ```sh
 chsh --shell $(which zsh)
 ```
+
+Next, log out and back in to kick the new setup into gear (zinit will install a bnunch of stuff) and make it active.
+
+Finally, do some optional stuffs..
+
+- Clone and install my desktop scripts using `make desktop-scripts`.
 
 ## Tools I currently use
 
@@ -38,6 +46,6 @@ chsh --shell $(which zsh)
 
 ## License
 
-Copyright (c) 2024, Chris Clonch. Distributed under an [MIT License][].
+Copyright (c) 2024, Chris Clonch. Distributed under an [MIT License].
 
 [mit license]: http://www.opensource.org/licenses/MIT
