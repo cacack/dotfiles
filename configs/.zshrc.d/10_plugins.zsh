@@ -13,6 +13,8 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#555558"
+
 zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
 source <(fzf --zsh)
