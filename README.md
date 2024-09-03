@@ -19,7 +19,7 @@ sudo apt update && sudo apt install zsh make stow
 Retrieve and run bash script.
 
 ```sh
-curl -sSL https://gitlab.com/cacack/dotfiles.new/-/raw/main/install.sh | bash
+curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
 ```
 
 Then change shells to zsh..
