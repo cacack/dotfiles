@@ -10,21 +10,26 @@ base-dirs:
 
 .PHONY: stow
 stow:
-	stow configs
+	stow -v configs
 
 .PHONY: clean-stow
 clean-stow:
 	stow --delete configs 2>/dev/null
 
 clean-old-configs:
+	rm -f ~/.abcde.conf
 	rm -f ~/.config/alacritty/alacritty.yml
 	rm -f ~/.config/git.d
 	rm -f ~/.config/lsd
 	rm -f ~/.config/nvim/lua/custom
+	rm -f ~/.config/ohmyposh
 	rm -f ~/.config/starship.toml
 	rm -f ~/.gitconfig
+	rm -f ~/.p10k.zsh
 	rm -f ~/.tmux.conf
 	rm -f ~/.zshenv
+	rm -f ~/.zshrc
+	rm -f ~/.zshrc.d
 
 .PHONY: clean-bashrc
 clean-bashrc:
