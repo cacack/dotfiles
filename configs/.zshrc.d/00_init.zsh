@@ -1,5 +1,9 @@
 if [ Darwin = `uname` ]; then
-  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+  if [ -d /usr/local/Homebrew ]; then
+    eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+  elif [ -d ${HOME}/.local/opt/homebrew ]; then
+    eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
+  fi
 fi
 
 # Define zinit home directory
