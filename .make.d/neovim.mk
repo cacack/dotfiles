@@ -9,12 +9,15 @@ install-neovim:
 	# Installing NeoVim
 ifeq ($(OS),linux)
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-	sudo rm -rf ${HOME}/.local/opt/nvim-linux64
-	sudo tar -C ${HOME}/.local/opt -xzf nvim-linux64.tar.gz
+	rm -rf ${HOME}/.local/opt/nvim-linux64
+	tar -C ${HOME}/.local/opt -xzf nvim-linux64.tar.gz
 	rm nvim-linux64.tar.gz
 endif
 ifeq ($(OS),darwin)
-	brew install neovim
+	curl -LOs https://github.com/neovim/neovim/releases/latest/download/nvim-macos-$(ARCH).tar.gz
+	rm -rf ${HOME}/.local/opt/nvim-macos-$(ARCH)
+	tar -C ${HOME}/.local/opt -xzf nvim-macos-$(ARCH).tar.gz
+	rm nvim-macos-$(ARCH).tar.gz
 endif
 
 .PHONY: setup-neovim-config
