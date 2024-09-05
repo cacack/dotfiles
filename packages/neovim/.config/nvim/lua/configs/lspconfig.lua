@@ -14,7 +14,7 @@ local servers = {
   "pyright",
   "rust_analyzer",
   "terraformls",
-  "tsserver",
+  "ts_ls",
   "yamlls",
 }
 local nvlsp = require "nvchad.configs.lspconfig"
