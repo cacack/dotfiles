@@ -16,6 +16,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = {
+      -- https://mason-registry.dev/registry/list
       ensure_installed = {
         -- python
         "black",
