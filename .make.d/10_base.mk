@@ -1,4 +1,5 @@
 CLEAN += clean-stow clean-bashrc
+UPDATE += zinit-update
 
 .PHONY: base-dirs
 base-dirs:
@@ -11,6 +12,10 @@ base-dirs:
 .PHONY: stow
 stow:
 	stow -v configs
+
+zinit-update:
+	zinit self-update
+	zinit update --parallel
 
 .PHONY: clean-stow
 clean-stow:
