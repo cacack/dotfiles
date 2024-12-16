@@ -14,7 +14,8 @@ stow:
 	stow -v configs
 
 zinit-update:
-	zinit self-update
+	source "${HOME}/.local/share/zinit/zinit.git/zinit.zsh"; \
+	zinit self-update; \
 	zinit update --parallel
 
 .PHONY: clean-stow

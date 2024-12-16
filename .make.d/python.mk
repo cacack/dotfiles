@@ -1,3 +1,5 @@
+UPDATE += install-pyenv
+
 setup-python: install-python install-pipx install-poetry install-pyenv
 
 install-python:
