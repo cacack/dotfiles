@@ -19,10 +19,6 @@ return {
       -- https://mason-registry.dev/registry/list
       ensure_installed = {
         -- python
-        "black",
-        "isort",
-        "mypy",
-        "pyright",
         "ruff",
 
         -- go
