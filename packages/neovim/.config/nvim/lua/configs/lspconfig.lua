@@ -11,7 +11,7 @@ local servers = {
   "gopls",
   "html",
   "jsonls",
-  "pyright",
+  "ruff",
   "rust_analyzer",
   "terraformls",
   "ts_ls",
