@@ -20,3 +20,6 @@ else
   alias vi='vim'
 fi
 
+# Disable built in time command and use OS time binary
+disable -r time
+alias time='time -p'
