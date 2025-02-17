@@ -10,7 +10,6 @@
 
 [user]
 	name = Chris Clonch
-	email = chris@theclonchs.com
 
 [include]
   path = ~/.config/git.d/aliases
