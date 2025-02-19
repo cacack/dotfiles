@@ -19,6 +19,7 @@ return {
       -- https://mason-registry.dev/registry/list
       ensure_installed = {
         -- python
+        "pyright",
         "ruff",
 
         -- go
