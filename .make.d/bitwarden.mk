@@ -12,3 +12,6 @@ install-bitwarden-cli:
 	unzip -d ${USER_BIN_DIR} bitwarden-cli.zip bw
 	chmod 0755 ${USER_BIN_DIR}/bw
 	rm -f bitwarden-cli.zip
+ifeq ($(UNAME), Darwin)
+	xattr -dr com.apple.quarantine ${USER_BIN_DIR}/bw
+endif
