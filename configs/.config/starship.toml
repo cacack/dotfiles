@@ -1,4 +1,4 @@
-command_timeout = 900
+command_timeout = 1800
 
 [directory]
 truncation_length = 3
