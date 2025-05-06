@@ -1,37 +1,30 @@
 -- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
-local lspconfig = require "lspconfig"
-
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+-- https://nvchad.com/docs/recipes#clean_lspconfig_syntax
 local servers = {
-  "autotools_ls",
-  "bashls",
-  "cssls",
-  "gopls",
-  "html",
-  "jsonls",
-  "pyright",
-  "ruff",
-  "rust_analyzer",
-  "terraformls",
-  "ts_ls",
-  "yamlls",
+  autotools_ls = {},
+  bashls = {},
+  cssls = {},
+  gopls = {},
+  html = {},
+  jsonls = {},
+  pyright = {},
+  ruff = {},
+  rust_analyzer = {},
+  terraformls = {},
+  ts_ls = {},
+  yamlls = {
+    yaml = {
+      schemas = {
+        "./c7n-schema.json" == "*.yml",
+      },
+    },
+  },
 }
-local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = nvlsp.on_attach,
-    on_init = nvlsp.on_init,
-    capabilities = nvlsp.capabilities,
-  }
+for name, opts in pairs(servers) do
+  vim.lsp.enable(name)
+  vim.lsp.config(name, opts)
 end
-
--- configuring single server, example: typescript
--- lspconfig.tsserver.setup {
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- }
