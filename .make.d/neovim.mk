@@ -1,7 +1,15 @@
 CLEAN_ALL += clean-neovim-config
 
 .PHONY: setup-neovim
-setup-neovim: install-neovim setup-neovim-config
+setup-neovim: install-neovim-dependencies install-neovim setup-neovim-config
+
+.PHONY: install-neovim-dependencies
+install-neovim-dependencies:
+	@echo
+ifeq ($(OS),linux)
+	sudo apt update
+	sudo apt install -y --no-install-recommends npm golang
+endif
 
 .PHONY: install-neovim
 install-neovim:
