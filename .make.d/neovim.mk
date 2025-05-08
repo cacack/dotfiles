@@ -8,10 +8,10 @@ install-neovim:
 	@echo
 	# Installing NeoVim
 ifeq ($(OS),linux)
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-	rm -rf ${HOME}/.local/opt/nvim-linux64
-	tar -C ${HOME}/.local/opt -xzf nvim-linux64.tar.gz
-	rm nvim-linux64.tar.gz
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+	rm -rf ${HOME}/.local/opt/nvim-linux-x86_64
+	tar -C ${HOME}/.local/opt -xzf nvim-linux-x86_64.tar.gz
+	rm nvim-linux-x86_64.tar.gz
 endif
 ifeq ($(OS),darwin)
 	curl -LOs https://github.com/neovim/neovim/releases/latest/download/nvim-macos-$(ARCH).tar.gz
