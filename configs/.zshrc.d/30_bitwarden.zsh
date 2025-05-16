@@ -4,6 +4,7 @@ if (( $+commands[bw] )); then
   bw_is_unlocked() {
     bw_load_session
     bw unlock --check
+    bw sync
   }
 
   bw_load_session() {
