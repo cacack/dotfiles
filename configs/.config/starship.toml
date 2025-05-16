@@ -4,10 +4,10 @@ command_timeout = 1800
 truncation_length = 3
 truncate_to_repo = false
 
-#[env_var]
-#variable = "OS_CLOUD_PROJECT"
-#style = "bold yellow"
-#symbol = "  "
+[env_var.STARSHIP_OS_PROMPT]
+style = "bold yellow"
+symbol = " "
+format = "[$symbol $env_value]($style)"
 
 [username]
 format = "[$user]($style)@"
