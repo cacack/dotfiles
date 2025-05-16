@@ -4,7 +4,6 @@ if (( $+commands[bw] )); then
   bw_is_unlocked() {
     bw_load_session
     bw unlock --check
-    bw sync
   }
 
   bw_load_session() {
@@ -16,6 +15,7 @@ if (( $+commands[bw] )); then
     (umask 077; echo "export BW_SESSION=$(bw unlock --raw)" >"$env")
     # shellcheck disable=SC1090
     . "$env" >/dev/null
+    bw sync
   }
 
   if ! bw_is_unlocked; then
