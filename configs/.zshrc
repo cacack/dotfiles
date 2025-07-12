@@ -1,3 +1,7 @@
+# Enable zsh profiling for debugging timing.
+# Can also use https://github.com/romkatv/zsh-bench
+# zmodload zsh/zprof
+
 # Source in external configs.
 for script in "${HOME}"/.zshrc.d/*; do
   # skip non-executable snippets
@@ -29,3 +33,6 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Trigger the profiler
+# zprof
