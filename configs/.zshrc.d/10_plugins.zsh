@@ -30,6 +30,8 @@ zinit light ajeetdsouza/zoxide
 source <(zoxide init --cmd cd zsh)
 
 # Pyenv
-export PYENV_ROOT="${HOME}/.local/opt/pyenv"
-command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
-source <(pyenv init -)
+if [[ -d ${HOME}/.local/opt/pyenv ]]; then
+  export PYENV_ROOT="${HOME}/.local/opt/pyenv"
+  command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
+  source <(pyenv init -)
+fi
