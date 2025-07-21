@@ -7,8 +7,8 @@ setup-neovim: install-neovim-dependencies install-neovim setup-neovim-config
 install-neovim-dependencies:
 	@echo
 ifeq ($(OS),linux)
-	sudo apt update
-	sudo apt install -y --no-install-recommends npm golang
+	# sudo apt update
+	# sudo apt install -y --no-install-recommends npm golang
 endif
 
 .PHONY: install-neovim
