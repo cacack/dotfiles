@@ -1,5 +1,5 @@
 if (( $+commands[bw] )); then
-  env="${HOME}/.ssh/bw.env"
+  bw_env="${HOME}/.ssh/bw.env"
 
   bw_is_unlocked() {
     bw_load_session
@@ -8,13 +8,13 @@ if (( $+commands[bw] )); then
 
   bw_load_session() {
     # shellcheck disable=SC1090
-    . "$env" >/dev/null
+    . "$bw_env" >/dev/null
   }
 
   bw_unlock() {
-    (umask 077; echo "export BW_SESSION=$(bw unlock --raw)" >"$env")
+    (umask 077; echo "export BW_SESSION=$(bw unlock --raw)" >"$bw_env")
     # shellcheck disable=SC1090
-    . "$env" >/dev/null
+    . "$bw_env" >/dev/null
     bw sync
   }
 
@@ -22,5 +22,5 @@ if (( $+commands[bw] )); then
     bw_unlock
   fi
 
-  unset env
+  # unset env
 fi
