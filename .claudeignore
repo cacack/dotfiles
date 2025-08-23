@@ -1,0 +1,61 @@
+# Environment and configuration files
+.env*
+.credentials*
+.netrc
+.pgpass
+
+# Secret and sensitive files
+secrets*
+*secret*
+*password*
+*key*
+*token*
+
+# Cryptographic files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# SSH keys
+.ssh/
+id_rsa*
+id_ed25519*
+known_hosts
+
+# Cloud provider credentials
+.aws/credentials
+.aws/config
+.azure/
+.gcp/
+
+# Kubernetes configuration
+kubeconfig*
+.kube/config
+
+# HashiCorp Vault
+vault-*
+.vault-token
+
+# Git credentials
+.git-credentials
+.gitconfig
+
+# Database credentials
+.my.cnf
+.pgpass
+
+# Docker and container secrets
+docker-compose.override.yml
+.docker/config.json
+
+# Backup files that might contain sensitive data
+*.bak
+*.backup
+*.old
+
+# Temporary files that might contain secrets
+*.tmp
+*.temp
+/tmp/
