@@ -17,7 +17,7 @@ local servers = {
   yamlls = {
     yaml = {
       schemas = {
-        "./c7n-schema.json" == "*.yml",
+        ["./c7n-schema.json"] = "*.yml",
       },
     },
   },
