@@ -48,6 +48,13 @@ return {
         "prettier",
         "typescript-language-server",
         "yaml-language-server",
+        "json-lsp",
+
+        -- markdown
+        "marksman",
+
+        -- toml
+        "taplo",
 
         -- shell stuffs
         "bash-language-server",
