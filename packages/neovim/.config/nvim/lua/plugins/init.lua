@@ -21,6 +21,7 @@ return {
         -- python
         "pyright",
         "ruff",
+        "black",
 
         -- go
         "gofumpt",
