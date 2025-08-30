@@ -23,3 +23,15 @@ dev() {
   # Set focus to the Claude pane
   tmux select-pane -t 1
 }
+
+# Close all tmux panes except the current one and return to single terminal
+undev() {
+  # Check if we're inside a tmux session
+  if [ -z "$TMUX" ]; then
+    echo "Error: Not inside a tmux session"
+    return 1
+  fi
+
+  # Kill all panes except the current one
+  tmux kill-pane -a
+}
