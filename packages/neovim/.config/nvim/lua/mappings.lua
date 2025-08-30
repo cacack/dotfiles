@@ -16,4 +16,7 @@ map("n", "<leader>gB", require("gitsigns").toggle_current_line_blame, { desc = "
 -- spelling using telescope
 map("n", "<leader>ss", "<cmd>Telescope spell_suggest<CR>", { desc = "spelling suggestions" })
 
+-- file operations
+map("n", "<leader>rf", "<cmd>e<CR>", { desc = "reload current file" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
