@@ -19,7 +19,7 @@ install: base-dirs setup-neovim stow
 install-desktop: desktop-dirs fonts setup-kitty
 
 .PHONY: install-apps
-install-apps: install-app-deps setup-kitty setup-tmux setup-neovim install-aws-cli
+install-apps: install-app-deps setup-kitty setup-tmux setup-neovim install-aws-cli install-glab
 
 .PHONY: install-app-deps
 install-app-deps: install-homebrew install-yarn
