@@ -11,6 +11,7 @@ endif
 
 .PHONY: setup-direnv
 setup-direnv: install-direnv
+	chmod +x configs/.zshrc.d/30_direnv.zsh
 
 .PHONY: install-direnv
 install-direnv:
