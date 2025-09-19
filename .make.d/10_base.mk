@@ -26,10 +26,8 @@ clean-old-configs:
 	rm -f ~/.abcde.conf
 	rm -f ~/.config/alacritty/alacritty.yml
 	rm -f ~/.config/git.d
-	rm -f ~/.config/lsd
 	rm -f ~/.config/nvim/lua/custom
 	rm -f ~/.config/ohmyposh
-	rm -f ~/.config/starship.toml
 	rm -f ~/.gitconfig
 	rm -f ~/.p10k.zsh
 	rm -f ~/.tmux.conf

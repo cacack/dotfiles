@@ -1,11 +1,11 @@
-alias ls='lsd'
+alias ls='eza'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 #alias ls='ls -F --color=auto'
 alias ll='ls -l --git'
 alias la='ls -a'
 alias lla='la -l'
-alias lx='ls -X'
+alias lx='ls --sort=extension'
 alias llx='lx -l'
 alias l='ls -1'
 
@@ -23,3 +23,9 @@ fi
 # Disable built in time command and use OS time binary
 disable -r time
 alias time='time -p'
+
+# Claude Code wrapper to avoid zoxide cd alias conflicts
+# See: https://github.com/anthropics/claude-code/issues/2407
+claude() {
+  SHELL=/bin/bash command claude "$@"
+}
