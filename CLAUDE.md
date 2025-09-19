@@ -46,6 +46,15 @@ make clean               # Clean temporary files
 make clean-all           # Deep clean including configurations
 ```
 
+### Testing
+```bash
+make test                # Run complete test suite
+make test-syntax         # Shell script syntax validation
+make test-config         # Configuration loading tests
+make test-stow           # Stow operation validation
+make test-help           # Show testing help
+```
+
 ## Configuration Structure
 
 ### ZSH Configuration
@@ -69,7 +78,7 @@ Configuration scripts in `.zshrc.d/` include:
 - **Terminal**: kitty, tmux
 - **Shell**: zsh with zinit plugin manager, starship prompt
 - **Editor**: neovim with custom configuration
-- **CLI Tools**: lsd, fzf, git configurations
+- **CLI Tools**: eza, fzf, git configurations
 - **Development**: Node.js, Python, Go, Ruby environments
 - **Cloud**: AWS CLI, OpenStack CLI
 - **Security**: Bitwarden CLI, SSH agent
@@ -94,6 +103,30 @@ When modifying this repository:
 2. **Configuration changes**: Modify files in `configs/` or `packages/` directories
 3. **Shell customization**: Add executable scripts to `configs/.zshrc.d/`
 4. **Testing changes**: Use `make clean-stow && make stow` to refresh symlinks
+
+### Installation Method Guidelines
+
+**Use Zinit for:**
+- Simple CLI tools used primarily in shell contexts
+- Shell-focused utilities and enhancements
+- Tools available as GitHub releases
+- Utilities that benefit from lazy loading
+- Tools where automatic updates are preferred
+
+**Use Makefiles for:**
+- Complex installations requiring system-wide availability
+- System services and applications (tmux, kitty, neovim)
+- Language runtimes and development environments
+- Tools requiring platform-specific installation logic
+- Applications needed before shell initialization
+- Tools requiring specific version pinning
+
+**Current Tools Managed via Zinit:**
+- `fzf` - fuzzy finder
+- `eza` - modern ls replacement
+- `starship` - cross-shell prompt
+- `zoxide` - smart cd replacement
+- Various zsh plugins (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab)
 
 ## Repository Maintenance
 

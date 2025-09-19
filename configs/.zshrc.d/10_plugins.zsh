@@ -19,8 +19,11 @@ zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
 source <(fzf --zsh)
 
-zinit ice from"gh-r" as"program" mv"lsd-*/lsd -> lsd"
-zinit light lsd-rs/lsd
+# eza: homebrew on macOS, zinit on Linux
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    zinit ice from"gh-r" as"program" mv"eza -> eza"
+    zinit light eza-community/eza
+fi
 
 zinit ice from"gh-r" as"program"
 zinit light starship/starship
@@ -28,6 +31,12 @@ zinit light starship/starship
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
 source <(zoxide init --cmd cd zsh)
+
+zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"
+zinit light BurntSushi/ripgrep
+
+zinit ice from"gh-r" as"program" mv"fd-*/fd -> fd"
+zinit light sharkdp/fd
 
 # Pyenv
 if [[ -d ${HOME}/.local/opt/pyenv ]]; then

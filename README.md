@@ -40,7 +40,7 @@ Finally, do some optional stuffs..
 - [tmux](https://github.com/tmux/tmux)
 - [zsh](https://www.zsh.org/)
 - [starship](https://github.com/starship/starship)
-- [lsd](https://github.com/Peltoche/lsd)
+- [eza](https://github.com/eza-community/eza)
 - [fzf](https://github.com/junegunn/fzf)
 - [neovim](https://neovim.io)
 
