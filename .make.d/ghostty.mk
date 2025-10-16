@@ -1,4 +1,4 @@
-GHOSTTY_VERSION := 1.1.3
+GHOSTTY_VERSION := 1.2.0
 
 .PHONY: setup-ghostty
 setup-ghostty: install-ghostty setup-ghostty-config
