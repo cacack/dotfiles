@@ -13,6 +13,7 @@
 
 [include]
   path = ~/.config/git.d/aliases
+  path = ~/.config/git.d/user
   path = ~/.config/git.local
 
 [credential]
