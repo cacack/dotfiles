@@ -1,4 +1,4 @@
-UV_VERSION := 0.8.19
+UV_VERSION := 0.9.3
 
 ifeq ($(UNAME), Darwin)
 UV_PLATFORM := apple-darwin
