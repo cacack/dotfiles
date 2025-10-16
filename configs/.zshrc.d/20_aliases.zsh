@@ -1,4 +1,9 @@
-alias ls='eza'
+# Prefer eza, fallback to lsd, then default ls
+if (( $+commands[eza] )); then
+  alias ls='eza'
+elif (( $+commands[lsd] )); then
+  alias ls='lsd'
+fi
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 #alias ls='ls -F --color=auto'

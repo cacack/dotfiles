@@ -19,11 +19,11 @@ zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
 source <(fzf --zsh)
 
-# eza: homebrew on macOS, zinit on Linux
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    zinit ice from"gh-r" as"program" mv"eza -> eza"
-    zinit light eza-community/eza
-fi
+# eza: installed via Homebrew (see .make.d/eza.mk)
+
+# lsd: zinit on all platforms
+zinit ice from"gh-r" as"program" mv"lsd-*/lsd -> lsd"
+zinit light lsd-rs/lsd
 
 zinit ice from"gh-r" as"program"
 zinit light starship/starship

@@ -5,6 +5,6 @@ ifeq ($(OS),darwin)
 	eval "$$(${HOME}/.local/opt/homebrew/bin/brew shellenv)" && brew install eza
 else
 	@echo
-	# Installing eza via zinit on Linux (handled in zsh plugins)
-	@echo "eza will be installed via zinit when zsh is loaded"
+	# Installing eza via Homebrew on Linux
+	@which brew > /dev/null 2>&1 && brew install eza || echo "Homebrew not found, install manually or use package manager"
 endif
