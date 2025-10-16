@@ -1,4 +1,4 @@
-KITTY_VERSION := 0.42.2
+KITTY_VERSION := 0.43.1
 
 .PHONY: setup-kitty
 setup-kitty: install-kitty setup-kitty-config

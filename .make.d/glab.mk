@@ -1,4 +1,4 @@
-GLAB_VERSION := 1.68.0
+GLAB_VERSION := 1.74.0
 
 ifeq ($(UNAME), Darwin)
 GLAB_PLATFORM := darwin
