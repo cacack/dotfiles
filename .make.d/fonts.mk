@@ -1,7 +1,7 @@
 ################################################################################
 # Fonts
 # kitty +list-fonts
-NERD_FONT_VERSION := 3.2.1
+NERD_FONT_VERSION := 3.4.0
 
 .PHONY: fonts
 fonts: nerdfont-3270 nerdfont-firacode nerdfont-hack font-jetbrains nerdfont-meslo nerdfont-mononoki nerdfont-proggy

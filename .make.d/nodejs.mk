@@ -1,4 +1,4 @@
-NVM_VERSION := 0.39.3
+NVM_VERSION := 0.40.3
 
 setup-node: setup-nodejs
 setup-nodejs: install-yarn install-nvm

@@ -4,7 +4,7 @@
 # Source: https://gitlab.cas.org/cloudservices/public/make/.make.d/git.mk
 ################################################################################
 
-COMMITLINT_VERSION ?= 0.10.1
+COMMITLINT_VERSION ?= 19.9.1
 COMMITLINT_START_REF ?= HEAD~20
 
 setup-git-config:
@@ -23,7 +23,7 @@ setup-git-filter-repo:
 .PHONY: setup-commitlint
 setup-commitlint:
 	@echo
-	# https://github.com/conventionalcommit/commitlint/releases/download/v0.10.1/commitlint_0.10.1_Darwin_x86_64.tar.gz
+	# https://github.com/conventionalcommit/commitlint/releases/download/v19.9.1/commitlint_19.9.1_Darwin_x86_64.tar.gz
 	curl -Ls -o commitlint.tar.gz https://github.com/conventionalcommit/commitlint/releases/download/v$(COMMITLINT_VERSION)/commitlint_$(COMMITLINT_VERSION)_$(UNAME)_$(ARCH).tar.gz
 	tar -xvzf commitlint.tar.gz -C $(BIN_DIR) commitlint
 	rm commitlint.tar.gz
