@@ -34,3 +34,6 @@ alias time='time -p'
 claude() {
   SHELL=/bin/bash command claude "$@"
 }
+
+alias n='noted'
+alias ne='noted edit'
