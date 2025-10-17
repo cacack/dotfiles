@@ -1,0 +1,74 @@
+################################################################################
+# Brewfile for GUI Applications
+#
+# This is an alternative to managing GUI apps via the Makefile.
+# Brewfile provides a declarative way to manage Homebrew packages.
+#
+# Usage:
+#   brew bundle install --file=Brewfile.gui      # Install all apps
+#   brew bundle cleanup --file=Brewfile.gui      # Remove unlisted apps
+#   brew bundle dump --file=Brewfile.gui --force # Generate from current installs
+#
+# To integrate with Makefile, add this target to gui-apps.mk:
+#   .PHONY: install-from-brewfile
+#   install-from-brewfile:
+#   	brew bundle install --file=Brewfile.gui
+#
+################################################################################
+
+# TODO: Uncomment and add your preferred GUI applications below
+
+# === Browsers ===
+# cask "firefox"
+# cask "brave-browser"
+# cask "google-chrome"
+
+# === Password Managers ===
+cask "bitwarden"
+
+# === File Sync & Cloud ===
+# cask "nextcloud"
+# cask "dropbox"
+# cask "google-drive"
+
+# === Communication ===
+# cask "slack"
+# cask "discord"
+# cask "zoom"
+# cask "signal"
+
+# === Development (GUI) ===
+# cask "visual-studio-code"
+# cask "docker"
+# cask "postman"
+# cask "tableplus"
+
+# === Media ===
+# cask "vlc"
+# cask "spotify"
+# cask "iina"
+
+# === Productivity ===
+# cask "obsidian"
+# cask "notion"
+# cask "rectangle"  # Window management
+# cask "alfred"     # Launcher
+
+# === Graphics & Design ===
+# cask "gimp"
+# cask "inkscape"
+
+# === Utilities ===
+# cask "the-unarchiver"
+# cask "appcleaner"
+# cask "stats"      # System monitor in menu bar
+
+################################################################################
+# Notes:
+#
+# 1. This Brewfile focuses on GUI apps (casks) only
+# 2. CLI tools should remain in the Makefile modules
+# 3. Run `brew bundle dump --file=Brewfile.gui --force` to generate this file
+#    from your currently installed casks
+# 4. Both Makefile and Brewfile approaches can coexist - choose what works best
+################################################################################
