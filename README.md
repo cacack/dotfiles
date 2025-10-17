@@ -8,29 +8,21 @@ My various configuration files to make ${HOME} home.
 
 ## Installation
 
-### Prerequisites
+### One-Command Install (No Prerequisites Needed!)
 
-**macOS:**
-- Command Line Tools: `xcode-select --install`
-- Homebrew: [Install Homebrew](https://brew.sh)
-- GNU Stow: `brew install stow`
-
-**Ubuntu/Debian:**
-```bash
-sudo apt update && sudo apt install zsh make stow
-```
-
-**📖 For detailed macOS setup instructions, see [`docs/BOOTSTRAP-MACOS.md`](docs/BOOTSTRAP-MACOS.md)**
-
-### Quick Install
-
-Retrieve and run bash script:
+The installation script automatically detects your platform and installs all prerequisites. Just run:
 
 ```sh
 curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
 ```
 
-Then change shells to zsh:
+The script will automatically install:
+- **macOS**: Command Line Tools, Homebrew, GNU Stow
+- **Linux**: zsh, make, stow, git (via your package manager)
+
+Supported platforms: macOS (Intel/Apple Silicon), Ubuntu/Debian, Fedora/RHEL/CentOS, Arch, openSUSE
+
+**Then change shells to zsh:**
 
 ```sh
 chsh --shell $(which zsh)
@@ -38,7 +30,11 @@ chsh --shell $(which zsh)
 
 Log out and back in to activate the new setup (zinit will install plugins automatically).
 
-### Manual Install
+**📖 For detailed setup instructions and troubleshooting, see [`docs/BOOTSTRAP-MACOS.md`](docs/BOOTSTRAP-MACOS.md)**
+
+### Manual Install (Optional)
+
+If you prefer to install prerequisites manually or need more control over the process:
 
 ```bash
 # Clone the repository

@@ -2,23 +2,27 @@
 
 This guide walks through setting up this dotfiles repository on a fresh Mac from scratch.
 
-## Prerequisites
+## Quick Start (One Command - No Prerequisites)
 
-Before installing the dotfiles, you need these tools:
-
-1. **Command Line Tools** - Provides `git`, `make`, `curl`, and other essential tools
-2. **Homebrew** - macOS package manager
-3. **GNU Stow** - Symlink farm manager for managing dotfiles
-
-## Quick Start (One Command)
-
-If you already have the prerequisites installed, run:
+The installation script now automatically installs all prerequisites. Just run:
 
 ```bash
 curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
 ```
 
-## Step-by-Step Installation (Fresh Mac)
+The script will:
+1. Detect your platform (macOS) and architecture
+2. Install Command Line Tools (if needed) - provides `git`, `make`, `curl`, and other essential tools
+3. Install Homebrew (if needed) - macOS package manager
+4. Install GNU Stow (if needed) - symlink farm manager for managing dotfiles
+5. Clone the repository to `~/.dotfiles`
+6. Run the basic installation (`make install`)
+
+**Note:** On macOS, you may need to interact with the Command Line Tools installer dialog if it's not already installed.
+
+## Step-by-Step Installation (Manual Method)
+
+**Note:** These steps are now **optional** since the one-command installation script handles all prerequisites automatically. This section is kept for reference and for users who prefer manual installation or troubleshooting.
 
 ### 1. Install Command Line Tools
 
@@ -223,12 +227,7 @@ make install
 When setting up a new Mac with this repo already configured:
 
 ```bash
-# Install prerequisites
-xcode-select --install
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install stow
-
-# Install dotfiles
+# Install dotfiles (prerequisites are automatically installed)
 curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
 
 # Install desktop components (fonts, GUI apps, settings)
@@ -239,3 +238,5 @@ make install-desktop
 ```
 
 That's it! Your terminal environment will be set up and ready to go.
+
+The installation script now handles all prerequisites automatically, so you don't need to manually install Command Line Tools, Homebrew, or Stow beforehand.
