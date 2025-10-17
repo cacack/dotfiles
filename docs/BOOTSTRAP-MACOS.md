@@ -7,11 +7,12 @@ This guide walks through setting up this dotfiles repository on a fresh Mac from
 Before installing the dotfiles, you need these tools:
 
 1. **Command Line Tools** - Provides `git`, `make`, `curl`, and other essential tools
-2. **GNU Stow** - Symlink farm manager for managing dotfiles
+2. **Homebrew** - macOS package manager
+3. **GNU Stow** - Symlink farm manager for managing dotfiles
 
 ## Quick Start (One Command)
 
-If you already have Command Line Tools, Homebrew, and Stow installed:
+If you already have the prerequisites installed, run:
 
 ```bash
 curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
@@ -37,38 +38,24 @@ make --version
 
 ### 2. Install Homebrew
 
-You have two options:
+Run the official Homebrew installer:
 
-**Option A: Using the official Homebrew installer (recommended)**
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-**Option B: Using the dotfiles Makefile (installs to `~/.local/opt/homebrew`)**
-```bash
-# Clone the repo first
-git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-make install-homebrew
-```
-
 **After installation, add Homebrew to your PATH:**
 
-For standard Homebrew (Apple Silicon):
+For Apple Silicon Macs:
 ```bash
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-For standard Homebrew (Intel):
+For Intel Macs:
 ```bash
 echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/usr/local/bin/brew shellenv)"
-```
-
-For dotfiles-installed Homebrew:
-```bash
-eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
 ```
 
 **Verify installation:**
@@ -206,6 +193,30 @@ eval "$(/usr/local/bin/brew shellenv)"      # Intel Mac
 3. **Customize settings**: Edit files in `.make.d/` and `configs/.zshrc.d/`
 4. **Set up work configs**: Create `~/.zshrc_work.d/` for work-specific settings
 5. **Update tools**: Run `make update` periodically
+
+## Advanced Options
+
+### Alternative Homebrew Installation
+
+If you prefer a local Homebrew installation in `~/.local/opt/homebrew` instead of the system-wide installation, you can use the dotfiles' Makefile target **after cloning the repository**:
+
+```bash
+# Clone the repository first
+git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+
+# Install Homebrew locally
+make install-homebrew
+
+# Add to PATH
+eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
+
+# Install Stow and continue with setup
+brew install stow
+make install
+```
+
+**Note:** This approach installs Homebrew in your home directory rather than `/opt/homebrew` or `/usr/local`. It's useful for systems where you don't have admin access or prefer to keep everything self-contained. However, you cannot use the one-line quick install script with this method since you need to clone the repo first.
 
 ## Starting Fresh on a New Mac
 
