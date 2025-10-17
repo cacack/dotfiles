@@ -12,7 +12,7 @@ My various configuration files to make ${HOME} home.
 
 **macOS:**
 - Command Line Tools: `xcode-select --install`
-- Homebrew: [Install Homebrew](https://brew.sh) or use `make install-homebrew`
+- Homebrew: [Install Homebrew](https://brew.sh)
 - GNU Stow: `brew install stow`
 
 **Ubuntu/Debian:**
