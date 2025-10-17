@@ -8,16 +8,18 @@ This is a personal dotfiles repository that manages terminal and application con
 
 ## Prerequisites & Bootstrap
 
-**Required for installation:**
-- **macOS**: Command Line Tools (`xcode-select --install`), Homebrew, GNU Stow (`brew install stow`)
-- **Linux**: `zsh`, `make`, `stow` (installed via package manager)
-
-**📖 Detailed setup guide:** See [`docs/BOOTSTRAP-MACOS.md`](docs/BOOTSTRAP-MACOS.md) for step-by-step macOS installation instructions.
-
-**Quick install (with prereqs met):**
+**One-command installation (no manual prerequisites needed):**
 ```bash
 curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
 ```
+
+The installation script automatically detects your platform (macOS/Linux) and installs all prerequisites:
+- **macOS**: Command Line Tools, Homebrew, GNU Stow
+- **Linux**: zsh, make, stow, git (via your distro's package manager)
+
+Supported Linux distributions: Ubuntu/Debian, Fedora/RHEL/CentOS, Arch, openSUSE
+
+**📖 Detailed setup guide:** See [`docs/BOOTSTRAP-MACOS.md`](docs/BOOTSTRAP-MACOS.md) for step-by-step instructions and troubleshooting.
 
 ## Architecture
 
@@ -212,3 +214,4 @@ make setup-macos-settings
 - Installation script available at: `https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh`
 - Font management handled through dedicated make targets
 - Supports switching between HTTPS and SSH remotes via `make switch-repo-url`
+- Remember to update the README.md as needed.
