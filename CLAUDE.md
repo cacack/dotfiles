@@ -6,21 +6,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a personal dotfiles repository that manages terminal and application configurations across Linux and macOS systems. The setup uses GNU Stow for symlink management and a modular Makefile system for installation and configuration.
 
+## Prerequisites & Bootstrap
+
+**Required for installation:**
+- **macOS**: Command Line Tools (`xcode-select --install`), Homebrew, GNU Stow (`brew install stow`)
+- **Linux**: `zsh`, `make`, `stow` (installed via package manager)
+
+**📖 Detailed setup guide:** See [`docs/BOOTSTRAP-MACOS.md`](docs/BOOTSTRAP-MACOS.md) for step-by-step macOS installation instructions.
+
+**Quick install (with prereqs met):**
+```bash
+curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
+```
+
 ## Architecture
 
 The repository is organized into three main components:
 
 - **configs/**: Contains dotfiles that get symlinked to `$HOME` via GNU Stow
-- **packages/**: Contains application-specific configurations (kitty, neovim, etc.) that get stowed to specific locations
-- **.make.d/**: Modular Makefile components for installing and managing different tools and applications
+- **packages/**: Contains application-specific configurations (kitty, neovim, alacritty, ghostty, beets, xdg) that get stowed to specific locations
+- **.make.d/**: Modular Makefile components for installing and managing different tools and applications (~30 modules)
 
 ## Key Commands
 
 ### Installation
 ```bash
 make install              # Basic installation: creates directories, installs neovim, runs stow
-make install-desktop      # Desktop installation: adds fonts and kitty setup
-make install-apps         # Application installation: homebrew, yarn, kitty, tmux, neovim, aws-cli
+make install-desktop      # Desktop installation: adds fonts, kitty, GUI apps, and system settings
+make install-apps         # Application installation: homebrew, yarn, kitty, tmux, neovim, aws-cli, glab, direnv
 ```
 
 ### Configuration Management
@@ -37,6 +50,10 @@ make setup-neovim        # Install neovim and configure
 make setup-kitty         # Install kitty terminal and configure
 make setup-tmux          # Setup tmux configuration
 make install-homebrew    # Install Homebrew (macOS)
+make setup-direnv        # Setup direnv configuration
+make setup-gui-apps      # Install GUI applications (cross-platform)
+make setup-macos-settings # Apply macOS system preferences and dock configuration
+make setup-linux-settings # Apply Linux desktop settings (GNOME/XFCE)
 ```
 
 ### Updates and Maintenance
@@ -44,6 +61,7 @@ make install-homebrew    # Install Homebrew (macOS)
 make update              # Update all configured tools
 make clean               # Clean temporary files
 make clean-all           # Deep clean including configurations
+make zinit-update        # Update zinit and all zinit-managed plugins
 ```
 
 ### Testing
@@ -53,6 +71,11 @@ make test-syntax         # Shell script syntax validation
 make test-config         # Configuration loading tests
 make test-stow           # Stow operation validation
 make test-help           # Show testing help
+```
+
+### Debugging
+```bash
+make print-<VAR>         # Print any Makefile variable value (e.g., make print-OS)
 ```
 
 ## Configuration Structure
@@ -73,15 +96,19 @@ Configuration scripts in `.zshrc.d/` include:
 - `20_history.zsh`: History configuration
 - `20_ssh_agent.zsh`: SSH agent management
 - `30_bitwarden.zsh`: Bitwarden CLI integration
+- `30_direnv.zsh`: Direnv initialization
+- `30_kiro.zsh`: Kiro-specific configuration
+- `30_tmux.zsh`: Tmux-specific configuration
 
 ### Tools Managed
-- **Terminal**: kitty, tmux
+- **Terminal**: kitty, ghostty, alacritty, tmux
 - **Shell**: zsh with zinit plugin manager, starship prompt
 - **Editor**: neovim with custom configuration
-- **CLI Tools**: eza, fzf, git configurations
-- **Development**: Node.js, Python, Go, Ruby environments
-- **Cloud**: AWS CLI, OpenStack CLI
+- **CLI Tools**: eza, lsd, fzf, ripgrep, fd, zoxide
+- **Development**: Node.js (via nvm), Python (via pyenv), Go, Ruby, uv (Python package manager)
+- **Cloud**: AWS CLI, OpenStack CLI, s5cmd, glab
 - **Security**: Bitwarden CLI, SSH agent
+- **Other**: direnv, vagrant, beets
 
 ## Platform Support
 
@@ -92,8 +119,13 @@ The Makefile system detects the platform and adjusts installation accordingly:
 Variables are set based on platform detection:
 - `OS`: linux or darwin
 - `ARCH`: x86_64 or arm64
+- `ARCH_ALT`: amd64 or arm64 (alternative naming)
+- `DISTRO`: Distribution name on Linux, 'none' on macOS
 - `USER_FONT_DIR`: Platform-specific font directory
 - `SHELL`: Platform-specific shell path
+- `BASE_DIR`: `~/.local` (base for bin, share, etc.)
+- `BIN_DIR`: `~/.local/bin`
+- `SHARE_DIR`: `~/.local/share`
 
 ## Development Patterns
 
@@ -123,10 +155,56 @@ When modifying this repository:
 
 **Current Tools Managed via Zinit:**
 - `fzf` - fuzzy finder
-- `eza` - modern ls replacement
+- `lsd` - modern ls replacement
 - `starship` - cross-shell prompt
 - `zoxide` - smart cd replacement
-- Various zsh plugins (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab)
+- `ripgrep` - fast grep alternative
+- `fd` - fast find alternative
+- Various zsh plugins (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, git, aws)
+
+## Makefile Module System
+
+The `.make.d/` directory contains modular Makefile components that are automatically included. Key modules:
+- `00_make.mk`: Core variable definitions and OS detection
+- `10_base.mk`: Basic directory setup and stow operations
+- `testing.mk`: Test suite targets
+- `gui-apps.mk`: GUI application installation (cross-platform)
+- `macos-settings.mk`: macOS system preferences and dock configuration
+- `linux-settings.mk`: Linux desktop settings (GNOME/XFCE)
+- Tool-specific modules (e.g., `neovim.mk`, `kitty.mk`, `golang.mk`, `python.mk`)
+
+Each module can contribute to these special variables:
+- `UPDATE`: Add targets to the `make update` command
+- `CLEAN`: Add targets to the `make clean` command
+- `CLEAN_ALL`: Add targets to the `make clean-all` command
+- `SETUP`: Add targets to setup operations
+
+## GUI Applications & Desktop Settings
+
+The repository now includes Infrastructure-as-Code for GUI applications and desktop environment settings:
+
+**📖 Complete guide:** See [`docs/GUI-APPS-AND-SETTINGS.md`](docs/GUI-APPS-AND-SETTINGS.md) for detailed instructions.
+
+**Key capabilities:**
+- Install GUI apps via Homebrew Cask (macOS) or apt/Flatpak (Linux)
+- Configure macOS dock position, size, auto-hide, and items
+- Apply macOS system preferences (Finder, keyboard, trackpad, screenshots, etc.)
+- Configure GNOME/XFCE desktop settings on Linux
+- Discovery tools to capture current settings and generate config
+
+**Example workflow:**
+```bash
+# Discover current setup
+make discover-macos-apps
+make capture-macos-settings
+
+# Edit .make.d/gui-apps.mk and .make.d/macos-settings.mk
+# Uncomment and customize desired apps and settings
+
+# Apply configuration
+make setup-gui-apps
+make setup-macos-settings
+```
 
 ## Repository Maintenance
 

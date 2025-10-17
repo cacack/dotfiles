@@ -16,7 +16,7 @@ include .make.d/*.mk
 install: base-dirs setup-neovim stow
 
 .PHONY: install-desktop
-install-desktop: desktop-dirs fonts setup-kitty
+install-desktop: desktop-dirs fonts setup-kitty setup-gui-apps setup-macos-settings setup-linux-settings
 
 .PHONY: install-apps
 install-apps: install-app-deps setup-kitty setup-tmux setup-neovim install-aws-cli install-glab setup-direnv
