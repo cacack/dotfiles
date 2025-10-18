@@ -29,7 +29,15 @@
 
 # macOS apps via Homebrew Cask
 MACOS_GUI_APPS := \
-	bitwarden
+	bitwarden \
+	discord \
+	firefox \
+	gimp \
+	google-chrome \
+	libreoffice \
+	slack \
+	spotify \
+	vlc
 
 # TODO: Add more macOS cask apps above (space-separated, use \ for line continuation)
 
@@ -41,8 +49,15 @@ LINUX_GUI_APPS := \
 
 # Linux apps via Flatpak (cross-distro, sandboxed)
 FLATPAK_APPS := \
-	# org.mozilla.firefox \
-	# com.bitwarden.desktop
+	com.bitwarden.desktop \
+	com.discordapp.Discord \
+	com.google.Chrome \
+	com.slack.Slack \
+	com.spotify.Client \
+	org.gimp.GIMP \
+	org.libreoffice.LibreOffice \
+	org.mozilla.firefox \
+	org.videolan.VLC
 
 # TODO: Add more Flatpak apps above (use flatpak app IDs)
 
