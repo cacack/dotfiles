@@ -19,9 +19,11 @@ zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
 source <(fzf --zsh)
 
-# eza: installed via Homebrew (see .make.d/eza.mk)
+# eza: modern ls replacement (default)
+zinit ice from"gh-r" as"program" bpick"*$(uname -m)*$(uname -s | tr '[:upper:]' '[:lower:]')*.tar.gz" pick"bin/eza"
+zinit light eza-community/eza
 
-# lsd: zinit on all platforms
+# lsd: backup ls replacement
 zinit ice from"gh-r" as"program" mv"lsd-*/lsd -> lsd"
 zinit light lsd-rs/lsd
 
