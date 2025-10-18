@@ -107,7 +107,7 @@ Configuration scripts in `.zshrc.d/` include:
 - **Terminal**: kitty, ghostty, alacritty, tmux
 - **Shell**: zsh with zinit plugin manager, starship prompt
 - **Editor**: neovim with custom configuration
-- **CLI Tools**: eza, lsd, fzf, ripgrep, fd, zoxide
+- **CLI Tools**: eza (default), fzf, lsd (backup), ripgrep, fd, zoxide
 - **Development**: Node.js (via nvm), Python (via pyenv), Go, Ruby, uv (Python package manager)
 - **Cloud**: AWS CLI, OpenStack CLI, s5cmd, glab
 - **Security**: Bitwarden CLI, SSH agent
@@ -158,12 +158,13 @@ When modifying this repository:
 - Tools requiring specific version pinning
 
 **Current Tools Managed via Zinit:**
+- `eza` - modern ls replacement (default)
+- `fd` - fast find alternative
 - `fzf` - fuzzy finder
-- `lsd` - modern ls replacement
+- `lsd` - modern ls replacement (backup)
+- `ripgrep` - fast grep alternative
 - `starship` - cross-shell prompt
 - `zoxide` - smart cd replacement
-- `ripgrep` - fast grep alternative
-- `fd` - fast find alternative
 - Various zsh plugins (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, git, aws)
 
 ## Makefile Module System
@@ -254,3 +255,4 @@ make setup-macos-settings
 - Supports switching between HTTPS and SSH remotes via `make switch-repo-url`
 - Remember to update the README.md as needed.
 - Sort _ALL_ lists unless it breaks functionality.
+- Commit changes to maintain atomic changes.
