@@ -2,82 +2,88 @@
 # Fonts
 # kitty +list-fonts
 NERD_FONT_VERSION := 3.4.0
+NERD_FONT_BASE_URL := https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)
 
 .PHONY: fonts
-fonts: nerdfont-3270 nerdfont-firacode nerdfont-hack font-jetbrains nerdfont-meslo nerdfont-mononoki nerdfont-proggy
+fonts: nerdfont-3270 nerdfont-firacode nerdfont-hack nerdfont-jetbrains nerdfont-meslo nerdfont-mononoki nerdfont-proggy
 
 .PHONY: nerdfont-symbols-only
 nerdfont-symbols-only:
-	@echo
-	curl -fLo nerdfont-symbols.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/NerdFontsSymbolsOnly.zip
-	unzip nerdfont-symbols.zip '*.ttf'
-	mv *.ttf $(USER_FONT_DIR)/
-	rm -f nerdfont-symbols.zip
+	@echo "Installing Nerd Fonts Symbols Only..."
+	@curl -fLo /tmp/nerdfont-symbols.zip $(NERD_FONT_BASE_URL)/NerdFontsSymbolsOnly.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/nerdfont-symbols.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/nerdfont-symbols.zip
+	@echo "✓ Nerd Fonts Symbols installed"
 
 .PHONY: font-jetbrains
 font-jetbrains:
-	@echo
-	curl -fLo jetbrains.zip https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
-	unzip jetbrains.zip 'fonts/ttf/*.ttf'
-	mv fonts/ttf/*.ttf $(USER_FONT_DIR)/
-	rm -rf fonts
-	rm -rf jetbrains.zip
+	@echo "Installing JetBrains Mono (official)..."
+	@curl -fLo /tmp/jetbrains.zip https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
+	@unzip -o -q /tmp/jetbrains.zip 'fonts/ttf/*.ttf' -d /tmp/jetbrains
+	@mv /tmp/jetbrains/fonts/ttf/*.ttf $(USER_FONT_DIR)/
+	@rm -rf /tmp/jetbrains /tmp/jetbrains.zip
+	@echo "✓ JetBrains Mono installed"
 
 .PHONY: nerdfont-3270
 nerdfont-3270:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Regular/complete/IBM%203270%20Nerd%20Font%20Complete.otf
-	curl -fLo "$(USER_FONT_DIR)/3270 Medium Nerd Font Complete Mono.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Regular/complete/IBM%203270%20Nerd%20Font%20Complete%20Mono.otf
+	@echo "Installing IBM 3270 Nerd Font..."
+	@curl -fLo /tmp/3270.zip $(NERD_FONT_BASE_URL)/3270.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/3270.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/3270.zip
+	@echo "✓ IBM 3270 Nerd Font installed"
 
 .PHONY: nerdfont-firacode
 nerdfont-firacode:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/Fira Code Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf
-	curl -fLo "$(USER_FONT_DIR)/Fira Code Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
+	@echo "Installing Fira Code Nerd Font..."
+	@curl -fLo /tmp/firacode.zip $(NERD_FONT_BASE_URL)/FiraCode.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/firacode.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/firacode.zip
+	@echo "✓ Fira Code Nerd Font installed"
 
 .PHONY: nerdfont-hack
 nerdfont-hack:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/Hack Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf
-	curl -fLo "$(USER_FONT_DIR)/Hack Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/Hack Bold Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Bold/complete/Hack%20Bold%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/Hack Italic Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Italic/complete/Hack%20Italic%20Nerd%20Font%20Complete%20Mono.ttf
+	@echo "Installing Hack Nerd Font..."
+	@curl -fLo /tmp/hack.zip $(NERD_FONT_BASE_URL)/Hack.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/hack.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/hack.zip
+	@echo "✓ Hack Nerd Font installed"
 
 .PHONY: nerdfont-jetbrains
 nerdfont-jetbrains:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf
-	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Bold Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Bold/complete/JetBrains%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/JetBrains Mono Italic Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Italic/complete/JetBrains%20Mono%20Italic%20Nerd%20Font%20Complete%20Mono.ttf
+	@echo "Installing JetBrains Mono Nerd Font..."
+	@curl -fLo /tmp/jetbrainsmono.zip $(NERD_FONT_BASE_URL)/JetBrainsMono.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/jetbrainsmono.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/jetbrainsmono.zip
+	@echo "✓ JetBrains Mono Nerd Font installed"
 
 .PHONY: nerdfont-meslo
 nerdfont-meslo:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Regular/complete/Meslo%20LG%20M%20DZ%20Regular%20Nerd%20Font%20Complete.ttf
-	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Regular/complete/Meslo%20LG%20M%20DZ%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Bold Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Bold/complete/Meslo%20LG%20M%20DZ%20Bold%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Bold Italic Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Bold-Italic/complete/Meslo%20LG%20M%20DZ%20Bold%20Italic%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/Meslo LG M DZ Italic Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M-DZ/Italic/complete/Meslo%20LG%20M%20DZ%20Italic%20Nerd%20Font%20Complete%20Mono.ttf
+	@echo "Installing Meslo Nerd Font..."
+	@curl -fLo /tmp/meslo.zip $(NERD_FONT_BASE_URL)/Meslo.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/meslo.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/meslo.zip
+	@echo "✓ Meslo Nerd Font installed"
 
 .PHONY: nerdfont-mplus
 nerdfont-mplus:
-	@echo
-	curl -fLo font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v$(NERD_FONT_VERSION)/MPlus.zip
-	unzip -o -d ${USER_FONT_DIR} font.zip
-	rm font.zip
+	@echo "Installing M+ Nerd Font..."
+	@curl -fLo /tmp/mplus.zip $(NERD_FONT_BASE_URL)/MPlus.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/mplus.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/mplus.zip
+	@echo "✓ M+ Nerd Font installed"
 
 .PHONY: nerdfont-mononoki
 nerdfont-mononoki:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/mononoki Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Regular/complete/mononoki-Regular%20Nerd%20Font%20Complete.ttf
-	curl -fLo "$(USER_FONT_DIR)/mononoki Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Regular/complete/mononoki-Regular%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/mononoki Bold Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Bold/complete/mononoki%20Bold%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/mononoki Bold Italic Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Bold-Italic/complete/mononoki%20Bold%20Italic%20Nerd%20Font%20Complete%20Mono.ttf
-	curl -fLo "$(USER_FONT_DIR)/mononoki Italic Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Mononoki/Italic/complete/mononoki%20Italic%20Nerd%20Font%20Complete%20Mono.ttf
+	@echo "Installing Mononoki Nerd Font..."
+	@curl -fLo /tmp/mononoki.zip $(NERD_FONT_BASE_URL)/Mononoki.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/mononoki.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/mononoki.zip
+	@echo "✓ Mononoki Nerd Font installed"
 
 .PHONY: nerdfont-proggy
 nerdfont-proggy:
-	@echo
-	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete.ttf
-	curl -fLo "$(USER_FONT_DIR)/ProggyClean Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/ProggyClean/Regular/complete/ProggyCleanTT%20Nerd%20Font%20Complete%20Mono.ttf
+	@echo "Installing ProggyClean Nerd Font..."
+	@curl -fLo /tmp/proggyclean.zip $(NERD_FONT_BASE_URL)/ProggyClean.zip
+	@unzip -o -q -d $(USER_FONT_DIR) /tmp/proggyclean.zip '*.ttf' '*.otf' 2>/dev/null || true
+	@rm -f /tmp/proggyclean.zip
+	@echo "✓ ProggyClean Nerd Font installed"
