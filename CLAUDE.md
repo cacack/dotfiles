@@ -48,6 +48,7 @@ make clean-stow          # Same as `stow --delete configs`
 
 ### Individual Tools
 ```bash
+make setup-autofs        # Setup autofs for NAS mounting
 make setup-neovim        # Install neovim and configure
 make setup-kitty         # Install kitty terminal and configure
 make setup-tmux          # Setup tmux configuration
@@ -110,6 +111,7 @@ Configuration scripts in `.zshrc.d/` include:
 - **Development**: Node.js (via nvm), Python (via pyenv), Go, Ruby, uv (Python package manager)
 - **Cloud**: AWS CLI, OpenStack CLI, s5cmd, glab
 - **Security**: Bitwarden CLI, SSH agent
+- **Storage**: autofs for automatic NAS mounting (Samba/SMB shares)
 - **Other**: direnv, vagrant, beets
 
 ## Platform Support
@@ -169,10 +171,11 @@ When modifying this repository:
 The `.make.d/` directory contains modular Makefile components that are automatically included. Key modules:
 - `00_make.mk`: Core variable definitions and OS detection
 - `10_base.mk`: Basic directory setup and stow operations
-- `testing.mk`: Test suite targets
+- `autofs.mk`: Automatic NAS mounting via autofs (cross-platform)
 - `gui-apps.mk`: GUI application installation (cross-platform)
-- `macos-settings.mk`: macOS system preferences and dock configuration
 - `linux-settings.mk`: Linux desktop settings (GNOME/XFCE)
+- `macos-settings.mk`: macOS system preferences and dock configuration
+- `testing.mk`: Test suite targets
 - Tool-specific modules (e.g., `neovim.mk`, `kitty.mk`, `golang.mk`, `python.mk`)
 
 Each module can contribute to these special variables:
@@ -180,6 +183,41 @@ Each module can contribute to these special variables:
 - `CLEAN`: Add targets to the `make clean` command
 - `CLEAN_ALL`: Add targets to the `make clean-all` command
 - `SETUP`: Add targets to setup operations
+
+## Autofs NAS Mounting
+
+The repository includes autofs configuration for automatic mounting of Samba/SMB NAS shares:
+
+**📖 Complete guide:** See [`docs/AUTOFS-NAS-SETUP.md`](docs/AUTOFS-NAS-SETUP.md) for detailed instructions.
+
+**Key capabilities:**
+- Automatic mounting of NAS shares to `~/shared/` on access
+- Cross-platform support (macOS and Linux)
+- Interactive setup prompts for NAS hostname (not hardcoded in repo)
+- Credential management (Keychain for macOS, credential file for Linux)
+- Auto-unmount after inactivity to save resources
+- Configuration stored locally in `~/.autofs_config` (not committed)
+
+**Quick start:**
+```bash
+# Interactive setup: prompts for NAS hostname, share name, and credentials
+make setup-autofs-credentials
+
+# Install and configure autofs (requires sudo)
+make setup-autofs
+
+# Test the mount
+make test-autofs
+```
+
+**Available commands:**
+```bash
+make setup-autofs              # Complete autofs setup for NAS mounting
+make setup-autofs-credentials  # Configure Samba credentials
+make test-autofs               # Test the NAS mount
+make status-autofs             # Show autofs configuration status
+make help-autofs               # Show autofs help message
+```
 
 ## GUI Applications & Desktop Settings
 
@@ -215,3 +253,4 @@ make setup-macos-settings
 - Font management handled through dedicated make targets
 - Supports switching between HTTPS and SSH remotes via `make switch-repo-url`
 - Remember to update the README.md as needed.
+- Sort _ALL_ lists unless it breaks functionality.
