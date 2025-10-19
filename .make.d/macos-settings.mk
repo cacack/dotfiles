@@ -76,8 +76,9 @@ ifeq ($(OS),darwin)
 	# Show indicator lights for open applications
 	defaults write com.apple.dock show-process-indicators -bool true
 
-	# Disable "Show Desktop" click behavior (prevents desktop from shrinking/border effect)
-	defaults write com.apple.WindowManager HideDesktop -bool false
+	# Disable "Show Desktop" on wallpaper click (prevents desktop from shrinking/border effect)
+	# Set to false to disable, or remove line to keep default "Always on Wallpaper Click"
+	defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
 	# TODO: Customize these additional settings as desired
 	# Minimize windows into application icon
