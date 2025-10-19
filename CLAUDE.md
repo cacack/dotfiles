@@ -48,15 +48,16 @@ make clean-stow          # Same as `stow --delete configs`
 
 ### Individual Tools
 ```bash
-make setup-autofs        # Setup autofs for NAS mounting
-make setup-neovim        # Install neovim and configure
-make setup-kitty         # Install kitty terminal and configure
-make setup-tmux          # Setup tmux configuration
 make install-homebrew    # Install Homebrew (macOS)
+make setup-autofs        # Setup autofs for NAS mounting
 make setup-direnv        # Setup direnv configuration
+make setup-eza           # Install eza modern ls replacement (macOS via Homebrew)
 make setup-gui-apps      # Install GUI applications (cross-platform)
-make setup-macos-settings # Apply macOS system preferences and dock configuration
+make setup-kitty         # Install kitty terminal and configure
 make setup-linux-settings # Apply Linux desktop settings (GNOME/XFCE)
+make setup-macos-settings # Apply macOS system preferences and dock configuration
+make setup-neovim        # Install neovim and configure
+make setup-tmux          # Setup tmux configuration
 ```
 
 ### Updates and Maintenance
@@ -107,7 +108,7 @@ Configuration scripts in `.zshrc.d/` include:
 - **Terminal**: kitty, ghostty, alacritty, tmux
 - **Shell**: zsh with zinit plugin manager, starship prompt
 - **Editor**: neovim with custom configuration
-- **CLI Tools**: eza (default), fzf, lsd (backup), ripgrep, fd, zoxide
+- **CLI Tools**: eza (default - zinit on Linux, Homebrew on macOS), fd, fzf, lsd (backup), ripgrep, zoxide
 - **Development**: Node.js (via nvm), Python (via pyenv), Go, Ruby, uv (Python package manager)
 - **Cloud**: AWS CLI, OpenStack CLI, s5cmd, glab
 - **Security**: Bitwarden CLI, SSH agent
@@ -158,7 +159,7 @@ When modifying this repository:
 - Tools requiring specific version pinning
 
 **Current Tools Managed via Zinit:**
-- `eza` - modern ls replacement (default)
+- `eza` - modern ls replacement (default) - **Linux only** (macOS uses Homebrew via `make setup-eza`)
 - `fd` - fast find alternative
 - `fzf` - fuzzy finder
 - `lsd` - modern ls replacement (backup)

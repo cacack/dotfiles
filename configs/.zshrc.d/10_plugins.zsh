@@ -20,8 +20,12 @@ zinit light junegunn/fzf
 source <(fzf --zsh)
 
 # eza: modern ls replacement (default)
-zinit ice from"gh-r" as"program" bpick"*$(uname -m)*$(uname -s | tr '[:upper:]' '[:lower:]')*.tar.gz" pick"bin/eza"
-zinit light eza-community/eza
+# Note: On macOS, eza is installed via Homebrew (make setup-eza)
+# GitHub releases only provide Linux binaries
+if [[ "$(uname -s)" == "Linux" ]]; then
+  zinit ice from"gh-r" as"program" bpick"*$(uname -m)*linux*.tar.gz" pick"bin/eza"
+  zinit light eza-community/eza
+fi
 
 # lsd: backup ls replacement
 zinit ice from"gh-r" as"program" mv"lsd-*/lsd -> lsd"
