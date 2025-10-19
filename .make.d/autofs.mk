@@ -15,11 +15,13 @@ MOUNT_POINT := $(HOME)/shared
 ifneq (,$(wildcard $(AUTOFS_CONFIG)))
 NAS_HOST := $(shell grep '^nas_host=' $(AUTOFS_CONFIG) 2>/dev/null | cut -d'=' -f2)
 NAS_SHARE_NAME := $(shell grep '^nas_share=' $(AUTOFS_CONFIG) 2>/dev/null | cut -d'=' -f2)
+NAS_USERNAME := $(shell grep '^nas_username=' $(AUTOFS_CONFIG) 2>/dev/null | cut -d'=' -f2)
 endif
 
 # Default values if not configured
 NAS_HOST ?= not-configured
-NAS_SHARE_NAME ?= share
+NAS_SHARE_NAME ?= shared
+NAS_USERNAME ?= $(USER)
 NAS_SHARE := //$(NAS_HOST)/$(NAS_SHARE_NAME)
 
 # Platform-specific autofs setup
@@ -27,12 +29,16 @@ ifeq ($(UNAME), Darwin)
 AUTOFS_CONF := /etc/auto_master
 AUTOFS_MAP := /etc/auto_nas
 AUTOFS_SERVICE := com.apple.autofsd
+# macOS uses /System/Volumes/Data for user data (read-only root filesystem)
+ACTUAL_MOUNT_POINT := /System/Volumes/Data/shared-$(NAS_USERNAME)
 endif
 
 ifeq ($(UNAME), Linux)
 AUTOFS_CONF := /etc/auto.master
 AUTOFS_MAP := /etc/auto.nas
 AUTOFS_SERVICE := autofs
+# Linux can mount directly to home directory
+ACTUAL_MOUNT_POINT := $(MOUNT_POINT)
 endif
 
 .PHONY: setup-autofs
@@ -108,21 +114,41 @@ endif
 create-autofs-mountpoint:
 	@echo
 	@echo "--> Creating mount point directory"
+ifeq ($(UNAME), Darwin)
+	@# On macOS, create the actual mount point and symlink from ~/shared
+	@sudo mkdir -p $(ACTUAL_MOUNT_POINT)
+	@if [ ! -L $(MOUNT_POINT) ]; then \
+		ln -s $(ACTUAL_MOUNT_POINT) $(MOUNT_POINT); \
+		echo "Created symlink: $(MOUNT_POINT) -> $(ACTUAL_MOUNT_POINT)"; \
+	else \
+		echo "Symlink already exists: $(MOUNT_POINT)"; \
+	fi
+endif
+ifeq ($(UNAME), Linux)
 	@mkdir -p $(MOUNT_POINT)
+endif
 
 .PHONY: configure-autofs-maps
 configure-autofs-maps:
 	@echo
 	@echo "--> Configuring autofs maps"
 ifeq ($(UNAME), Darwin)
-	@# macOS autofs configuration
+	@# macOS autofs configuration - uses direct mounts and keychain for credentials
 	@echo "Creating macOS autofs map at $(AUTOFS_MAP)"
-	@echo "shared -fstype=smbfs,soft ://$(NAS_HOST)/share" | sudo tee $(AUTOFS_MAP) > /dev/null
-	@if ! grep -q "$(MOUNT_POINT)" $(AUTOFS_CONF); then \
-		echo "$(MOUNT_POINT) auto_nas" | sudo tee -a $(AUTOFS_CONF) > /dev/null; \
-		echo "Added entry to $(AUTOFS_CONF)"; \
+	@# Get password from keychain for the NAS host
+	@NAS_PASSWORD=$$(security find-generic-password -s "$(NAS_HOST)" -a "$(NAS_USERNAME)" -w 2>/dev/null); \
+	if [ -z "$$NAS_PASSWORD" ]; then \
+		echo "ERROR: No password found in Keychain for host $(NAS_HOST), account $(NAS_USERNAME)"; \
+		echo "Please run 'make setup-autofs-credentials' first to store credentials in Keychain."; \
+		exit 1; \
+	fi; \
+	echo "$(ACTUAL_MOUNT_POINT) -fstype=smbfs,soft,noowners,nosuid,rw ://$(NAS_USERNAME):$$NAS_PASSWORD@$(NAS_HOST)/$(NAS_SHARE_NAME)" | sudo tee $(AUTOFS_MAP) > /dev/null
+	@# Update auto_master to use direct mount syntax (/-) instead of directory
+	@if ! grep -q "^/-.*auto_nas" $(AUTOFS_CONF); then \
+		echo "/-	auto_nas	-nosuid" | sudo tee -a $(AUTOFS_CONF) > /dev/null; \
+		echo "Added direct mount entry to $(AUTOFS_CONF)"; \
 	else \
-		echo "Entry already exists in $(AUTOFS_CONF)"; \
+		echo "Direct mount entry already exists in $(AUTOFS_CONF)"; \
 	fi
 endif
 ifeq ($(UNAME), Linux)
@@ -179,14 +205,18 @@ setup-autofs-credentials:
 		echo "ERROR: NAS hostname cannot be empty"; \
 		exit 1; \
 	fi; \
-	printf "Enter the share name [share]: "; \
+	printf "Enter the share name [shared]: "; \
 	read nas_share; \
-	nas_share=$${nas_share:-share}; \
+	nas_share=$${nas_share:-shared}; \
+	printf "Enter your NAS username [$(USER)]: "; \
+	read nas_username; \
+	nas_username=$${nas_username:-$(USER)}; \
 	echo "# Autofs NAS Configuration" > $(AUTOFS_CONFIG); \
 	echo "# This file is NOT committed to the repository" >> $(AUTOFS_CONFIG); \
 	echo "# Generated on $$(date)" >> $(AUTOFS_CONFIG); \
 	echo "nas_host=$$nas_host" >> $(AUTOFS_CONFIG); \
 	echo "nas_share=$$nas_share" >> $(AUTOFS_CONFIG); \
+	echo "nas_username=$$nas_username" >> $(AUTOFS_CONFIG); \
 	chmod 600 $(AUTOFS_CONFIG); \
 	echo; \
 	echo "Configuration saved to $(AUTOFS_CONFIG)"; \
@@ -198,16 +228,22 @@ ifeq ($(UNAME), Darwin)
 	@echo "macOS uses Keychain for Samba credentials."
 	@echo
 	@NAS_HOST_VAL=$$(grep '^nas_host=' $(AUTOFS_CONFIG) | cut -d'=' -f2); \
-	echo "To store credentials for $$NAS_HOST_VAL:"; \
-	echo "1. Open Keychain Access (Applications > Utilities > Keychain Access)"; \
-	echo "2. Click '+' to create a new Password item"; \
-	echo "3. Set:"; \
-	echo "   - Name: $$NAS_HOST_VAL"; \
-	echo "   - Account: your_username"; \
-	echo "   - Password: your_password"; \
-	echo "4. Click 'Add'"; \
+	NAS_USER_VAL=$$(grep '^nas_username=' $(AUTOFS_CONFIG) | cut -d'=' -f2); \
+	echo "Storing credentials for $$NAS_HOST_VAL (account: $$NAS_USER_VAL) in Keychain..."; \
 	echo; \
-	echo "Alternatively, you'll be prompted for credentials when first accessing the share."
+	printf "Enter password for $$NAS_USER_VAL@$$NAS_HOST_VAL: "; \
+	stty -echo; \
+	read NAS_PASSWORD; \
+	stty echo; \
+	echo; \
+	if [ -n "$$NAS_PASSWORD" ]; then \
+		security delete-generic-password -s "$$NAS_HOST_VAL" -a "$$NAS_USER_VAL" 2>/dev/null || true; \
+		security add-generic-password -s "$$NAS_HOST_VAL" -a "$$NAS_USER_VAL" -w "$$NAS_PASSWORD" -T /usr/sbin/automount -T /usr/bin/security; \
+		echo "Credentials stored in Keychain for $$NAS_HOST_VAL (account: $$NAS_USER_VAL)"; \
+	else \
+		echo "ERROR: Password cannot be empty"; \
+		exit 1; \
+	fi
 endif
 ifeq ($(UNAME), Linux)
 	@echo "Linux Credential Setup:"
@@ -289,30 +325,49 @@ status-autofs:
 	@echo
 	@echo "NAS Host: $(NAS_HOST)"
 	@echo "NAS Share: $(NAS_SHARE)"
-	@echo "Mount Point: $(MOUNT_POINT)"
+	@echo "NAS Username: $(NAS_USERNAME)"
+	@echo "User Mount Point: $(MOUNT_POINT)"
+ifeq ($(UNAME), Darwin)
+	@echo "Actual Mount Point: $(ACTUAL_MOUNT_POINT)"
+endif
 	@echo
 	@echo "Autofs Configuration:"
 	@if [ -f $(AUTOFS_CONF) ]; then \
 		echo "Master config: $(AUTOFS_CONF)"; \
-		grep -E "$(subst /,\/,$(MOUNT_POINT))|auto_nas" $(AUTOFS_CONF) 2>/dev/null || echo "  No entries found"; \
+		grep -E "auto_nas" $(AUTOFS_CONF) 2>/dev/null || echo "  No entries found"; \
 	else \
 		echo "Master config not found: $(AUTOFS_CONF)"; \
 	fi
 	@echo
 	@if [ -f $(AUTOFS_MAP) ]; then \
 		echo "Map config: $(AUTOFS_MAP)"; \
-		sudo cat $(AUTOFS_MAP); \
+		sudo cat $(AUTOFS_MAP) | sed 's/:[^:]*@/:****@/g'; \
 	else \
 		echo "Map config not found: $(AUTOFS_MAP)"; \
 	fi
 	@echo
 	@echo "Mount Point Status:"
+ifeq ($(UNAME), Darwin)
+	@if [ -L $(MOUNT_POINT) ]; then \
+		echo "  Symlink exists: $(MOUNT_POINT) -> $$(readlink $(MOUNT_POINT))"; \
+	else \
+		echo "  Symlink does not exist: $(MOUNT_POINT)"; \
+	fi
+	@if [ -d $(ACTUAL_MOUNT_POINT) ]; then \
+		echo "  Actual mount point exists: $(ACTUAL_MOUNT_POINT)"; \
+		mount | grep "$(ACTUAL_MOUNT_POINT)" || echo "  Not currently mounted"; \
+	else \
+		echo "  Actual mount point does not exist: $(ACTUAL_MOUNT_POINT)"; \
+	fi
+endif
+ifeq ($(UNAME), Linux)
 	@if [ -d $(MOUNT_POINT) ]; then \
 		echo "  Directory exists: $(MOUNT_POINT)"; \
 		mount | grep "$(MOUNT_POINT)" || echo "  Not currently mounted"; \
 	else \
 		echo "  Directory does not exist: $(MOUNT_POINT)"; \
 	fi
+endif
 	@echo
 ifeq ($(UNAME), Darwin)
 	@echo "Autofs Service Status:"
@@ -344,7 +399,11 @@ help-autofs:
 	@echo "  3. make test-autofs               # Test the mount"
 	@echo
 	@echo "Configuration:"
-	@echo "  NAS Host:    $(NAS_HOST)"
-	@echo "  Mount Point: $(MOUNT_POINT)"
-	@echo "  Share:       $(NAS_SHARE)"
+	@echo "  NAS Host:         $(NAS_HOST)"
+	@echo "  NAS Username:     $(NAS_USERNAME)"
+	@echo "  User Mount Point: $(MOUNT_POINT)"
+ifeq ($(UNAME), Darwin)
+	@echo "  Actual Mount:     $(ACTUAL_MOUNT_POINT)"
+endif
+	@echo "  Share:            $(NAS_SHARE)"
 	@echo
