@@ -52,28 +52,35 @@ endif
 .PHONY: apply-macos-dock
 apply-macos-dock:
 ifeq ($(OS),darwin)
+	# Ensure dockutil is installed first
+	$(MAKE) install-dockutil
+
 	@echo
 	# Configuring macOS Dock
 
-	# TODO: Customize dock position (left, bottom, right)
+	# Dock position (left, bottom, right)
 	defaults write com.apple.dock orientation -string "left"
 
-	# TODO: Customize dock auto-hide behavior
+	# Auto-hide the dock
 	defaults write com.apple.dock autohide -bool true
 
-	# TODO: Customize dock icon size (16-128, suggested: 32-48 for small)
-	defaults write com.apple.dock tilesize -int 36
+	# Dock icon size (16-128)
+	defaults write com.apple.dock tilesize -int 30
 
-	# TODO: Minimize windows into application icon
-	defaults write com.apple.dock minimize-to-application -bool true
+	# Disable magnification
+	defaults write com.apple.dock magnification -bool false
 
-	# TODO: Show indicator lights for open applications
-	defaults write com.apple.dock show-process-indicators -bool true
-
-	# TODO: Don't show recent applications
+	# Don't show recent applications (only show actively running apps)
 	defaults write com.apple.dock show-recents -bool false
 
-	# TODO: Faster dock animation
+	# Show indicator lights for open applications
+	defaults write com.apple.dock show-process-indicators -bool true
+
+	# TODO: Customize these additional settings as desired
+	# Minimize windows into application icon
+	# defaults write com.apple.dock minimize-to-application -bool true
+
+	# Faster dock animation (reduces auto-hide delay)
 	# defaults write com.apple.dock autohide-delay -float 0
 	# defaults write com.apple.dock autohide-time-modifier -float 0.5
 
@@ -90,13 +97,11 @@ ifeq ($(OS),darwin)
 	@echo
 	# Configuring Dock items
 
-	# TODO: Review and customize dock items below
-	# Uncomment and modify as needed
+	# Remove all persistent apps (keeps only Finder and Trash, which are always present)
+	# Running applications will appear automatically and disappear when closed
+	dockutil --remove all --no-restart || true
 
-	# Remove all existing items (careful!)
-	# dockutil --remove all --no-restart
-
-	# Add applications (order matters!)
+	# Note: To add persistent apps to the Dock, uncomment and modify below:
 	# dockutil --add /Applications/Kitty.app --no-restart
 	# dockutil --add /Applications/Firefox.app --no-restart
 	# dockutil --add /Applications/Bitwarden.app --no-restart
@@ -105,8 +110,7 @@ ifeq ($(OS),darwin)
 	# Add folders
 	# dockutil --add ~/Downloads --view grid --display folder --no-restart
 
-	@echo "Dock items configuration is commented out by default."
-	@echo "Edit .make.d/macos-settings.mk to customize your dock items."
+	@echo "Dock configured to show only Finder, Trash, and actively running applications."
 endif
 
 ################################################################################
