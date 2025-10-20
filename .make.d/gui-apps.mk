@@ -35,6 +35,7 @@ MACOS_GUI_APPS := \
 	gimp \
 	google-chrome \
 	libreoffice \
+	nextcloud \
 	slack \
 	spotify \
 	vlc
@@ -52,6 +53,7 @@ FLATPAK_APPS := \
 	com.bitwarden.desktop \
 	com.discordapp.Discord \
 	com.google.Chrome \
+	com.nextcloud.desktopclient.nextcloud \
 	com.slack.Slack \
 	com.spotify.Client \
 	org.gimp.GIMP \
