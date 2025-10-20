@@ -57,6 +57,16 @@ bw() {
     esac
 }
 
+# Mock kiro command
+kiro() {
+    if [[ "\$1" == "--locate-shell-integration-path" ]]; then
+        # Create a temporary empty shell integration file
+        local integration_file="\$HOME/.kiro_integration.zsh"
+        touch "\$integration_file"
+        echo "\$integration_file"
+    fi
+}
+
 # Mock zinit to prevent actual plugin loading
 zinit() {
     case "\$1" in
@@ -130,6 +140,15 @@ bw() {
             return 0
             ;;
     esac
+}
+
+# Mock kiro command
+kiro() {
+    if [[ "\$1" == "--locate-shell-integration-path" ]]; then
+        local integration_file="\$HOME/.kiro_integration.zsh"
+        touch "\$integration_file"
+        echo "\$integration_file"
+    fi
 }
 
 # Mock zinit for testing (prevent actual plugin loading)
