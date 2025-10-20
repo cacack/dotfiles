@@ -46,6 +46,9 @@ main() {
         "test-config-loading.sh:ZSH Configuration Loading"
         "test-stow-operations.sh:Stow Operation Validation"
         "test-makefile-functionality.sh:Makefile Functionality"
+        "test-shellcheck.sh:ShellCheck Linting"
+        "test-security-scan.sh:Security Scanning"
+        "test-file-permissions.sh:File Permissions"
     )
 
     # Run each test suite
@@ -105,6 +108,9 @@ case "${1:-}" in
         echo "  - ZSH configuration loading tests"
         echo "  - Stow operation validation"
         echo "  - Makefile functionality tests"
+        echo "  - ShellCheck linting"
+        echo "  - Security scanning (secrets/credentials)"
+        echo "  - File permissions validation"
         echo
         echo "Options:"
         echo "  --help, -h    Show this help message"
