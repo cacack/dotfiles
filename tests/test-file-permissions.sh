@@ -48,20 +48,20 @@ test_executable_scripts() {
     return $failures
 }
 
-test_non_executable_configs() {
-    echo "Checking that config files are NOT executable:"
+test_config_permissions() {
+    echo "Checking config file permissions:"
 
     local failures=0
 
-    # ZSH config files should NOT be executable (they are sourced, not executed)
+    # ZSH config files SHOULD be executable (executable bit used to enable/disable configs)
+    # This allows easy toggling with chmod +x/-x without renaming or moving files
     for file in "$DOTFILES_DIR"/configs/.zshrc.d/*.zsh; do
         if [[ -f "$file" ]]; then
             local filename=$(basename "$file")
             if [[ -x "$file" ]]; then
-                echo -e "  ${RED}✗${NC} $filename is executable (should NOT be)"
-                failures=$((failures + 1))
+                echo -e "  ${GREEN}✓${NC} $filename is executable (enabled)"
             else
-                echo -e "  ${GREEN}✓${NC} $filename is not executable"
+                echo -e "  ${YELLOW}ℹ${NC} $filename is not executable (disabled)"
             fi
         fi
     done
@@ -154,8 +154,14 @@ fix_permissions() {
     echo "  # Make scripts executable:"
     echo "  chmod +x install.sh tests/*.sh"
     echo
-    echo "  # Remove executable bit from configs:"
-    echo "  chmod -x configs/.zshrc.d/*.zsh configs/.zshrc .make.d/*.mk"
+    echo "  # Enable ZSH configs (if needed):"
+    echo "  chmod +x configs/.zshrc.d/*.zsh"
+    echo
+    echo "  # Remove executable bit from other configs:"
+    echo "  chmod -x configs/.zshrc .make.d/*.mk"
+    echo
+    echo "  # To disable specific ZSH configs:"
+    echo "  chmod -x configs/.zshrc.d/<config-name>.zsh"
     echo
 }
 
@@ -167,8 +173,8 @@ main() {
     # Test 1: Scripts should be executable
     test_executable_scripts || total_failures=$((total_failures + $?))
 
-    # Test 2: Config files should NOT be executable
-    test_non_executable_configs || total_failures=$((total_failures + $?))
+    # Test 2: Check config file permissions (informational)
+    test_config_permissions || total_failures=$((total_failures + $?))
 
     # Test 3: Directories should be accessible
     test_directory_permissions || total_failures=$((total_failures + $?))
