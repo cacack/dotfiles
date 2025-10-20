@@ -48,6 +48,15 @@ endif
 # useful for debugging, just run make print-<VAR>
 print-%  : ; @echo $* = $($*)
 
+# list all available make targets in alphabetical order
+.PHONY: list-targets
+list-targets:
+	@$(MAKE) -pRrq -f $(firstword $(MAKEFILE_LIST)) : 2>/dev/null | \
+		awk -v RS= -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | \
+		sort -u | \
+		grep -E -v '^(Makefile|[^[:alnum:]])' | \
+		grep -v '^$$'
+
 
 ################################################################################
 SETUP += setup-bin-dir
