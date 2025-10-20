@@ -1,7 +1,7 @@
 NVM_VERSION := 0.40.3
 
 setup-node: setup-nodejs
-setup-nodejs: install-yarn install-nvm
+setup-nodejs: install-nvm install-nodejs
 
 install-yarn:
 	@echo
@@ -26,8 +26,10 @@ ifeq ($(OS),linux)
 endif
 ifeq ($(OS),darwin)
 	brew install nvm
+	mkdir -p ${HOME}/.nvm
 endif
 
+.PHONY: install-nodejs
 install-nodejs:
 	@echo
 	# Installing NodeJS
@@ -35,5 +37,5 @@ ifeq ($(OS),linux)
 	export NVM_DIR=${HOME}/.nvm; [ -s ${NVM_DIR}/nvm.sh ] && source ${NVM_DIR}/nvm.sh; nvm install --lts; corepack enable; corepack prepare yarn@stable --activate
 endif
 ifeq ($(OS),darwin)
-	brew install node@16 yarn npm
+	export NVM_DIR=${HOME}/.nvm; [ -s /opt/homebrew/opt/nvm/nvm.sh ] && source /opt/homebrew/opt/nvm/nvm.sh; nvm install --lts
 endif
