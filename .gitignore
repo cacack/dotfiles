@@ -1,1 +1,24 @@
+# Neovim plugin lock file
 packages/neovim/.config/nvim/lazy-lock.json
+
+# Sensitive configuration files
+.smbcredentials
+.autofs_config
+.env
+.env.*
+*.pem
+*.key
+
+# SSH keys
+.ssh/id_rsa
+.ssh/id_ed25519
+.ssh/id_dsa
+.ssh/id_ecdsa
+
+# AWS credentials
+.aws/credentials
+
+# Secrets and passwords
+*_secret
+*_password
+*_token
