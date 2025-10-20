@@ -16,12 +16,12 @@ setup-ccstatusline-config:
 setup-claude-code-settings:
 	@echo
 	@echo "Setting up Claude Code settings..."
-	@mkdir -p ~/.config/claude-code
-	@echo '{\n  "statusLine": {\n    "command": "npx ccstatusline"\n  }\n}' > ~/.config/claude-code/settings.json
-	@echo "Claude Code settings created at ~/.config/claude-code/settings.json"
+	@mkdir -p ~/.claude
+	@echo '{\n  "statusLine": {\n    "command": "npx ccstatusline"\n  }\n}' > ~/.claude/settings.json
+	@echo "Claude Code settings created at ~/.claude/settings.json"
 
 .PHONY: clean-ccstatusline-config
 clean-ccstatusline-config:
 	cd packages && stow --target=${HOME} --delete ccstatusline 2>/dev/null || true
 	rm -rf ~/.config/ccstatusline
-	rm -f ~/.config/claude-code/settings.json
+	rm -f ~/.claude/settings.json
