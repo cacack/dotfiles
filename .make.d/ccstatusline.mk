@@ -17,7 +17,7 @@ setup-claude-code-settings:
 	@echo
 	@echo "Setting up Claude Code settings..."
 	@mkdir -p ~/.claude
-	@echo '{\n  "statusLine": {\n    "command": "npx ccstatusline"\n  }\n}' > ~/.claude/settings.json
+	@echo '{\n  "statusLine": {\n    "type": "command",\n    "command": "npx ccstatusline"\n  }\n}' > ~/.claude/settings.json
 	@echo "Claude Code settings created at ~/.claude/settings.json"
 
 .PHONY: clean-ccstatusline-config
