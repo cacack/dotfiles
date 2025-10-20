@@ -12,6 +12,9 @@ include .make.d/*.mk
 
 ################################################################################
 
+# Make help the default target when running 'make' without arguments
+.DEFAULT_GOAL := help
+
 .PHONY: help
 help:
 	@echo "Dotfiles Management System"
