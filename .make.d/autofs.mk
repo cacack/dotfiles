@@ -29,8 +29,8 @@ ifeq ($(UNAME), Darwin)
 AUTOFS_CONF := /etc/auto_master
 AUTOFS_MAP := /etc/auto_nas
 AUTOFS_SERVICE := com.apple.autofsd
-# macOS can mount directly to home directory (same as Linux)
-ACTUAL_MOUNT_POINT := $(MOUNT_POINT)
+# macOS uses /System/Volumes/Data for user data (more stable after sleep/wake)
+ACTUAL_MOUNT_POINT := /System/Volumes/Data/shared-$(NAS_USERNAME)
 endif
 
 ifeq ($(UNAME), Linux)
@@ -115,9 +115,14 @@ create-autofs-mountpoint:
 	@echo
 	@echo "--> Creating mount point directory"
 ifeq ($(UNAME), Darwin)
-	@# On macOS, just ensure the directory exists (autofs will manage it)
-	@mkdir -p $(MOUNT_POINT)
-	@echo "Created mount point directory: $(MOUNT_POINT)"
+	@# On macOS, create the actual mount point and symlink from ~/shared
+	@sudo mkdir -p $(ACTUAL_MOUNT_POINT)
+	@if [ ! -L $(MOUNT_POINT) ]; then \
+		ln -s $(ACTUAL_MOUNT_POINT) $(MOUNT_POINT); \
+		echo "Created symlink: $(MOUNT_POINT) -> $(ACTUAL_MOUNT_POINT)"; \
+	else \
+		echo "Symlink already exists: $(MOUNT_POINT)"; \
+	fi
 endif
 ifeq ($(UNAME), Linux)
 	@mkdir -p $(MOUNT_POINT)
@@ -137,7 +142,7 @@ ifeq ($(UNAME), Darwin)
 		echo "Please run 'make setup-autofs-credentials' first to store credentials in Keychain."; \
 		exit 1; \
 	fi; \
-	echo "$(MOUNT_POINT) -fstype=smbfs,soft,noowners,nosuid,rw ://$(NAS_USERNAME):$$NAS_PASSWORD@$(NAS_HOST)/$(NAS_SHARE_NAME)" | sudo tee $(AUTOFS_MAP) > /dev/null
+	echo "$(ACTUAL_MOUNT_POINT) -fstype=smbfs,soft,noowners,nosuid,rw ://$(NAS_USERNAME):$$NAS_PASSWORD@$(NAS_HOST)/$(NAS_SHARE_NAME)" | sudo tee $(AUTOFS_MAP) > /dev/null
 	@# Ensure only direct mount entry exists in auto_master (remove any old indirect mounts)
 	@sudo sed -i.bak '/\/Users\/.*\/shared.*auto_nas/d' $(AUTOFS_CONF) 2>/dev/null || true
 	@if ! grep -q "^/-[[:space:]].*auto_nas" $(AUTOFS_CONF); then \
@@ -322,7 +327,10 @@ status-autofs:
 	@echo "NAS Host: $(NAS_HOST)"
 	@echo "NAS Share: $(NAS_SHARE)"
 	@echo "NAS Username: $(NAS_USERNAME)"
-	@echo "Mount Point: $(MOUNT_POINT)"
+	@echo "User Mount Point: $(MOUNT_POINT)"
+ifeq ($(UNAME), Darwin)
+	@echo "Actual Mount Point: $(ACTUAL_MOUNT_POINT)"
+endif
 	@echo
 	@echo "Autofs Configuration:"
 	@if [ -f $(AUTOFS_CONF) ]; then \
@@ -341,11 +349,16 @@ status-autofs:
 	@echo
 	@echo "Mount Point Status:"
 ifeq ($(UNAME), Darwin)
-	@if [ -d $(MOUNT_POINT) ]; then \
-		echo "  Directory exists: $(MOUNT_POINT)"; \
-		mount | grep "$(MOUNT_POINT)" || echo "  Not currently mounted"; \
+	@if [ -L $(MOUNT_POINT) ]; then \
+		echo "  Symlink exists: $(MOUNT_POINT) -> $$(readlink $(MOUNT_POINT))"; \
 	else \
-		echo "  Directory does not exist: $(MOUNT_POINT)"; \
+		echo "  Symlink does not exist: $(MOUNT_POINT)"; \
+	fi
+	@if [ -d $(ACTUAL_MOUNT_POINT) ]; then \
+		echo "  Actual mount point exists: $(ACTUAL_MOUNT_POINT)"; \
+		mount | grep "$(ACTUAL_MOUNT_POINT)" || echo "  Not currently mounted"; \
+	else \
+		echo "  Actual mount point does not exist: $(ACTUAL_MOUNT_POINT)"; \
 	fi
 endif
 ifeq ($(UNAME), Linux)
@@ -389,6 +402,9 @@ help-autofs:
 	@echo "Configuration:"
 	@echo "  NAS Host:         $(NAS_HOST)"
 	@echo "  NAS Username:     $(NAS_USERNAME)"
-	@echo "  Mount Point:      $(MOUNT_POINT)"
+	@echo "  User Mount Point: $(MOUNT_POINT)"
+ifeq ($(UNAME), Darwin)
+	@echo "  Actual Mount:     $(ACTUAL_MOUNT_POINT)"
+endif
 	@echo "  Share:            $(NAS_SHARE)"
 	@echo
