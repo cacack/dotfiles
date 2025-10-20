@@ -1,4 +1,4 @@
-.PHONY: test test-syntax test-config test-stow test-help
+.PHONY: test test-syntax test-config test-stow test-makefile test-help
 
 # Main test target - runs all tests
 test:
@@ -22,13 +22,19 @@ test-stow:
 	@echo "Running stow operation validation tests..."
 	@./tests/test-stow-operations.sh
 
+test-makefile:
+	@echo
+	@echo "Running Makefile functionality tests..."
+	@./tests/test-makefile-functionality.sh
+
 # Test help
 test-help:
 	@echo
 	@echo "Available testing targets:"
-	@echo "  test        - Run all tests"
-	@echo "  test-syntax - Run shell script syntax validation"
-	@echo "  test-config - Run configuration loading tests"
-	@echo "  test-stow   - Run stow operation validation"
-	@echo "  test-help   - Show this help message"
+	@echo "  test          - Run all tests"
+	@echo "  test-syntax   - Run shell script syntax validation"
+	@echo "  test-config   - Run configuration loading tests"
+	@echo "  test-stow     - Run stow operation validation"
+	@echo "  test-makefile - Run Makefile functionality tests"
+	@echo "  test-help     - Show this help message"
 	@echo

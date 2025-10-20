@@ -45,6 +45,7 @@ main() {
         "test-shell-syntax.sh:Shell Script Syntax Validation"
         "test-config-loading.sh:ZSH Configuration Loading"
         "test-stow-operations.sh:Stow Operation Validation"
+        "test-makefile-functionality.sh:Makefile Functionality"
     )
 
     # Run each test suite
@@ -103,6 +104,7 @@ case "${1:-}" in
         echo "  - Shell script syntax validation"
         echo "  - ZSH configuration loading tests"
         echo "  - Stow operation validation"
+        echo "  - Makefile functionality tests"
         echo
         echo "Options:"
         echo "  --help, -h    Show this help message"
