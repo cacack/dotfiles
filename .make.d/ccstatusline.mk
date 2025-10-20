@@ -1,23 +1,15 @@
-UPDATE += update-ccstatusline
 CLEAN_ALL += clean-ccstatusline-config
 
+# ccstatusline is used via npx (npx ccstatusline@latest)
+# No installation needed - npx downloads and runs the latest version on-demand
+
 .PHONY: setup-ccstatusline
-setup-ccstatusline: install-ccstatusline setup-ccstatusline-config
-
-.PHONY: install-ccstatusline
-install-ccstatusline:
-	@echo
-	@echo "Installing ccstatusline..."
-	npm install -g ccstatusline
-
-.PHONY: update-ccstatusline
-update-ccstatusline:
-	@echo
-	@echo "Updating ccstatusline..."
-	npm update -g ccstatusline
+setup-ccstatusline: setup-ccstatusline-config
 
 .PHONY: setup-ccstatusline-config
 setup-ccstatusline-config:
+	@echo
+	@echo "Setting up ccstatusline configuration..."
 	cd packages && stow --target=${HOME} ccstatusline
 
 .PHONY: clean-ccstatusline-config
