@@ -256,4 +256,27 @@ make setup-macos-settings
 - Supports switching between HTTPS and SSH remotes via `make switch-repo-url`
 - Remember to update the README.md as needed.
 - Sort _ALL_ lists unless it breaks functionality.
-- Commit changes to maintain atomic changes.
+
+### Commit Guidelines
+
+**IMPORTANT: Always commit changes in logical, atomic chunks.**
+
+Each commit should:
+- Represent a single logical change (one feature, one fix, one refactor)
+- Be independently understandable and reviewable
+- Include all related changes for that specific change (code + tests + docs)
+- Have a clear, descriptive commit message following conventional commit format
+
+**Examples of atomic commits:**
+- ✅ Add nextcloud to GUI apps list (one commit for both macOS and Linux)
+- ✅ Fix autofs mount point on macOS (all autofs.mk changes together)
+- ✅ Update CLAUDE.md with commit guidelines (documentation change)
+- ❌ Mixed changes: autofs fix + nextcloud addition + doc updates (too broad)
+
+**When making multiple unrelated changes:**
+1. Identify distinct logical changes in your modifications
+2. Commit each change separately with `git add <specific-files>` or `git add -p`
+3. Write clear commit messages for each
+4. Push all commits together when ready
+
+This practice maintains a clean git history and makes code review, debugging, and reverting changes much easier.
