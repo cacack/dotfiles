@@ -1,4 +1,4 @@
-.PHONY: test test-syntax test-config test-stow test-makefile test-help
+.PHONY: test test-syntax test-config test-stow test-makefile test-shellcheck test-security test-permissions test-help
 
 # Main test target - runs all tests
 test:
@@ -27,14 +27,32 @@ test-makefile:
 	@echo "Running Makefile functionality tests..."
 	@./tests/test-makefile-functionality.sh
 
+test-shellcheck:
+	@echo
+	@echo "Running ShellCheck linting..."
+	@./tests/test-shellcheck.sh
+
+test-security:
+	@echo
+	@echo "Running security scanning..."
+	@./tests/test-security-scan.sh
+
+test-permissions:
+	@echo
+	@echo "Running file permissions validation..."
+	@./tests/test-file-permissions.sh
+
 # Test help
 test-help:
 	@echo
 	@echo "Available testing targets:"
-	@echo "  test          - Run all tests"
-	@echo "  test-syntax   - Run shell script syntax validation"
-	@echo "  test-config   - Run configuration loading tests"
-	@echo "  test-stow     - Run stow operation validation"
-	@echo "  test-makefile - Run Makefile functionality tests"
-	@echo "  test-help     - Show this help message"
+	@echo "  test             - Run all tests"
+	@echo "  test-syntax      - Run shell script syntax validation"
+	@echo "  test-config      - Run configuration loading tests"
+	@echo "  test-stow        - Run stow operation validation"
+	@echo "  test-makefile    - Run Makefile functionality tests"
+	@echo "  test-shellcheck  - Run ShellCheck linting"
+	@echo "  test-security    - Run security scanning"
+	@echo "  test-permissions - Run file permissions validation"
+	@echo "  test-help        - Show this help message"
 	@echo
