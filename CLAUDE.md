@@ -147,6 +147,82 @@ Set automatically by `.make.d/00_make.mk`:
 - **Linux**: apt for packages, source/release installs, zinit for CLI tools
 - **macOS**: Homebrew for packages, Homebrew for many CLI tools (not all via zinit)
 
+### Security: SHA256 Checksum Verification
+
+**Two-layer verification system:**
+1. **Upstream binaries**: Checksums stored in individual .mk files as variables
+2. **Makefile modules**: Checksums in `.make.d/makefile-checksums.txt` to verify .mk files themselves
+
+**Location:** `.make.d/00_make.mk` (verification functions)
+**Helper:** `scripts/update-checksums.sh`
+
+#### Verifying Downloaded Files
+
+**Store checksums in the .mk file:**
+```makefile
+TOOL_VERSION := 1.2.3
+
+# SHA256 checksums from https://example.com/releases/v1.2.3/checksums.txt
+TOOL_CHECKSUM_LINUX_AMD64 := abc123...
+TOOL_CHECKSUM_MACOS_ARM64 := def456...
+TOOL_CHECKSUM_MACOS_AMD64 := 789ghi...
+
+# Set platform-specific checksum
+ifeq ($(UNAME), Darwin)
+ifeq ($(ARCH_ALT), arm64)
+TOOL_CHECKSUM := $(TOOL_CHECKSUM_MACOS_ARM64)
+else
+TOOL_CHECKSUM := $(TOOL_CHECKSUM_MACOS_AMD64)
+endif
+else
+TOOL_CHECKSUM := $(TOOL_CHECKSUM_LINUX_AMD64)
+endif
+```
+
+**Use in download target:**
+```makefile
+install-tool:
+	curl -Ls -o tool.tar.gz https://example.com/tool.tar.gz
+	$(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
+	tar -xzf tool.tar.gz
+```
+
+**Parameters:**
+- First: local filename (what you downloaded)
+- Second: expected checksum (use Makefile variable)
+
+**Optional checksums (warns but continues):**
+```makefile
+ifneq ($(TOOL_CHECKSUM),)
+	$(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
+else
+	@echo "WARNING: No checksum available, skipping verification"
+endif
+```
+
+#### Verifying Makefile Modules
+
+**Verify all .mk files haven't been tampered with:**
+```bash
+make verify-makefiles
+```
+
+**After modifying .mk files, regenerate checksums:**
+```bash
+cd .make.d
+shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt.new
+# Review changes
+diff makefile-checksums.txt makefile-checksums.txt.new
+# Apply
+mv makefile-checksums.txt.new makefile-checksums.txt
+```
+
+**Important:**
+- Checksum verification aborts on failure (removes downloaded file)
+- Always verify checksums from official sources (release pages, checksum files)
+- Update checksums when upgrading tool versions
+- Verify makefiles before major installations for security
+
 ## Feature-Specific Guidance
 
 ### Autofs NAS Mounting
