@@ -69,7 +69,7 @@ install: base-dirs setup-neovim stow
 install-desktop: desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
 
 .PHONY: install-apps
-install-apps: install-app-deps setup-eza setup-ghostty setup-tmux setup-neovim install-aws-cli install-glab setup-direnv setup-bitwarden
+install-apps: install-app-deps setup-eza setup-ghostty setup-tmux setup-neovim install-aws-cli setup-gh install-glab setup-direnv setup-bitwarden
 
 .PHONY: install-app-deps
 install-app-deps: install-homebrew install-yarn
