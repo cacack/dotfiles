@@ -44,6 +44,43 @@ SHELL := /bin/zsh
 USER_FONT_DIR := ${HOME}/Library/Fonts
 endif
 
+################################################################################
+# Checksum verification
+################################################################################
+CHECKSUMS_FILE := $(REPO_DIR)/.make.d/checksums.txt
+MAKEFILE_CHECKSUMS_FILE := $(REPO_DIR)/.make.d/makefile-checksums.txt
+
+# Determine which shasum command is available
+ifeq ($(UNAME), Darwin)
+SHASUM := shasum -a 256
+SHASUM_CHECK := shasum -a 256 -c
+else
+SHASUM := sha256sum
+SHASUM_CHECK := sha256sum -c
+endif
+
+# Usage: $(call verify_checksum,file,expected_checksum)
+# Example: $(call verify_checksum,downloaded.tar.gz,$(GH_CHECKSUM_MACOS_ARM64))
+define verify_checksum
+	@echo "Verifying checksum for $(1)..."
+	@EXPECTED="$(2)"; \
+	if [ -z "$$EXPECTED" ]; then \
+		echo "ERROR: No checksum provided for $(1)"; \
+		echo "Please provide a checksum as the second parameter."; \
+		exit 1; \
+	fi; \
+	ACTUAL=$$($(SHASUM) $(1) | awk '{print $$1}'); \
+	if [ "$$EXPECTED" != "$$ACTUAL" ]; then \
+		echo "ERROR: Checksum verification failed for $(1)"; \
+		echo "Expected: $$EXPECTED"; \
+		echo "Actual:   $$ACTUAL"; \
+		echo "File may be corrupted or tampered with."; \
+		rm -f $(1); \
+		exit 1; \
+	fi; \
+	echo "✓ Checksum verified for $(1)"
+endef
+
 
 # useful for debugging, just run make print-<VAR>
 print-%  : ; @echo $* = $($*)
@@ -81,3 +118,29 @@ print-repo-directory:
 .PHONY: print-repo-name
 print-repo-name:
 	@echo $(REPO_NAME)
+
+################################################################################
+# Makefile integrity verification
+################################################################################
+
+.PHONY: verify-makefiles
+verify-makefiles:
+	@echo
+	@echo "Verifying integrity of Makefile modules..."
+	@cd $(REPO_DIR)/.make.d && \
+	if $(SHASUM_CHECK) --quiet makefile-checksums.txt 2>/dev/null; then \
+		echo "✓ All Makefile modules verified successfully"; \
+	else \
+		echo "ERROR: Makefile verification failed!"; \
+		echo "One or more .mk files have been modified or corrupted."; \
+		echo ""; \
+		echo "To see which files changed:"; \
+		echo "  cd .make.d && $(SHASUM_CHECK) makefile-checksums.txt"; \
+		echo ""; \
+		echo "If changes are intentional, regenerate checksums:"; \
+		echo "  cd .make.d && shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt.new"; \
+		echo "  # Review changes, then:"; \
+		echo "  mv makefile-checksums.txt.new makefile-checksums.txt"; \
+		exit 1; \
+	fi
+	@echo

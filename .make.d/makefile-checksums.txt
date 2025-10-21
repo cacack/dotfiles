@@ -1,0 +1,53 @@
+# SHA256 Checksums for Makefile Modules
+#
+# This file contains SHA256 checksums for all .mk files in the .make.d/ directory.
+# These checksums verify the integrity of the Makefile modules themselves to prevent
+# tampering or accidental corruption.
+#
+# Format: <checksum>  <filename>
+#
+# To regenerate this file after making changes to .mk files:
+#   cd .make.d && shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt.new
+#   # Review the changes, then:
+#   mv makefile-checksums.txt.new makefile-checksums.txt
+#
+# To verify all makefiles:
+#   make verify-makefiles
+#
+# Note: This file itself is not checksummed (would create circular dependency)
+
+986ccadffbac9903c808f5617492aaec0c2b7cb283164063aa4d56d134c318ba  00_make.mk
+f183cbd3b6317feb28b6567c529c833536cf9049985ad7e9ba21e89e08ec6d74  10_base.mk
+dbfd5fbf5997bba4aa017c448799dbbc1ba9de8ae03fa6585f2f8c186443054e  alacritty.mk
+bef036887165995cd7133f816099345bd2cc1e9db94d7264c234037881f4b406  autofs.mk
+305f35d3617894324f733f09a2234845f5d516041cec47219f23e1c82a038d80  aws-cli.mk
+5fcc25a48cbf0d3924c0008ce37246e544e7414c3ebf54a5e483a4b1e3fc37f1  bitwarden.mk
+d41a282b06218679746a612f7dbb07dd1c162d6ef52103ec5649d7542ab5e408  ccstatusline.mk
+597c945942304335999422f7f4fc33af5d67d90ebce14b843e4f654d46f91698  claude-code.mk
+2f22962b5b9993e2c4ee650dcd78ed661fe89f9fccf6c69d96d238a8490940aa  claude-powerline-rust.mk
+26a90ebab0ab23022573a8013eea37141ed01d2a6ec0043aac1fae87a7a22594  desktop-scripts.mk
+5d80d2af4c14f951a0b608c680853288e5b439ff680f99366c1a20095baf73c4  development.mk
+756f81692a9805ee2aab231ff1a3bc967adac9e8ec80f477d51f0e55bf2042b7  direnv.mk
+2fdc3aa38d92a4928e811b552fcb2cf1b8a404214b540b2cf595bcd4640ff183  eza.mk
+c3c071d0802118a110ed25bd99070fb4255b8504c825a00126ea02e2e349adf1  fonts.mk
+2e47623e0302265d796fed6699b0c9f2402c93f65474f380861bdb211aeff827  gh.mk
+2720ec7361d202549e40087d70ca3639808b757c7be59bae327452ba4e8c62df  ghostty.mk
+1b6eaf718f05bb6757fe818cdb599e0566fcfa192e84964c3febf6b2c34773e1  git.mk
+f4298e16e098901d49d880699c6b8b51d22d44498adc3784b248090852a066dd  glab.mk
+22e4c611fe7f9abb325666d21044fdc59152fbaa870e5d076dc44d38e152b18a  golang.mk
+db0980b652ea37d22ff6893ebeb022df0bcab6df31124c594b34ee593d48284c  gui-apps.mk
+810d445751954768388b6bd69434fce8a752c9853b5237fac91a877a40c75001  homebrew.mk
+d720d461bacc2a3adceac5c5a10d8e815890d72af9c1b5ec22381f91f9e6847c  kitty.mk
+5b01db91d859be9e24496ad251caecc9dd863960822c30550af4c7c3a905a62e  linux-settings.mk
+b51e0ed8fee29e630eb1ed42133d46b4ae329c22e06f08da7e16b50f6bc2117a  lsd.mk
+f87dfffb443dfc3942a6f79e8ce92200e8c15eb824368a347575eb9a01a23024  macos-settings.mk
+9e35c54f5acf1ad1a5df7ceb3566411c9091d152c388dcae7f73c85c0d17a1c0  neovim.mk
+07aa9ccc48d2921543c526e228d88e048794fd5bd7b9f1152d8ed8a8711c82b0  nodejs.mk
+7cb23fbfdab24150d18dbc8d50822de2e29d77c12768c6566f6634510fe49e72  openstack-cli.mk
+7520c5c4075728922214c6c9cff4f4f9e858480be0caf8f1c84e222706338284  python.mk
+ca7aa7cb729d1257a08ee8d6fd27dd19cb10470e9ec5385b41a04a6f7cb175c3  ruby.mk
+4bc1b211ab247fcfa33c618b7e10901284c8bc37792547d525efd660b225cc94  s5cmd.mk
+2c377c320583e98f3ef32ba0099ede8aca9b78b64aa0eafddd749722c6d13cb0  testing.mk
+70e610c7e856f0154fccb75d999d6410f755250630900377084fdfbb0594beab  tmux.mk
+f4c3cfa36f848ad65e453881bf0c3efb2d9e7f0131aeddda0618c7888370f41b  uv.mk
+3f79baaac50871c0a21830606306311e1ef0cec8ad41be6f505482c07e2c051c  vagrant.mk
