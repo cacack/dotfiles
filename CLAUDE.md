@@ -237,6 +237,18 @@ mv makefile-checksums.txt.new makefile-checksums.txt
 - Interactive setup: prompts for NAS hostname/credentials (never hardcode)
 - Mounts to `~/shared/` on access
 
+### Bitwarden CLI Authentication
+
+**Location:** `.make.d/bitwarden.mk`, `configs/.zshrc.d/30_bitwarden.zsh`
+
+- Session-based authentication (like ssh-agent)
+- Prompt once per session, reuse across all terminal windows
+- Session token stored in `~/.ssh/bw.env` with TTL
+- Auto-syncs vault on unlock
+- Works cross-platform (no OS-specific dependencies)
+- Commands: `make bitwarden-status`, `make bitwarden-lock`
+- Self-hosted support: `bw config server https://your-server.com`
+
 ### GUI Applications & Desktop Settings
 
 **Location:** `.make.d/gui-apps.mk`, `.make.d/macos-settings.mk`, `.make.d/linux-settings.mk`
