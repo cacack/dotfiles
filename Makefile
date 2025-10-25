@@ -21,7 +21,7 @@ help:
 	@echo "=========================="
 	@echo ""
 	@echo "INSTALLATION COMMANDS:"
-	@echo "  make install              - Basic installation (directories, neovim, stow)"
+	@echo "  make install              - Basic installation (directories, neovim, AWS CLI, stow)"
 	@echo "  make install-desktop      - Desktop installation (fonts, GUI apps, settings)"
 	@echo "  make install-apps         - Application installation (homebrew, dev tools)"
 	@echo ""
@@ -63,7 +63,7 @@ help:
 	@echo "For a complete list of targets, run: make list-targets"
 
 .PHONY: install
-install: base-dirs setup-neovim stow
+install: base-dirs setup-neovim stow install-aws-cli
 
 .PHONY: install-desktop
 install-desktop: desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
