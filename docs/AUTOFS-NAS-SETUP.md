@@ -74,9 +74,13 @@ The share should mount automatically when accessed.
 |--------|-------------|
 | `make setup-autofs` | Complete autofs setup for NAS mounting |
 | `make setup-autofs-credentials` | Configure Samba credentials |
+| `make refresh-autofs-credentials` | Refresh credentials from Keychain (macOS, after password change) |
 | `make test-autofs` | Test the NAS mount |
 | `make status-autofs` | Show autofs configuration status |
 | `make restart-autofs-service` | Restart autofs service |
+| `make fix-autofs-ownership` | Fix ownership bug (macOS only) |
+| `make install-autofs-fix-agent` | Auto-fix ownership on wake (macOS only) |
+| `make uninstall-autofs-fix-agent` | Remove auto-fix agent (macOS only) |
 | `make remove-autofs` | Remove autofs NAS configuration |
 | `make help-autofs` | Show autofs help message |
 
@@ -132,6 +136,57 @@ This shows:
 - Autofs master and map file contents
 - Mount point status
 - Service status
+
+### macOS: Permission Denied After Sleep/Wake (Known Bug)
+
+**Problem:** On macOS, autofs mounts frequently become owned by root after sleep/wake cycles or network reconnections, causing "Permission denied" errors.
+
+This is a **known macOS autofs bug** that has existed since at least macOS Yosemite and persists through Sequoia.
+
+**Symptoms:**
+- `ls ~/shared` returns "Permission denied"
+- Mount shows as active: `mount | grep shared` shows the SMB mount
+- Accessing mount point fails even though it appears mounted
+
+**Quick Fix:**
+```bash
+make fix-autofs-ownership
+```
+
+Or manually:
+```bash
+sudo umount -f /System/Volumes/Data/shared-$USER && sudo automount -vc
+```
+
+This force unmounts the broken mount and refreshes autofs to remount with correct ownership.
+
+**Permanent Solution (Recommended):**
+Install a LaunchAgent that automatically detects and fixes the ownership issue:
+
+```bash
+make install-autofs-fix-agent
+```
+
+This installs a background service that:
+- Runs at login
+- Checks every 5 minutes if the mount is owned by root
+- Automatically fixes ownership when needed
+
+**View fix logs:**
+```bash
+tail -f /tmp/autofs-fix.log
+```
+
+**Uninstall auto-fix:**
+```bash
+make uninstall-autofs-fix-agent
+```
+
+**Technical Details:**
+- The bug causes mounts to be automounted by root instead of the user
+- Affects both sleep/wake cycles and network reconnections
+- No official Apple fix exists
+- Workaround: unmount and remount to restore correct ownership
 
 ### Mount Not Working
 
