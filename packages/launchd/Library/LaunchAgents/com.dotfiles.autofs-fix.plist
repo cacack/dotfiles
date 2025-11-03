@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.dotfiles.autofs-fix</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/chris/.dotfiles/scripts/fix-autofs-ownership.sh</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>300</integer>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/autofs-fix.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/autofs-fix-error.log</string>
+</dict>
+</plist>
