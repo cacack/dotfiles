@@ -143,8 +143,10 @@ ifeq ($(UNAME), Darwin)
 		exit 1; \
 	fi; \
 	echo "$(ACTUAL_MOUNT_POINT) -fstype=smbfs,soft,noowners,nosuid,rw ://$(NAS_USERNAME):$$NAS_PASSWORD@$(NAS_HOST)/$(NAS_SHARE_NAME)" | sudo tee $(AUTOFS_MAP) > /dev/null
-	@# Ensure only direct mount entry exists in auto_master (remove any old indirect mounts)
+	@# Ensure only direct mount entry exists in auto_master (remove any old entries)
 	@sudo sed -i.bak '/\/Users\/.*\/shared.*auto_nas/d' $(AUTOFS_CONF) 2>/dev/null || true
+	@sudo sed -i.bak '/^\/-.auto_nas/d' $(AUTOFS_CONF) 2>/dev/null || true
+	@sudo sed -i.bak '/autofs-nas-map/d' $(AUTOFS_CONF) 2>/dev/null || true
 	@if ! grep -q "^/-[[:space:]].*auto_nas" $(AUTOFS_CONF); then \
 		echo "/-	auto_nas	-nosuid" | sudo tee -a $(AUTOFS_CONF) > /dev/null; \
 		echo "Added direct mount entry to $(AUTOFS_CONF)"; \
@@ -347,6 +349,9 @@ endif
 		echo "Map config not found: $(AUTOFS_MAP)"; \
 	fi
 	@echo
+	@echo "Note: Credentials are read from Keychain and embedded in $(AUTOFS_MAP)"
+	@echo "      Run 'make refresh-autofs-credentials' after changing your NAS password"
+	@echo
 	@echo "Mount Point Status:"
 ifeq ($(UNAME), Darwin)
 	@if [ -L $(MOUNT_POINT) ]; then \
@@ -380,24 +385,107 @@ ifeq ($(UNAME), Linux)
 	@systemctl is-enabled $(AUTOFS_SERVICE) || echo "  Service not enabled"
 endif
 
+.PHONY: refresh-autofs-credentials
+refresh-autofs-credentials:
+	@echo
+	@echo "==> Refreshing autofs credentials from Keychain"
+	@echo
+	@echo "This will update the autofs map with current credentials from Keychain."
+	@echo "Use this after changing your NAS password in Keychain."
+	@echo
+	@$(MAKE) configure-autofs-maps
+	@$(MAKE) restart-autofs-service
+	@echo
+	@echo "Credentials refreshed! Test with: ls $(MOUNT_POINT)"
+
+.PHONY: fix-autofs-ownership
+fix-autofs-ownership:
+	@echo
+	@echo "==> Fixing autofs mount ownership (macOS bug workaround)"
+	@echo
+ifeq ($(UNAME), Darwin)
+	@echo "Running ownership fix script..."
+	@$(BASE_DIR)/../.dotfiles/scripts/fix-autofs-ownership.sh
+else
+	@echo "This target is only for macOS (ownership bug does not affect Linux)"
+endif
+
+.PHONY: install-autofs-fix-agent
+install-autofs-fix-agent:
+	@echo
+	@echo "==> Installing LaunchAgent for automatic autofs ownership fixes"
+	@echo
+ifeq ($(UNAME), Darwin)
+	@echo "This will install a LaunchAgent that:"
+	@echo "  - Runs at login"
+	@echo "  - Checks every 5 minutes if mount is owned by root"
+	@echo "  - Automatically fixes ownership when needed"
+	@echo
+	@echo "This works around the macOS autofs bug where mounts become"
+	@echo "owned by root after sleep/wake or network reconnection."
+	@echo
+	@if [ -f ~/Library/LaunchAgents/com.dotfiles.autofs-fix.plist ]; then \
+		echo "Unloading existing LaunchAgent..."; \
+		launchctl unload ~/Library/LaunchAgents/com.dotfiles.autofs-fix.plist 2>/dev/null || true; \
+	fi
+	@echo "Installing LaunchAgent..."
+	@mkdir -p ~/Library/LaunchAgents
+	@cp packages/launchd/Library/LaunchAgents/com.dotfiles.autofs-fix.plist ~/Library/LaunchAgents/
+	@launchctl load ~/Library/LaunchAgents/com.dotfiles.autofs-fix.plist
+	@echo
+	@echo "✓ LaunchAgent installed and loaded"
+	@echo
+	@echo "View logs:"
+	@echo "  tail -f /tmp/autofs-fix.log"
+	@echo
+	@echo "Uninstall:"
+	@echo "  make uninstall-autofs-fix-agent"
+else
+	@echo "This target is only for macOS (ownership bug does not affect Linux)"
+endif
+
+.PHONY: uninstall-autofs-fix-agent
+uninstall-autofs-fix-agent:
+	@echo
+	@echo "==> Uninstalling autofs fix LaunchAgent"
+	@echo
+ifeq ($(UNAME), Darwin)
+	@if [ -f ~/Library/LaunchAgents/com.dotfiles.autofs-fix.plist ]; then \
+		launchctl unload ~/Library/LaunchAgents/com.dotfiles.autofs-fix.plist 2>/dev/null || true; \
+		rm ~/Library/LaunchAgents/com.dotfiles.autofs-fix.plist; \
+		echo "✓ LaunchAgent uninstalled"; \
+	else \
+		echo "LaunchAgent not found"; \
+	fi
+else
+	@echo "This target is only for macOS"
+endif
+
 .PHONY: help-autofs
 help-autofs:
 	@echo
 	@echo "==> Autofs NAS Mounting Help"
 	@echo
 	@echo "Available targets:"
-	@echo "  make setup-autofs              - Complete autofs setup for NAS mounting"
-	@echo "  make setup-autofs-credentials  - Configure Samba credentials"
-	@echo "  make test-autofs               - Test the NAS mount"
-	@echo "  make status-autofs             - Show autofs configuration status"
-	@echo "  make restart-autofs-service    - Restart autofs service"
-	@echo "  make remove-autofs             - Remove autofs NAS configuration"
-	@echo "  make help-autofs               - Show this help message"
+	@echo "  make setup-autofs                  - Complete autofs setup for NAS mounting"
+	@echo "  make setup-autofs-credentials      - Configure Samba credentials"
+	@echo "  make refresh-autofs-credentials    - Refresh credentials from Keychain (after password change)"
+	@echo "  make test-autofs                   - Test the NAS mount"
+	@echo "  make status-autofs                 - Show autofs configuration status"
+	@echo "  make restart-autofs-service        - Restart autofs service"
+	@echo "  make remove-autofs                 - Remove autofs NAS configuration"
+	@echo "  make fix-autofs-ownership          - Fix ownership bug (macOS only)"
+	@echo "  make install-autofs-fix-agent      - Auto-fix ownership on wake (macOS only)"
+	@echo "  make uninstall-autofs-fix-agent    - Remove auto-fix agent (macOS only)"
+	@echo "  make help-autofs                   - Show this help message"
 	@echo
 	@echo "Quick start:"
 	@echo "  1. make setup-autofs-credentials  # Set up Samba credentials"
 	@echo "  2. make setup-autofs              # Configure autofs"
 	@echo "  3. make test-autofs               # Test the mount"
+ifeq ($(UNAME), Darwin)
+	@echo "  4. make install-autofs-fix-agent  # (macOS) Auto-fix ownership bug"
+endif
 	@echo
 	@echo "Configuration:"
 	@echo "  NAS Host:         $(NAS_HOST)"
@@ -405,6 +493,10 @@ help-autofs:
 	@echo "  User Mount Point: $(MOUNT_POINT)"
 ifeq ($(UNAME), Darwin)
 	@echo "  Actual Mount:     $(ACTUAL_MOUNT_POINT)"
+	@echo
+	@echo "macOS Known Issue:"
+	@echo "  After sleep/wake or network changes, mounts may become owned by root."
+	@echo "  Use 'make fix-autofs-ownership' or install the auto-fix agent."
 endif
 	@echo "  Share:            $(NAS_SHARE)"
 	@echo
