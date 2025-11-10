@@ -17,7 +17,10 @@ if (( $+commands[bw] )); then
     (umask 077; echo "export BW_SESSION=$(bw unlock --raw)" >"$bw_env")
     # shellcheck disable=SC1090
     . "$bw_env" 2>/dev/null
-    bw sync
+    # Try to sync with 5s timeout, fail gracefully if network is unavailable
+    if ! timeout 5s bw sync >/dev/null 2>&1; then
+      echo "Warning: Bitwarden sync failed or timed out. Working with cached vault." >&2
+    fi
   }
 
   if ! bw_is_unlocked; then
