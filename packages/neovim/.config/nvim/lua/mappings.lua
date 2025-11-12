@@ -19,4 +19,14 @@ map("n", "<leader>ss", "<cmd>Telescope spell_suggest<CR>", { desc = "spelling su
 -- file operations
 map("n", "<leader>rf", "<cmd>e<CR>", { desc = "reload current file" })
 
+-- formatting toggle
+map("n", "<leader>tf", function()
+  vim.b.disable_autoformat = not vim.b.disable_autoformat
+  if vim.b.disable_autoformat then
+    vim.notify("Format on save: DISABLED", vim.log.levels.WARN)
+  else
+    vim.notify("Format on save: ENABLED", vim.log.levels.INFO)
+  end
+end, { desc = "toggle format on save" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
