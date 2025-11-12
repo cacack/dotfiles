@@ -11,11 +11,17 @@ local options = {
 		terraform = { "terraform_fmt" },
   },
 
-  format_on_save = {
+  format_on_save = function(bufnr)
+    -- Check if formatting is disabled for this buffer
+    if vim.b[bufnr].disable_autoformat then
+      return nil
+    end
     -- These options will be passed to conform.format()
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
+    return {
+      timeout_ms = 500,
+      lsp_fallback = true,
+    }
+  end,
 }
 
 return options
