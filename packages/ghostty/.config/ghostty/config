@@ -2,3 +2,5 @@ font-family = JetBrains Mono
 font-size = 11
 # theme = Kanagawa Wave
 theme = One Half Dark
+
+keybind = shift+enter=text:\x1b\r
