@@ -17,48 +17,33 @@ The autofs configuration automatically mounts your NAS share at `~/shared/` when
 
 ## Quick Start
 
-### 1. Set Up Configuration and Credentials
+### 1. Complete Setup (Recommended)
 
-Run the interactive setup to configure your NAS connection:
+Run the all-in-one setup command:
 
 ```bash
-make setup-autofs-credentials
+make autofs
 ```
 
-This will:
-1. **Prompt for NAS details:**
+This interactive wizard will:
+1. **Prompt for NAS details** (if not already configured):
    - NAS hostname (e.g., `nas.example.com`)
-   - Share name (default: `share`)
-   - Configuration saved to `~/.autofs_config` (mode 600)
+   - Share name (default: `shared`)
+   - Username (default: your current username)
+   - Password (stored securely in Keychain on macOS, or `~/.smbcredentials` on Linux)
 
-2. **Platform-specific credential setup:**
+2. **Configure autofs system files** (requires sudo):
+   - Install autofs package (Linux only; macOS has autofs built-in)
+   - Create mount point at `~/shared/`
+   - Configure autofs maps
+   - Restart autofs service
 
-   **Linux:**
-   - Prompts for Samba username, password, and domain
-   - Saves credentials to `~/.smbcredentials` (mode 600)
+**Note:** Configuration is stored in `~/.autofs_config` (mode 600) which is NOT committed to the repository.
 
-   **macOS:**
-   - Displays instructions for storing credentials in Keychain
-   - Alternatively, macOS will prompt for credentials on first access
-
-**Note:** Both `~/.autofs_config` and `~/.smbcredentials` are local to your machine and NOT committed to the repository.
-
-### 2. Install and Configure Autofs
+### 2. Test the Mount
 
 ```bash
-make setup-autofs
-```
-
-This command will:
-1. Install autofs and required packages (Linux only; macOS has autofs built-in)
-2. Create the `~/shared/` mount point directory
-3. Configure autofs master and map files (requires sudo)
-4. Restart the autofs service
-
-### 3. Test the Mount
-
-```bash
-make test-autofs
+make autofs-test
 ```
 
 Or simply:
@@ -68,21 +53,29 @@ ls ~/shared/
 
 The share should mount automatically when accessed.
 
+### 3. Check Status
+
+```bash
+make autofs-status
+```
+
+Shows configuration, mount status, and service health with clear OK/ERROR indicators.
+
 ## Available Make Targets
 
 | Target | Description |
 |--------|-------------|
-| `make setup-autofs` | Complete autofs setup for NAS mounting |
-| `make setup-autofs-credentials` | Configure Samba credentials |
-| `make refresh-autofs-credentials` | Refresh credentials from Keychain (macOS, after password change) |
-| `make test-autofs` | Test the NAS mount |
-| `make status-autofs` | Show autofs configuration status |
-| `make restart-autofs-service` | Restart autofs service |
-| `make fix-autofs-ownership` | Fix ownership bug (macOS only) |
-| `make install-autofs-fix-agent` | Auto-fix ownership on wake (macOS only) |
-| `make uninstall-autofs-fix-agent` | Remove auto-fix agent (macOS only) |
-| `make remove-autofs` | Remove autofs NAS configuration |
-| `make help-autofs` | Show autofs help message |
+| `make autofs` | Complete setup (credentials + configuration) |
+| `make autofs-status` | Show configuration and mount status |
+| `make autofs-test` | Test the NAS mount connection |
+| `make autofs-fix` | Fix common issues (menu-driven) |
+| `make autofs-remove` | Remove autofs NAS configuration |
+
+**Via `make autofs-fix` menu:**
+- Refresh credentials (after password change)
+- Restart autofs service
+- Fix ownership bug (macOS only)
+- Install/uninstall auto-fix agent (macOS only)
 
 ## How It Works
 
@@ -128,13 +121,13 @@ macOS uses the built-in autofs/automount system with SMB:
 ### Check Configuration Status
 
 ```bash
-make status-autofs
+make autofs-status
 ```
 
 This shows:
 - NAS configuration details
-- Autofs master and map file contents
-- Mount point status
+- System configuration status with OK/MISSING/ERROR indicators
+- Mount point status and ownership
 - Service status
 
 ### macOS: Permission Denied After Sleep/Wake (Known Bug)
@@ -147,10 +140,12 @@ This is a **known macOS autofs bug** that has existed since at least macOS Yosem
 - `ls ~/shared` returns "Permission denied"
 - Mount shows as active: `mount | grep shared` shows the SMB mount
 - Accessing mount point fails even though it appears mounted
+- `make autofs-status` shows "[WARNING] Owned by root"
 
 **Quick Fix:**
 ```bash
-make fix-autofs-ownership
+make autofs-fix
+# Select option 3: Fix ownership bug (macOS)
 ```
 
 Or manually:
@@ -164,7 +159,8 @@ This force unmounts the broken mount and refreshes autofs to remount with correc
 Install a LaunchAgent that automatically detects and fixes the ownership issue:
 
 ```bash
-make install-autofs-fix-agent
+make autofs-fix
+# Select option 4: Install auto-fix agent (macOS)
 ```
 
 This installs a background service that:
@@ -179,7 +175,8 @@ tail -f /tmp/autofs-fix.log
 
 **Uninstall auto-fix:**
 ```bash
-make uninstall-autofs-fix-agent
+make autofs-fix
+# Select option 5: Uninstall auto-fix agent (macOS)
 ```
 
 **Technical Details:**
@@ -195,21 +192,21 @@ make uninstall-autofs-fix-agent
 **Symptoms:**
 - `ls ~/shared` returns empty or just `.` and `..`
 - Symlink exists: `ls -la ~/shared` shows symlink to `/System/Volumes/Data/shared-$USER`
-- But `make status-autofs` shows "No entries found" in auto_master
+- But `make autofs-status` shows "[MISSING] No entry in /etc/auto_master"
 
-**Cause:** The mount point and symlink were created, but the autofs configuration was never applied. This happens when `make setup-autofs` was interrupted or never completed.
+**Cause:** The mount point and symlink were created, but the autofs configuration was never applied. This happens when `make autofs` was interrupted or never completed.
 
 **Solution:**
 ```bash
-make setup-autofs
+make autofs
 ```
 
 This will (re)apply the autofs configuration files to `/etc/auto_master` and `/etc/auto_nas` (macOS) or `/etc/auto.master` and `/etc/auto.nas` (Linux).
 
 **Verification:**
 ```bash
-make status-autofs
-# Should show "auto_nas" entry in master config
+make autofs-status
+# Should show "[OK] Entry exists in /etc/auto_master"
 ls ~/shared
 # Should now show your NAS files
 ```
@@ -248,7 +245,8 @@ ls ~/shared
 ### Restart Autofs Service
 
 ```bash
-make restart-autofs-service
+make autofs-fix
+# Select option 2: Restart autofs service
 ```
 
 Or manually:
@@ -285,13 +283,15 @@ log show --predicate 'process == "automountd"' --last 1h
 To remove the autofs NAS configuration:
 
 ```bash
-make remove-autofs
+make autofs-remove
 ```
 
 This will:
 1. Remove autofs configuration entries
-2. Remove the mount point directory
+2. Remove the mount point directory/symlink
 3. Restart the autofs service
+
+**Note:** This does NOT remove your credentials (`~/.autofs_config`, Keychain entries, or `~/.smbcredentials`).
 
 The autofs package itself remains installed but inactive for your NAS.
 
@@ -326,22 +326,22 @@ MOUNT_POINT := $(HOME)/your-custom-path
 
 Then run:
 ```bash
-make remove-autofs
-make setup-autofs
+make autofs-remove
+make autofs
 ```
 
 ### Change NAS Host or Share
 
-Simply re-run the credentials setup, which will prompt to reconfigure:
+Simply re-run setup, which will offer to reconfigure:
 
 ```bash
-make setup-autofs-credentials
+make autofs
 ```
 
-Then reconfigure autofs:
+If you need to completely reset:
 ```bash
-make remove-autofs
-make setup-autofs
+make autofs-remove
+make autofs
 ```
 
 ### Add Multiple NAS Shares
@@ -362,7 +362,8 @@ media  -fstype=smbfs,soft ://your-nas.example.com/media
 
 After editing, restart autofs:
 ```bash
-make restart-autofs-service
+make autofs-fix
+# Select option 2: Restart autofs service
 ```
 
 ## References
