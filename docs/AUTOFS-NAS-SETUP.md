@@ -188,6 +188,32 @@ make uninstall-autofs-fix-agent
 - No official Apple fix exists
 - Workaround: unmount and remount to restore correct ownership
 
+### Mount Point Empty or Shows Only "." and ".."
+
+**Problem:** `~/shared` exists but is empty or shows only hidden entries, not your NAS files.
+
+**Symptoms:**
+- `ls ~/shared` returns empty or just `.` and `..`
+- Symlink exists: `ls -la ~/shared` shows symlink to `/System/Volumes/Data/shared-$USER`
+- But `make status-autofs` shows "No entries found" in auto_master
+
+**Cause:** The mount point and symlink were created, but the autofs configuration was never applied. This happens when `make setup-autofs` was interrupted or never completed.
+
+**Solution:**
+```bash
+make setup-autofs
+```
+
+This will (re)apply the autofs configuration files to `/etc/auto_master` and `/etc/auto_nas` (macOS) or `/etc/auto.master` and `/etc/auto.nas` (Linux).
+
+**Verification:**
+```bash
+make status-autofs
+# Should show "auto_nas" entry in master config
+ls ~/shared
+# Should now show your NAS files
+```
+
 ### Mount Not Working
 
 1. **Check autofs service:**
