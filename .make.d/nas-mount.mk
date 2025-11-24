@@ -127,16 +127,18 @@ ifeq ($(UNAME), Darwin)
 	@echo
 	@echo "Mount Point:"
 	@if [ -L $(MOUNT_POINT) ]; then \
-		echo "  [OK] Symlink: $(MOUNT_POINT) -> $$(readlink $(MOUNT_POINT))"; \
+		SYMLINK_TARGET=$$(readlink $(MOUNT_POINT)); \
+		echo "  [OK] Symlink: $(MOUNT_POINT) -> $$SYMLINK_TARGET"; \
+		if mount | grep -q "$(NAS_HOST)/$(NAS_SHARE_NAME)"; then \
+			REAL_MOUNT=$$(mount | grep "$(NAS_HOST)/$(NAS_SHARE_NAME)" | awk '{print $$3}' | head -1); \
+			echo "  [MOUNTED] Currently mounted at $$REAL_MOUNT"; \
+			OWNER=$$(stat -f "%Su" "$$REAL_MOUNT" 2>/dev/null || echo "unknown"); \
+			echo "  [OK] Owned by $$OWNER"; \
+		else \
+			echo "  [NOT MOUNTED] Not currently mounted"; \
+		fi; \
 	else \
 		echo "  [MISSING] Symlink does not exist"; \
-	fi
-	@if mount | grep -q "$(ACTUAL_MOUNT_POINT)"; then \
-		echo "  [MOUNTED] Currently mounted"; \
-		OWNER=$$(stat -f "%Su" $(ACTUAL_MOUNT_POINT) 2>/dev/null || echo "unknown"); \
-		echo "  [OK] Owned by $$OWNER"; \
-	else \
-		echo "  [NOT MOUNTED] Not currently mounted"; \
 	fi
 	@echo
 	@echo "LaunchAgent Service:"
@@ -374,11 +376,12 @@ _nas-install-macos:
 	fi
 	@chmod +x $(MOUNT_SCRIPT)
 	@echo
-	@echo "Creating mount point..."
-	@mkdir -p $(ACTUAL_MOUNT_POINT)
+	@echo "Setting up symlink..."
+	@# Note: mount_smbfs creates /Volumes/nas-* automatically, we just symlink to it
 	@if [ ! -L $(MOUNT_POINT) ]; then \
 		ln -sf $(ACTUAL_MOUNT_POINT) $(MOUNT_POINT); \
 		echo "Created symlink: $(MOUNT_POINT) -> $(ACTUAL_MOUNT_POINT)"; \
+		echo "Note: Mount point will be created by mount_smbfs when NAS is mounted"; \
 	else \
 		echo "Symlink already exists."; \
 	fi
