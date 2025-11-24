@@ -68,7 +68,8 @@ error_exit() {
 
 # Check if NAS is already mounted
 is_mounted() {
-    mount | grep -q "$MOUNT_POINT"
+    # Check if our specific share is mounted anywhere
+    mount | grep -q "//${nas_username}@${nas_host}/${nas_share}"
 }
 
 # Create log directory if it doesn't exist
@@ -82,22 +83,42 @@ ensure_log_dir() {
 
 # Create mount point directory if it doesn't exist
 ensure_mount_point() {
-    if [ ! -d "$MOUNT_POINT" ]; then
-        mkdir -p "$MOUNT_POINT" 2>/dev/null || \
-            error_exit "Failed to create mount point: $MOUNT_POINT"
+    # On macOS, mount_smbfs creates /Volumes/ mount points automatically
+    # We don't need to (and can't without sudo) pre-create them
+    # Just verify /Volumes exists (it always should on macOS)
+    if [ ! -d "/Volumes" ]; then
+        error_exit "/Volumes directory not found (unexpected on macOS)"
     fi
 }
 
-# Create or update symlink
+# Create or update symlink to actual mount location
 ensure_symlink() {
-    if [ ! -L "$SYMLINK" ]; then
-        ln -sf "$MOUNT_POINT" "$SYMLINK" 2>/dev/null || \
-            log_error "Failed to create symlink: $SYMLINK -> $MOUNT_POINT"
-    elif [ "$(readlink "$SYMLINK")" != "$MOUNT_POINT" ]; then
-        rm -f "$SYMLINK"
-        ln -sf "$MOUNT_POINT" "$SYMLINK" 2>/dev/null || \
-            log_error "Failed to update symlink: $SYMLINK -> $MOUNT_POINT"
+    local target_mount="$1"
+    local search_host="${2:-}"
+    local search_share="${3:-}"
+
+    # If no target specified, try to find it
+    if [ -z "$target_mount" ] && [ -n "$search_host" ] && [ -n "$search_share" ]; then
+        # Look for mounts matching our NAS host
+        target_mount=$(mount | grep "${search_host}/${search_share}" | awk '{print $3}' | head -1)
     fi
+
+    # If still not found, can't create symlink
+    if [ -z "$target_mount" ] || [ ! -d "$target_mount" ]; then
+        log_error "Cannot create symlink: mount point not found"
+        return 1
+    fi
+
+    if [ ! -L "$SYMLINK" ]; then
+        ln -sf "$target_mount" "$SYMLINK" 2>/dev/null || \
+            log_error "Failed to create symlink: $SYMLINK -> $target_mount"
+    elif [ "$(readlink "$SYMLINK")" != "$target_mount" ]; then
+        rm -f "$SYMLINK"
+        ln -sf "$target_mount" "$SYMLINK" 2>/dev/null || \
+            log_error "Failed to update symlink: $SYMLINK -> $target_mount"
+    fi
+
+    log "Symlink created/updated: $SYMLINK -> $target_mount"
 }
 
 # Check network connectivity to NAS host
@@ -135,9 +156,26 @@ mount_nas() {
 
     local smb_url="smb://${nas_username}:${nas_password}@${nas_host}/${nas_share}"
 
-    # Try to mount using mount_smbfs
-    if mount_smbfs -o soft,noowners,nosuid "$smb_url" "$MOUNT_POINT" 2>&1 | tee -a "$LOG_FILE"; then
-        log "Successfully mounted ${nas_host}/${nas_share} at ${MOUNT_POINT}"
+    # Use AppleScript to mount (handles mount point creation automatically)
+    # This is the same approach Finder uses and handles Keychain integration
+    if osascript -e "mount volume \"${smb_url}\"" 2>&1 | tee -a "$LOG_FILE"; then
+        log "Successfully mounted ${nas_host}/${nas_share}"
+
+        # Find where it was mounted (usually /Volumes/<share-name> or /Volumes/<share-name>-1)
+        # Wait a moment for the mount to appear
+        sleep 1
+
+        # Look for the mount in common locations
+        for possible_mount in "/Volumes/${nas_share}" "/Volumes/${nas_share}-1" "/Volumes/${nas_share}-2"; do
+            if [ -d "$possible_mount" ] && mount | grep -q "$possible_mount"; then
+                ACTUAL_MOUNT_POINT="$possible_mount"
+                log "Mount detected at: $ACTUAL_MOUNT_POINT"
+                return 0
+            fi
+        done
+
+        # If we can't find it, just return success (it's mounted somewhere)
+        log "Mount successful but location auto-detected"
         return 0
     else
         error_exit "Failed to mount ${nas_host}/${nas_share}"
@@ -168,17 +206,17 @@ main() {
         error_exit "Invalid configuration in $CONFIG_FILE (missing nas_host, nas_share, or nas_username)"
     fi
 
-    # Update mount point and symlink based on actual username
-    MOUNT_POINT="/Volumes/nas-${nas_username}"
-
     # Check if already mounted
     if is_mounted; then
-        # Verify mount is still accessible
-        if ls "$MOUNT_POINT" >/dev/null 2>&1; then
-            silent_exit "Already mounted and accessible at $MOUNT_POINT"
+        # Find where it's mounted
+        existing_mount=$(mount | grep "//${nas_username}@${nas_host}/${nas_share}" | awk '{print $3}' | head -1)
+        if [ -n "$existing_mount" ] && ls "$existing_mount" >/dev/null 2>&1; then
+            # Update symlink to point to existing mount
+            ensure_symlink "$existing_mount"
+            silent_exit "Already mounted and accessible at $existing_mount"
         else
             log "Mount exists but not accessible, forcing unmount"
-            umount "$MOUNT_POINT" 2>/dev/null || true
+            diskutil unmount force "$existing_mount" 2>/dev/null || true
         fi
     fi
 
@@ -196,8 +234,8 @@ main() {
     # Mount the share
     mount_nas "$nas_host" "$nas_share" "$nas_username" "$password"
 
-    # Create/update symlink
-    ensure_symlink
+    # Create/update symlink (will auto-detect mount point)
+    ensure_symlink "" "$nas_host" "$nas_share"
 
     log "Mount cycle completed successfully"
     exit 0
