@@ -1,10 +1,8 @@
 # CLAUDE.md
 
-## Purpose
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-This file guides Claude Code (claude.ai/code) when working with this repository. It provides architectural context, development patterns, and guidelines to ensure consistent, quality contributions. This is NOT user documentation - users should refer to README.md and docs/.
-
-**When modifying this file:** Focus on information that helps Claude Code make better decisions. Remove content that duplicates what Claude can discover through exploration (like full command lists discoverable via `make help`).
+**When modifying this file:** Focus on information that helps Claude Code make better decisions. Remove content that duplicates what Claude can discover through exploration (like full command lists discoverable via `make help`). This is NOT user documentation - users should refer to README.md and docs/.
 
 ## Repository Overview
 
@@ -43,14 +41,13 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### Tools Managed
 
 - **CLI Tools**: eza, fd, fzf, lsd, ripgrep, zoxide (via zinit on Linux, mixed on macOS)
-- **Cloud**: AWS CLI, OpenStack CLI, gh, glab, s5cmd
+- **Cloud/DevOps**: AWS CLI, OpenStack CLI, gh, glab, s5cmd
 - **Development**: Go, Node.js (nvm), Python (pyenv), Ruby, uv
 - **Editor**: neovim (custom config in packages/neovim/)
-- **Other**: autofs, beets, bitwarden-cli, direnv, vagrant
-- **Security**: Bitwarden CLI, SSH agent
 - **Shell**: zsh with zinit plugin manager, starship prompt
-- **Storage**: autofs for automatic NAS mounting
+- **Storage**: autofs (automatic NAS mounting), Bitwarden CLI
 - **Terminal**: alacritty, ghostty, kitty, tmux
+- **Utilities**: beets, direnv, vagrant
 
 ## Development Guidelines
 
@@ -102,14 +99,14 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `SETUP`: Targets added to setup operations
 
 **Key modules:**
-- `00_make.mk`: Core variable definitions and OS detection
+- `00_make.mk`: Core variables, OS detection, checksum verification
 - `10_base.mk`: Directory setup, stow operations
 - `autofs.mk`: NAS mounting (cross-platform)
 - `gui-apps.mk`: GUI apps (cross-platform)
 - `linux-settings.mk`: GNOME/XFCE settings
 - `macos-settings.mk`: System preferences, dock config
 - `testing.mk`: Test suite
-- Tool-specific: `golang.mk`, `kitty.mk`, `neovim.mk`, `python.mk`, etc.
+- Tool-specific: `claude-code.mk`, `golang.mk`, `kitty.mk`, `neovim.mk`, `python.mk`, etc.
 
 ### Essential Commands
 
@@ -123,9 +120,10 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `make stow` - Symlink dotfiles to $HOME
 - `make clean-stow` - Remove symlinked dotfiles
 - `make test` - Run complete test suite
+- `make test-<type>` - Run specific test (syntax, config, stow, makefile, shellcheck, security, permissions)
 - `make update` - Update all configured tools
 
-**Note:** Claude can discover specific commands via `make help` - don't list them all here.
+**Note:** Use `make help` or `make list-targets` to discover all available commands.
 
 ## Platform Support
 
@@ -153,75 +151,24 @@ Set automatically by `.make.d/00_make.mk`:
 1. **Upstream binaries**: Checksums stored in individual .mk files as variables
 2. **Makefile modules**: Checksums in `.make.d/makefile-checksums.txt` to verify .mk files themselves
 
-**Location:** `.make.d/00_make.mk` (verification functions)
-**Helper:** `scripts/update-checksums.sh`
+**Implementation:** See `.make.d/00_make.mk` for `verify_checksum` function.
 
-#### Verifying Downloaded Files
-
-**Store checksums in the .mk file:**
+**Usage pattern in .mk files:**
 ```makefile
-TOOL_VERSION := 1.2.3
-
-# SHA256 checksums from https://example.com/releases/v1.2.3/checksums.txt
+# Store platform-specific checksums as variables
 TOOL_CHECKSUM_LINUX_AMD64 := abc123...
 TOOL_CHECKSUM_MACOS_ARM64 := def456...
-TOOL_CHECKSUM_MACOS_AMD64 := 789ghi...
 
-# Set platform-specific checksum
-ifeq ($(UNAME), Darwin)
-ifeq ($(ARCH_ALT), arm64)
-TOOL_CHECKSUM := $(TOOL_CHECKSUM_MACOS_ARM64)
-else
-TOOL_CHECKSUM := $(TOOL_CHECKSUM_MACOS_AMD64)
-endif
-else
-TOOL_CHECKSUM := $(TOOL_CHECKSUM_LINUX_AMD64)
-endif
+# In download target:
+curl -Ls -o tool.tar.gz https://example.com/tool.tar.gz
+$(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
 ```
 
-**Use in download target:**
-```makefile
-install-tool:
-	curl -Ls -o tool.tar.gz https://example.com/tool.tar.gz
-	$(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
-	tar -xzf tool.tar.gz
-```
+**Makefile integrity:**
+- `make verify-makefiles` - Verify .mk files haven't been tampered with
+- After modifying .mk files: `cd .make.d && shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt`
 
-**Parameters:**
-- First: local filename (what you downloaded)
-- Second: expected checksum (use Makefile variable)
-
-**Optional checksums (warns but continues):**
-```makefile
-ifneq ($(TOOL_CHECKSUM),)
-	$(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
-else
-	@echo "WARNING: No checksum available, skipping verification"
-endif
-```
-
-#### Verifying Makefile Modules
-
-**Verify all .mk files haven't been tampered with:**
-```bash
-make verify-makefiles
-```
-
-**After modifying .mk files, regenerate checksums:**
-```bash
-cd .make.d
-shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt.new
-# Review changes
-diff makefile-checksums.txt makefile-checksums.txt.new
-# Apply
-mv makefile-checksums.txt.new makefile-checksums.txt
-```
-
-**Important:**
-- Checksum verification aborts on failure (removes downloaded file)
-- Always verify checksums from official sources (release pages, checksum files)
-- Update checksums when upgrading tool versions
-- Verify makefiles before major installations for security
+**Important:** Checksum verification aborts on failure and removes the downloaded file. Always source checksums from official release pages.
 
 ## Feature-Specific Guidance
 
