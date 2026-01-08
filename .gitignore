@@ -9,6 +9,9 @@ packages/neovim/.config/nvim/lazy-lock.json
 *.pem
 *.key
 
+# Local git configuration (environment-specific)
+configs/.config/git.local
+
 # SSH keys
 .ssh/id_rsa
 .ssh/id_ed25519
