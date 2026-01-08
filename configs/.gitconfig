@@ -8,9 +8,6 @@
 	renames = true
 	tool = vimdiff
 
-[user]
-	name = Chris Clonch
-
 [include]
   path = ~/.config/git.d/aliases
   path = ~/.config/git.d/user

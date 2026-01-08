@@ -5,8 +5,8 @@
       {
         "id": "831f7137-e0db-417f-b74c-d2d2b1935d49",
         "type": "current-working-dir",
-        "rawValue": true,
-        "color": "brightBlue"
+        "color": "brightBlue",
+        "rawValue": true
       },
       {
         "id": "18348ccb-f23e-43a2-842f-c326ef4c2585",
@@ -58,8 +58,8 @@
       {
         "id": "7b15b93a-f646-4f1e-9fc2-5a2637fa5dfe",
         "type": "context-percentage",
-        "rawValue": true,
-        "color": "magenta"
+        "color": "magenta",
+        "rawValue": true
       },
       {
         "id": "4b4eb1ed-43c4-4380-83c5-83cff496818e",
@@ -94,6 +94,11 @@
         "id": "a4ee6dd7-0318-4468-b8b0-106cd3385c17",
         "type": "session-cost",
         "color": "brightGreen"
+      },
+      {
+        "id": "1efeafbe-d8ad-43b6-b6e7-bc07c5f39508",
+        "type": "custom-command",
+        "commandPath": "~/.local/bin/ccstatusline-usage.sh"
       }
     ],
     []
@@ -101,6 +106,7 @@
   "flexMode": "full-until-compact",
   "compactThreshold": 60,
   "colorLevel": 2,
+  "defaultPadding": " ",
   "inheritSeparatorColors": false,
   "globalBold": false,
   "powerline": {
@@ -113,8 +119,7 @@
     ],
     "startCaps": [],
     "endCaps": [],
-    "autoAlign": true,
-    "theme": "nord-aurora"
-  },
-  "defaultPadding": " "
+    "theme": "nord-aurora",
+    "autoAlign": true
+  }
 }
