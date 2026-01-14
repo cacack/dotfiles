@@ -1,27 +1,9 @@
-# SHA256 Checksums for Makefile Modules
-#
-# This file contains SHA256 checksums for all .mk files in the .make.d/ directory.
-# These checksums verify the integrity of the Makefile modules themselves to prevent
-# tampering or accidental corruption.
-#
-# Format: <checksum>  <filename>
-#
-# To regenerate this file after making changes to .mk files:
-#   cd .make.d && shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt.new
-#   # Review the changes, then:
-#   mv makefile-checksums.txt.new makefile-checksums.txt
-#
-# To verify all makefiles:
-#   make verify-makefiles
-#
-# Note: This file itself is not checksummed (would create circular dependency)
-
 986ccadffbac9903c808f5617492aaec0c2b7cb283164063aa4d56d134c318ba  00_make.mk
 f183cbd3b6317feb28b6567c529c833536cf9049985ad7e9ba21e89e08ec6d74  10_base.mk
 dbfd5fbf5997bba4aa017c448799dbbc1ba9de8ae03fa6585f2f8c186443054e  alacritty.mk
-bef036887165995cd7133f816099345bd2cc1e9db94d7264c234037881f4b406  autofs.mk
+aa890e55f3d04588fa74736542e04a48a073ff464f70fc43ac2119013e1aee5c  autofs.mk
 305f35d3617894324f733f09a2234845f5d516041cec47219f23e1c82a038d80  aws-cli.mk
-5fcc25a48cbf0d3924c0008ce37246e544e7414c3ebf54a5e483a4b1e3fc37f1  bitwarden.mk
+4e7b26134626c25ed054ed71e257eac5f8879f87bf2f2c6285d0d5932565b337  bitwarden.mk
 d41a282b06218679746a612f7dbb07dd1c162d6ef52103ec5649d7542ab5e408  ccstatusline.mk
 597c945942304335999422f7f4fc33af5d67d90ebce14b843e4f654d46f91698  claude-code.mk
 2f22962b5b9993e2c4ee650dcd78ed661fe89f9fccf6c69d96d238a8490940aa  claude-powerline-rust.mk
@@ -30,7 +12,7 @@ d41a282b06218679746a612f7dbb07dd1c162d6ef52103ec5649d7542ab5e408  ccstatusline.m
 756f81692a9805ee2aab231ff1a3bc967adac9e8ec80f477d51f0e55bf2042b7  direnv.mk
 2fdc3aa38d92a4928e811b552fcb2cf1b8a404214b540b2cf595bcd4640ff183  eza.mk
 c3c071d0802118a110ed25bd99070fb4255b8504c825a00126ea02e2e349adf1  fonts.mk
-2e47623e0302265d796fed6699b0c9f2402c93f65474f380861bdb211aeff827  gh.mk
+691dff1d31c17375bb400000df27342d2c00e9d6ca0e323f28044afcf4b9553c  gh.mk
 2720ec7361d202549e40087d70ca3639808b757c7be59bae327452ba4e8c62df  ghostty.mk
 1b6eaf718f05bb6757fe818cdb599e0566fcfa192e84964c3febf6b2c34773e1  git.mk
 f4298e16e098901d49d880699c6b8b51d22d44498adc3784b248090852a066dd  glab.mk
