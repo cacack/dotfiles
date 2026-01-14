@@ -1,23 +1,25 @@
-GH_VERSION := 2.82.0
+# GitHub CLI (gh) installation
+# https://github.com/cli/cli
 
-# SHA256 checksums from https://github.com/cli/cli/releases/download/v2.82.0/gh_2.82.0_checksums.txt
-GH_CHECKSUM_LINUX_AMD64 := aba32dd552112101464941c7b5ee5f097896e1e234eb99581ff1652f44c4009a
-GH_CHECKSUM_MACOS_AMD64 := c5dd3ebea62a7363226026acf0493eda93a66273f8fbf24014a73fb33330ab14
-GH_CHECKSUM_MACOS_ARM64 := c52d24f92858743e7142c0ddbea7ba3679e116062a48f364be8fe6aa6b24e42c
+GH_VERSION := 2.83.2
+
+# SHA256 checksums from https://github.com/cli/cli/releases
+GH_CHECKSUM_LINUX_AMD64 := ca6e7641214fbd0e21429cec4b64a7ba626fd946d8f9d6d191467545b092015e
+GH_CHECKSUM_MACOS_AMD64 := 6f1712519ccc768946791dc97da407bf188582345b73fef3d604d050ebf6f614
+GH_CHECKSUM_MACOS_ARM64 := ba3e0396ebbc8da17256144ddda503e4e79c8b502166335569f8390d6b75fa8d
 
 ifeq ($(UNAME), Darwin)
 GH_PLATFORM := macOS
 GH_ARCH := $(ARCH_ALT)
-GH_ARCHIVE := zip
 ifeq ($(ARCH_ALT), arm64)
 GH_CHECKSUM := $(GH_CHECKSUM_MACOS_ARM64)
 else
 GH_CHECKSUM := $(GH_CHECKSUM_MACOS_AMD64)
 endif
-else ifeq ($(UNAME), Linux)
+endif
+ifeq ($(UNAME), Linux)
 GH_PLATFORM := linux
 GH_ARCH := $(ARCH_ALT)
-GH_ARCHIVE := tar.gz
 GH_CHECKSUM := $(GH_CHECKSUM_LINUX_AMD64)
 endif
 
