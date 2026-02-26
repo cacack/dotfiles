@@ -4,3 +4,5 @@ font-size = 11
 theme = One Half Dark
 
 keybind = shift+enter=text:\x1b\r
+
+shell-integration-features = ssh-terminfo,ssh-env
