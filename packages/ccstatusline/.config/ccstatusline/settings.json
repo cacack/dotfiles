@@ -92,12 +92,8 @@
       },
       {
         "id": "a4ee6dd7-0318-4468-b8b0-106cd3385c17",
-        "type": "session-cost",
-        "color": "brightGreen"
-      },
-      {
-        "id": "1efeafbe-d8ad-43b6-b6e7-bc07c5f39508",
         "type": "custom-command",
+        "color": "brightGreen",
         "commandPath": "~/.local/bin/ccstatusline-usage.sh"
       }
     ],
