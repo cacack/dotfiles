@@ -41,7 +41,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### Tools Managed
 
 - **CLI Tools**: eza, fd, fzf, lsd, ripgrep, zoxide (via zinit on Linux, mixed on macOS)
-- **Cloud/DevOps**: AWS CLI, OpenStack CLI, gh, glab, s5cmd
+- **Cloud/DevOps**: AWS CLI, Azure CLI, gcloud, gh, glab, OpenStack CLI, s5cmd
 - **Development**: Go, Node.js (nvm), Python (pyenv), Ruby, uv
 - **Editor**: neovim (custom config in packages/neovim/)
 - **Shell**: zsh with zinit plugin manager, starship prompt
