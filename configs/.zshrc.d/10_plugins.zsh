@@ -3,8 +3,15 @@
 
 # Setup ZSH plugins
 zinit light Aloxaf/fzf-tab
-zinit snippet OMZP::git
 zinit snippet OMZP::aws
+
+# Google Cloud SDK: set CLOUDSDK_HOME for Linux custom install path
+if [[ -d "${HOME}/.local/opt/google-cloud-sdk" ]]; then
+  export CLOUDSDK_HOME="${HOME}/.local/opt/google-cloud-sdk"
+fi
+zinit snippet OMZP::gcloud
+
+zinit snippet OMZP::git
 
 ZVM_INIT_MODE=sourcing
 zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
