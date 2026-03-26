@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# idea - quickly capture ideas to a markdown file
+#
+# Usage: idea <your idea here>
+#
+
+set -euo pipefail
+
+IDEAS_FILE="${HOME}/Documents/solutioning/IDEAS.md"
+
+# Show usage if no arguments provided
+if [ $# -eq 0 ]; then
+    echo "Usage: idea <your idea here>"
+    echo ""
+    echo "Captures ideas to: ${IDEAS_FILE}"
+    exit 1
+fi
+
+# Create directory if it doesn't exist
+IDEAS_DIR=$(dirname "${IDEAS_FILE}")
+if [ ! -d "${IDEAS_DIR}" ]; then
+    mkdir -p "${IDEAS_DIR}"
+    echo "Created directory: ${IDEAS_DIR}"
+fi
+
+# Create file if it doesn't exist
+if [ ! -f "${IDEAS_FILE}" ]; then
+    echo "# Ideas" > "${IDEAS_FILE}"
+    echo "" >> "${IDEAS_FILE}"
+    echo "Created: ${IDEAS_FILE}"
+fi
+
+# Get current date in YYYY-MM-DD format
+TIMESTAMP=$(date +%Y-%m-%d)
+
+# Append the idea with timestamp
+echo "- [${TIMESTAMP}] $*" >> "${IDEAS_FILE}"
+
+echo "💡 Idea captured!"
