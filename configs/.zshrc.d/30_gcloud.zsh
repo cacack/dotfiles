@@ -19,6 +19,8 @@ if (( $+commands[gcloud] )); then
     configs=($(gcloud config configurations list --format='value(name)' 2>/dev/null))
     _describe 'gcloud configuration' configs
   }
-  compdef _gsp gsp
+  if (( $+functions[compdef] )); then
+    compdef _gsp gsp
+  fi
 
 fi

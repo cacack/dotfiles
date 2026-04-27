@@ -19,6 +19,8 @@ if (( $+commands[az] )); then
     subscriptions=("${(@f)$(az account list --query '[].name' --output tsv 2>/dev/null)}")
     _describe 'azure subscription' subscriptions
   }
-  compdef _azs azs
+  if (( $+functions[compdef] )); then
+    compdef _azs azs
+  fi
 
 fi
