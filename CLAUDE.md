@@ -45,7 +45,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 - **Development**: Go, Node.js (nvm), Python (pyenv), Ruby, uv
 - **Editor**: neovim (custom config in packages/neovim/)
 - **Shell**: zsh with zinit plugin manager, starship prompt
-- **Storage**: autofs (automatic NAS mounting), Bitwarden CLI
+- **Storage**: Bitwarden CLI, NAS auto-mount (launchd on macOS, autofs on Linux)
 - **Terminal**: alacritty, ghostty, kitty, tmux
 - **Utilities**: beets, direnv, vagrant
 
@@ -101,10 +101,10 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 **Key modules:**
 - `00_make.mk`: Core variables, OS detection, checksum verification
 - `10_base.mk`: Directory setup, stow operations
-- `autofs.mk`: NAS mounting (cross-platform)
 - `gui-apps.mk`: GUI apps (cross-platform)
 - `linux-settings.mk`: GNOME/XFCE settings
 - `macos-settings.mk`: System preferences, dock config
+- `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux); `autofs.mk` retained for Linux back-compat
 - `testing.mk`: Test suite
 - Tool-specific: `claude-code.mk`, `golang.mk`, `kitty.mk`, `neovim.mk`, `python.mk`, etc.
 
@@ -172,17 +172,16 @@ $(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
 
 ## Feature-Specific Guidance
 
-### Autofs NAS Mounting
+### NAS Mounting
 
-**Location:** `.make.d/autofs.mk`
-**Docs:** `docs/AUTOFS-NAS-SETUP.md`
+**Location:** `.make.d/nas-mount.mk` (canonical); `.make.d/autofs.mk` retained for Linux back-compat.
+**Docs:** `docs/NAS-MOUNT-SETUP.md`; migration history in `docs/NAS-MIGRATION-GUIDE.md`.
 
-- Cross-platform (macOS and Linux)
-- Auto-unmount after inactivity
-- Config stored in `~/.autofs_config` (not committed to repo)
-- Credential management: Keychain (macOS), credential file (Linux)
-- Interactive setup: prompts for NAS hostname/credentials (never hardcode)
-- Mounts to `~/shared/` on access
+- macOS: launchd + `scripts/mount-nas.sh` (NetFS path, Keychain-stored password). The pure-autofs path on macOS was retired due to a Sequoia root-ownership bug and lease-cache fragility.
+- Linux: autofs + cifs with `~/.smbcredentials` (chmod 600).
+- Shared config: `~/.autofs_config` (chmod 600, gitignored) — host/share/username only, never passwords.
+- Mount point: `~/shared` on both platforms (symlink on macOS, direct mount on Linux).
+- Entry points: `make nas-mount` (setup) and friends; see `make help`.
 
 ### Bitwarden CLI Authentication
 
