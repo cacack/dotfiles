@@ -23,10 +23,11 @@ NAS_CONFIG_FILE := $(HOME)/.autofs_config
 NAS_SYMLINK     := $(HOME)/shared
 
 ifeq ($(UNAME), Darwin)
-NAS_PLIST  := $(HOME)/Library/LaunchAgents/com.user.nas-mount.plist
-NAS_LABEL  := com.user.nas-mount
-NAS_SCRIPT := $(DOTFILES_SCRIPT_DIR)/mount-nas.sh
-NAS_LOG    := $(HOME)/.local/share/logs/nas-mount.log
+NAS_PLIST          := $(HOME)/Library/LaunchAgents/com.user.nas-mount.plist
+NAS_PLIST_TEMPLATE := $(HOME)/.dotfiles/templates/com.user.nas-mount.plist.template
+NAS_LABEL          := com.user.nas-mount
+NAS_SCRIPT         := $(DOTFILES_SCRIPT_DIR)/mount-nas.sh
+NAS_LOG            := $(HOME)/.local/share/logs/nas-mount.log
 endif
 
 ifeq ($(UNAME), Linux)
@@ -228,16 +229,37 @@ _nas-darwin-ensure-keychain:
 	fi
 
 .PHONY: _nas-darwin-ensure-launchd
-_nas-darwin-ensure-launchd:
-	@if [ ! -f $(NAS_PLIST) ]; then \
-		echo "ERROR: $(NAS_PLIST) not found — run 'make stow' first"; \
-		exit 1; \
-	fi
+_nas-darwin-ensure-launchd: _nas-darwin-render-plist
 	@if launchctl list 2>/dev/null | grep -q $(NAS_LABEL); then \
 		echo "[OK] launchd $(NAS_LABEL) already loaded"; \
 	else \
 		launchctl bootstrap gui/$$(id -u) $(NAS_PLIST); \
 		echo "Loaded launchd $(NAS_LABEL)"; \
+	fi
+
+# Render the plist from template into ~/Library/LaunchAgents/. If the
+# rendered output differs from what's installed, reload the agent so the
+# new settings take effect.
+.PHONY: _nas-darwin-render-plist
+_nas-darwin-render-plist:
+	@if [ ! -f $(NAS_PLIST_TEMPLATE) ]; then \
+		echo "ERROR: template $(NAS_PLIST_TEMPLATE) not found"; \
+		exit 1; \
+	fi
+	@mkdir -p $(dir $(NAS_PLIST))
+	@RENDERED=$$(mktemp); \
+	sed 's|{{MOUNT_SCRIPT}}|$(NAS_SCRIPT)|g' $(NAS_PLIST_TEMPLATE) > $$RENDERED; \
+	if [ -f $(NAS_PLIST) ] && cmp -s $$RENDERED $(NAS_PLIST); then \
+		echo "[OK] plist $(NAS_PLIST) up to date"; \
+		rm -f $$RENDERED; \
+	else \
+		mv $$RENDERED $(NAS_PLIST); \
+		echo "Wrote $(NAS_PLIST) from template"; \
+		if launchctl list 2>/dev/null | grep -q $(NAS_LABEL); then \
+			echo "Reloading $(NAS_LABEL) to pick up new plist..."; \
+			launchctl bootout gui/$$(id -u)/$(NAS_LABEL) 2>/dev/null || true; \
+			launchctl bootstrap gui/$$(id -u) $(NAS_PLIST); \
+		fi; \
 	fi
 
 .PHONY: _nas-darwin-refresh-keychain
