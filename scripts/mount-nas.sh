@@ -1,16 +1,21 @@
 #!/bin/bash
 ################################################################################
-# mount-nas.sh - Robust NAS mounting script for macOS
+# mount-nas.sh - NAS mounting script for macOS
 #
-# This script is run periodically by launchd (every 5 minutes) to ensure
-# the NAS share is mounted when on the home network. It handles:
-# - Silent failure when network unavailable
-# - Already-mounted detection (no-op if mounted)
-# - Network availability checking (ping test)
-# - Keychain password retrieval
-# - Symlink management
-# - Detailed logging for troubleshooting
-# - Robust reconnection after sleep/wake using mount_smbfs with soft mount
+# Run periodically by launchd (StartInterval) and on network changes
+# (WatchPaths on SystemConfiguration). Idempotent: exits silently if the
+# share is already mounted or the network is unreachable.
+#
+# Responsibilities:
+# - Read host/share/user from ~/.autofs_config
+# - Skip if already mounted (trust the kernel mount table)
+# - Skip if NAS host is not reachable (off home network)
+# - Pull SMB password from Keychain
+# - Mount via osascript "mount volume" (NetFS path)
+# - Maintain ~/shared symlink pointing at the active mount
+# - Log to ~/.local/share/logs/nas-mount.log
+#
+# Recovery from a dead mount: `make nas-fix` -> option 3 (force remount).
 #
 # Exit codes:
 #   0 - Success (mounted or already mounted)
@@ -216,24 +221,17 @@ main() {
         error_exit "Invalid configuration in $CONFIG_FILE (missing nas_host, nas_share, or nas_username)"
     fi
 
-    # Check if already mounted
+    # Check if already mounted. Trust the kernel mount table — do not probe
+    # with `ls`, which on SMB can take longer than any reasonable timeout
+    # (the previous 3-second ls test declared healthy mounts stale every run,
+    # producing a remount loop that eventually triggered the NetAuthAgent
+    # password dialog). If the mount has actually died, run `make nas-fix`
+    # to force a remount.
     if is_mounted; then
-        # Find where it's mounted
         existing_mount=$(mount | grep "//${nas_username}@${nas_host}/${nas_share}" | awk '{print $3}' | head -1)
         if [ -n "$existing_mount" ]; then
-            # Test if mount is actually accessible with a timeout
-            # Use perl one-liner as timeout (macOS doesn't have timeout command)
-            if perl -e 'alarm 3; exec @ARGV' ls "$existing_mount" >/dev/null 2>&1; then
-                # Update symlink to point to existing mount
-                ensure_symlink "$existing_mount"
-                silent_exit "Already mounted and accessible at $existing_mount"
-            else
-                log "Mount exists but not accessible (stale after sleep?), forcing unmount"
-                # Use diskutil unmount force - more reliable than umount
-                diskutil unmount force "$existing_mount" 2>&1 | tee -a "$LOG_FILE" || true
-                # Give system time to clean up
-                sleep 1
-            fi
+            ensure_symlink "$existing_mount"
+            silent_exit "Already mounted at $existing_mount"
         fi
     fi
 
