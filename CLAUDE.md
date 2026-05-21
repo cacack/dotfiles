@@ -175,7 +175,7 @@ $(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
 ### NAS Mounting
 
 **Location:** `.make.d/nas-mount.mk` (canonical); `.make.d/autofs.mk` retained for Linux back-compat.
-**Docs:** `docs/NAS-MOUNT-SETUP.md`; migration history in `docs/NAS-MIGRATION-GUIDE.md`.
+**Docs:** `docs/NAS-MOUNT-SETUP.md`.
 
 - macOS: launchd + `scripts/mount-nas.sh` (NetFS path, Keychain-stored password). The pure-autofs path on macOS was retired due to a Sequoia root-ownership bug and lease-cache fragility.
 - Linux: autofs + cifs with `~/.smbcredentials` (chmod 600).
