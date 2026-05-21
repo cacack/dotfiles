@@ -28,3 +28,6 @@ configs/.config/git.local
 
 # Local scratchwork (planning notes, execution summaries, drafts)
 .prompts/
+
+# Local make overrides (personal infrastructure not committed publicly)
+.make.d/99_local.mk

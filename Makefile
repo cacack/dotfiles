@@ -1,8 +1,10 @@
 ################################################################################
 # Main make configuration file
 #
-# It is intended to be copied into the local repository once and local overrides
-# or customizations go into `.make.d/99_local.mk`.
+# Modules under .make.d/*.mk are auto-included in lexical order. Personal
+# or host-specific targets that should not be committed publicly go in
+# .make.d/99_local.mk (gitignored). The numeric prefix ensures the local
+# overrides load last and can replace earlier definitions if needed.
 ################################################################################
 
 

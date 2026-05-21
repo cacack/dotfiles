@@ -108,6 +108,10 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `testing.mk`: Test suite
 - Tool-specific: `claude-code.mk`, `golang.mk`, `kitty.mk`, `neovim.mk`, `python.mk`, etc.
 
+**Local overrides:** `.make.d/99_local.mk` is gitignored and auto-included
+last. Use it for personal-infrastructure targets (private repos, host-
+specific paths) that should not be committed to a public dotfiles repo.
+
 ### Essential Commands
 
 **Discovery:**
