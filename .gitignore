@@ -25,3 +25,6 @@ configs/.config/git.local
 *_secret
 *_password
 *_token
+
+# Local scratchwork (planning notes, execution summaries, drafts)
+.prompts/
