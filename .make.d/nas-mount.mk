@@ -3,10 +3,11 @@
 #
 # Mounts a Samba share at ~/shared using platform-native tooling:
 #
-#   macOS:  launchd (com.user.nas-mount) runs scripts/mount-nas.sh every 60s,
-#           which reads ~/.autofs_config, looks up the password in Keychain,
-#           and uses `osascript "mount volume"` (the NetFS path Finder uses).
-#           Logs to ~/.local/share/logs/nas-mount.log.
+#   macOS:  launchd (com.user.nas-mount) runs scripts/mount-nas.sh every
+#           5 minutes (plus on network-state changes via WatchPaths).
+#           The script reads ~/.autofs_config, looks up the password in
+#           Keychain, and uses `osascript "mount volume"` (the NetFS path
+#           Finder uses). Logs to ~/.local/share/logs/nas-mount.log.
 #
 #   Linux:  autofs with an on-demand map at /etc/auto.smb, triggered by
 #           accessing ~/shared. Credentials in ~/.smbcredentials (chmod 600).
