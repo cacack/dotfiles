@@ -28,7 +28,9 @@ agent_has_keys() {
 }
 
 agent_add_keys() {
-  for key in ~/.ssh/*.pub; do
+  # (N) is zsh's null-glob qualifier: no matches expands to nothing
+  # instead of erroring under the default `nomatch` setopt.
+  for key in ~/.ssh/*.pub(N); do
     [ -f "${key%%.pub}" ] && ssh-add -t 24h "${key%%.pub}"
   done
 }
