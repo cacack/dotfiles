@@ -104,7 +104,7 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `gui-apps.mk`: GUI apps (cross-platform)
 - `linux-settings.mk`: GNOME/XFCE settings
 - `macos-settings.mk`: System preferences, dock config
-- `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux); `autofs.mk` retained for Linux back-compat
+- `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux)
 - `testing.mk`: Test suite
 - Tool-specific: `claude-code.mk`, `golang.mk`, `kitty.mk`, `neovim.mk`, `python.mk`, etc.
 
@@ -174,7 +174,7 @@ $(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
 
 ### NAS Mounting
 
-**Location:** `.make.d/nas-mount.mk` (canonical); `.make.d/autofs.mk` retained for Linux back-compat.
+**Location:** `.make.d/nas-mount.mk` (cross-platform).
 **Docs:** `docs/NAS-MOUNT-SETUP.md`.
 
 - macOS: launchd + `scripts/mount-nas.sh` (NetFS path, Keychain-stored password). The pure-autofs path on macOS was retired due to a Sequoia root-ownership bug and lease-cache fragility.
