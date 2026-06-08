@@ -105,6 +105,8 @@
   "defaultPadding": " ",
   "inheritSeparatorColors": false,
   "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
   "powerline": {
     "enabled": false,
     "separators": [
@@ -116,6 +118,11 @@
     "startCaps": [],
     "endCaps": [],
     "theme": "nord-aurora",
-    "autoAlign": true
+    "autoAlign": true,
+    "continueThemeAcrossLines": false
+  },
+  "installation": {
+    "method": "pinned",
+    "installedVersion": "2.2.19"
   }
 }
