@@ -1,5 +1,5 @@
 CLEAN += clean-stow clean-bashrc
-UPDATE += zinit-update
+UPDATE += zinit-update zinit-prune-completions
 
 .PHONY: base-dirs
 base-dirs:
@@ -17,6 +17,25 @@ zinit-update:
 	source "${HOME}/.local/share/zinit/zinit.git/zinit.zsh"; \
 	zinit self-update; \
 	zinit update --parallel
+
+# Plugin updates can drop or relocate completion files, leaving dangling
+# symlinks in zinit's aggregated completions dir that break compinit on next
+# shell start. Prune the broken links and clear the compdump cache so it
+# rebuilds clean. Runs after zinit-update in `make update`.
+.PHONY: zinit-prune-completions
+zinit-prune-completions:
+	@echo
+	# Pruning broken zinit completion symlinks
+	@comp_dir="${HOME}/.local/share/zinit/completions"; \
+	if [ -d "$$comp_dir" ]; then \
+		pruned=$$(find "$$comp_dir" -maxdepth 1 -type l ! -exec test -e {} \; -print 2>/dev/null | wc -l | tr -d ' '); \
+		find "$$comp_dir" -maxdepth 1 -type l ! -exec test -e {} \; -delete 2>/dev/null; \
+		echo "Removed $$pruned dangling completion symlink(s)"; \
+		if [ "$$pruned" -gt 0 ]; then \
+			rm -f ${HOME}/.zcompdump ${HOME}/.zcompdump-*; \
+			echo "Cleared compdump cache (rebuilds on next shell start)"; \
+		fi; \
+	fi
 
 .PHONY: clean-stow
 clean-stow:
