@@ -24,7 +24,12 @@
 # cask "google-chrome"
 
 # === Password Managers ===
-cask "bitwarden"
+# Bitwarden is installed from the Mac App Store, not the Homebrew cask: the cask
+# is auto_updates and fights the App Store / in-app self-updater, which breaks
+# `brew upgrade`. `mas` lets `brew bundle` reproduce the App Store install.
+# Requires being signed in to the App Store. id from: mas list / app metadata.
+brew "mas"
+mas "Bitwarden", id: 1352778147
 
 # === File Sync & Cloud ===
 # cask "nextcloud"

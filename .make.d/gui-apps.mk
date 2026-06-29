@@ -28,8 +28,10 @@
 ################################################################################
 
 # macOS apps via Homebrew Cask
+# NOTE: Bitwarden is intentionally NOT here. On macOS it is installed from the
+# Mac App Store (see `mas` entry in Brewfile.gui); the brew cask is auto_updates
+# and collides with the App-Store/self-updater copy, breaking `brew upgrade`.
 MACOS_GUI_APPS := \
-	bitwarden \
 	discord \
 	firefox \
 	gimp \
