@@ -3,6 +3,10 @@ if [ Darwin = `uname` ]; then
     eval "$(/usr/local/Homebrew/bin/brew shellenv)"
   elif [ -d ${HOME}/.local/opt/homebrew ]; then
     eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
+    # Custom prefix (~/.local) forces source builds for non-relocatable
+    # formulae (python, gcc). Those apply patches that only resolve against a
+    # real tap repo, not the JSON API, so use the locally-tapped homebrew/core.
+    export HOMEBREW_NO_INSTALL_FROM_API=1
   fi
 fi
 
