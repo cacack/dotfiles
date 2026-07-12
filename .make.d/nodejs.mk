@@ -6,10 +6,10 @@ setup-nodejs: install-nvm install-nodejs
 install-yarn:
 	@echo
 	# Installing yarn
-ifeq ($(DISTRO),Fedora)
+ifeq ($(DISTRO),fedora)
 	sudo dnf install yarnpkg
 endif
-ifeq ($(DISTRO),Ubuntu)
+ifeq ($(DISTRO),ubuntu)
 	sudo apt install --yes --no-install-recommends yarnpkg npm
 endif
 ifeq ($(OS),darwin)

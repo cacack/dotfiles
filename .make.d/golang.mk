@@ -4,10 +4,10 @@ setup-golang: install-golang
 install-golang:
 	@echo
 	# Installing yarn
-ifeq ($(DISTRO),Fedora)
+ifeq ($(DISTRO),fedora)
 	sudo dnf install golang
 endif
-ifeq ($(DISTRO),Ubuntu)
+ifeq ($(DISTRO),ubuntu)
 	sudo apt install --yes --no-install-recommends golang
 endif
 ifeq ($(OS),darwin)

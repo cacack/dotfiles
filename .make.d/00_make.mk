@@ -33,8 +33,10 @@ endif
 # OS-based directories
 ifeq ($(UNAME), Linux)
 OS := linux
-DISTRO := $(shell lsb_release -si)
-SHELL := $(shell which bash)
+# Lowercase ID from os-release (arch, debian, fedora, ubuntu, ...), same
+# source install.sh uses. lsb_release/which are absent on minimal installs.
+DISTRO := $(shell . /etc/os-release 2>/dev/null && echo $$ID)
+SHELL := /bin/bash
 USER_FONT_DIR := ${HOME}/.local/share/fonts
 endif
 ifeq ($(UNAME), Darwin)

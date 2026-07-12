@@ -5,10 +5,10 @@ setup-python: install-python install-pipx install-poetry install-pyenv install-u
 install-python:
 	@echo
 	# Installing python
-ifeq ($(DISTRO),Fedora)
+ifeq ($(DISTRO),fedora)
 	sudo dnf install python
 endif
-ifeq ($(DISTRO),Ubuntu)
+ifeq ($(DISTRO),ubuntu)
 	sudo apt install --yes --no-install-recommends python3-venv python3-dev
 endif
 ifeq ($(OS),darwin)
@@ -18,10 +18,10 @@ endif
 install-pipx:
 	@echo
 	# Installing pipx
-ifeq ($(DISTRO),Fedora)
+ifeq ($(DISTRO),fedora)
 	sudo dnf install pipx
 endif
-ifeq ($(DISTRO),Ubuntu)
+ifeq ($(DISTRO),ubuntu)
 	sudo apt install --yes --no-install-recommends pipx
 endif
 ifeq ($(OS),darwin)
