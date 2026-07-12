@@ -25,7 +25,7 @@ Supported platforms: macOS (Intel/Apple Silicon), Ubuntu/Debian, Fedora/RHEL/Cen
 **Then change shells to zsh:**
 
 ```sh
-chsh --shell $(which zsh)
+chsh -s "$(command -v zsh)"
 ```
 
 Log out and back in to activate the new setup (zinit will install plugins automatically).

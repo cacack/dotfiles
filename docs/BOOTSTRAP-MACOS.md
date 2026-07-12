@@ -108,7 +108,7 @@ make install-apps
 Modern macOS already uses Zsh as the default shell, but if needed:
 
 ```bash
-chsh -s $(which zsh)
+chsh -s "$(command -v zsh)"
 ```
 
 ### 6. Restart Your Terminal
