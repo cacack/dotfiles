@@ -32,7 +32,7 @@ zinit-prune-completions:
 		find "$$comp_dir" -maxdepth 1 -type l ! -exec test -e {} \; -delete 2>/dev/null; \
 		echo "Removed $$pruned dangling completion symlink(s)"; \
 		if [ "$$pruned" -gt 0 ]; then \
-			rm -f ${HOME}/.zcompdump ${HOME}/.zcompdump-*; \
+			find "${HOME}" -maxdepth 1 -name '.zcompdump*' -delete 2>/dev/null; \
 			echo "Cleared compdump cache (rebuilds on next shell start)"; \
 		fi; \
 	fi
