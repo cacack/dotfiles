@@ -1,3 +1,18 @@
+# fzf/zoxide/pyenv regenerate their init script by spawning their binary on
+# every shell start. Cache the generated script instead and only regenerate
+# when missing or the binary itself has been updated.
+_zsh_init_cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-init"
+mkdir -p "$_zsh_init_cache_dir"
+_cached_init() {
+  local name="$1" cmd="$2" bin="$3"
+  local cache_file="${_zsh_init_cache_dir}/${name}.zsh"
+  local bin_path="$(command -v "$bin")"
+  if [[ ! -s "$cache_file" || ( -n "$bin_path" && "$cache_file" -ot "$bin_path" ) ]]; then
+    eval "$cmd" >| "$cache_file"
+  fi
+  source "$cache_file"
+}
+
 # Setup ZSH plugins
 zinit light Aloxaf/fzf-tab
 zinit snippet OMZP::aws
@@ -21,7 +36,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#555558"
 
 zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
-source <(fzf --zsh)
+_cached_init fzf 'fzf --zsh' fzf
 
 # eza: modern ls replacement (default)
 # Note: On macOS, eza is installed via Homebrew (make setup-eza)
@@ -40,7 +55,7 @@ zinit light starship/starship
 
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
-source <(zoxide init --cmd cd zsh)
+_cached_init zoxide 'zoxide init --cmd cd zsh' zoxide
 
 zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"
 zinit light BurntSushi/ripgrep
@@ -52,5 +67,8 @@ zinit light sharkdp/fd
 if [[ -d ${HOME}/.local/opt/pyenv ]]; then
   export PYENV_ROOT="${HOME}/.local/opt/pyenv"
   command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
-  source <(pyenv init -)
+  _cached_init pyenv 'pyenv init -' pyenv
 fi
+
+unset -f _cached_init
+unset _zsh_init_cache_dir
