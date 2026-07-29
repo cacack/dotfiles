@@ -21,7 +21,16 @@ fi
 # Source zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Load completions
-autoload -Uz compinit && compinit
+# Load completions. The full compinit security scan (stat'ing every file on
+# fpath) is slow enough to notice on every shell start, so only pay for it
+# once a day; otherwise trust the existing dump via `-C`.
+autoload -Uz compinit
+_zcompdump="${HOME}/.zcompdump"
+if [[ -n ${_zcompdump}(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+unset _zcompdump
 
 zinit cdreplay -q
