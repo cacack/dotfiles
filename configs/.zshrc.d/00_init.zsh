@@ -23,14 +23,16 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # Load completions. The full compinit security scan (stat'ing every file on
 # fpath) is slow enough to notice on every shell start, so only pay for it
-# once a day; otherwise trust the existing dump via `-C`.
+# once a day; otherwise trust the existing dump via `-C`. compinit leaves an
+# unchanged dump untouched, so touch it to restart the 24h window.
 autoload -Uz compinit
 _zcompdump="${HOME}/.zcompdump"
-if [[ -n ${_zcompdump}(#qN.mh+24) ]]; then
-  compinit
+_zcompdump_stale=( ${_zcompdump}(N.mh+24) )  # glob: [[ ]] never expands one
+if (( ${#_zcompdump_stale} )); then
+  compinit && touch "$_zcompdump"
 else
   compinit -C
 fi
-unset _zcompdump
+unset _zcompdump _zcompdump_stale
 
 zinit cdreplay -q
