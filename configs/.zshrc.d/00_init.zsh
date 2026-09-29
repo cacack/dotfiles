@@ -1,4 +1,4 @@
-if [ Darwin = `uname` ]; then
+if [[ $OSTYPE == darwin* ]]; then
   if [ -d /usr/local/Homebrew ]; then
     eval "$(/usr/local/Homebrew/bin/brew shellenv)"
   elif [ -d ${HOME}/.local/opt/homebrew ]; then
