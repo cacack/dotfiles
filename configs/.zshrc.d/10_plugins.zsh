@@ -23,16 +23,18 @@ if [[ -d "${HOME}/.local/opt/google-cloud-sdk" ]]; then
 fi
 zinit snippet OMZP::gcloud
 
-zinit snippet OMZP::git
-
 ZVM_INIT_MODE=sourcing
 zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
 
-zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
 
+# Turbo mode: load these after the first prompt is drawn (~30ms off startup).
+# syntax-highlighting stays last so it wraps every other widget.
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#555558"
+zinit wait lucid light-mode for \
+  OMZP::git \
+  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+  zsh-users/zsh-syntax-highlighting
 
 zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
