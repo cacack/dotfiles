@@ -1,5 +1,7 @@
 if [[ $OSTYPE == darwin* ]]; then
-  if [ -d /usr/local/Homebrew ]; then
+  if [ -d /opt/homebrew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -d /usr/local/Homebrew ]; then
     eval "$(/usr/local/Homebrew/bin/brew shellenv)"
   elif [ -d ${HOME}/.local/opt/homebrew ]; then
     eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
