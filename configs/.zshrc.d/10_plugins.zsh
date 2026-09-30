@@ -1,18 +1,3 @@
-# fzf/zoxide/pyenv regenerate their init script by spawning their binary on
-# every shell start. Cache the generated script instead and only regenerate
-# when missing or the binary itself has been updated.
-_zsh_init_cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-init"
-mkdir -p "$_zsh_init_cache_dir"
-_cached_init() {
-  local name="$1" cmd="$2" bin="$3"
-  local cache_file="${_zsh_init_cache_dir}/${name}.zsh"
-  local bin_path="$(command -v "$bin")"
-  if [[ ! -s "$cache_file" || ( -n "$bin_path" && "$cache_file" -ot "$bin_path" ) ]]; then
-    eval "$cmd" >| "$cache_file"
-  fi
-  source "$cache_file"
-}
-
 # Setup ZSH plugins
 zinit light Aloxaf/fzf-tab
 zinit snippet OMZP::aws
@@ -72,5 +57,6 @@ if [[ -d ${HOME}/.local/opt/pyenv ]]; then
   _cached_init pyenv 'pyenv init -' pyenv
 fi
 
+# _cached_init is defined in 00_init.zsh; this file is its last user.
 unset -f _cached_init
 unset _zsh_init_cache_dir

@@ -1,10 +1,25 @@
+# brew/fzf/zoxide/pyenv regenerate their init script by spawning their binary on
+# every shell start. Cache the generated script instead and only regenerate
+# when missing or the binary itself has been updated.
+_zsh_init_cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-init"
+mkdir -p "$_zsh_init_cache_dir"
+_cached_init() {
+  local name="$1" cmd="$2" bin="$3"
+  local cache_file="${_zsh_init_cache_dir}/${name}.zsh"
+  local bin_path="$(command -v "$bin")"
+  if [[ ! -s "$cache_file" || ( -n "$bin_path" && "$cache_file" -ot "$bin_path" ) ]]; then
+    eval "$cmd" >| "$cache_file"
+  fi
+  source "$cache_file"
+}
+
 if [[ $OSTYPE == darwin* ]]; then
   if [ -d /opt/homebrew ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    _cached_init brew '/opt/homebrew/bin/brew shellenv' /opt/homebrew/bin/brew
   elif [ -d /usr/local/Homebrew ]; then
-    eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+    _cached_init brew '/usr/local/Homebrew/bin/brew shellenv' /usr/local/Homebrew/bin/brew
   elif [ -d ${HOME}/.local/opt/homebrew ]; then
-    eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
+    _cached_init brew '${HOME}/.local/opt/homebrew/bin/brew shellenv' ${HOME}/.local/opt/homebrew/bin/brew
     # Custom prefix (~/.local) forces source builds for non-relocatable
     # formulae (python, gcc). Those apply patches that only resolve against a
     # real tap repo, not the JSON API, so use the locally-tapped homebrew/core.
