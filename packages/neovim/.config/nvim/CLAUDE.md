@@ -65,7 +65,7 @@ Syntax highlighting and parsing for: bash, css, dockerfile, go, html, javascript
 - **Terraform**: tflint, tfsec
 - **Lua**: stylua
 - **Web**: prettier
-- **Shell**: shfmt, shellcheck
+- **Shell**: shfmt (shellcheck comes from the dotfiles' light mise set)
 - **Docker**: hadolint
 - **Markdown**: mdformat
 

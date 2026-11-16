@@ -10,7 +10,6 @@ local M = {
     "hadolint",
     "lua-language-server",
     "marksman",
-    "shellcheck",
     "shfmt",
     "stylua",
     "taplo",
