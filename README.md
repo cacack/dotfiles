@@ -41,7 +41,7 @@ If you prefer to install prerequisites manually or need more control over the pr
 git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 
-# Basic installation (creates directories, installs neovim, symlinks configs)
+# Basic installation (creates directories, symlinks configs, installs CLI tools via mise)
 make install
 
 # Desktop installation (adds fonts, kitty, GUI apps, system settings)
@@ -49,6 +49,18 @@ make install-desktop
 
 # Full application installation (all CLI and GUI tools)
 make install-apps
+```
+
+### CLI Tools and Runtimes (mise)
+
+CLI tools and language runtimes are installed by [mise](https://mise.jdx.dev).
+Every version is pinned in `configs/.config/mise/config.toml` and locked, with
+per-platform checksums, in `mise.lock` beside it. Renovate opens merge requests
+to bump the pins.
+
+```bash
+make tools       # install exactly what the lockfile pins (also part of `make update`)
+make mise-lock   # regenerate mise.lock after editing config.toml; commit both
 ```
 
 ### Optional Customization
@@ -63,7 +75,8 @@ make install-apps
 - [tmux](https://github.com/tmux/tmux)
 - [zsh](https://www.zsh.org/)
 - [starship](https://github.com/starship/starship)
-- [eza](https://github.com/eza-community/eza)
+- [lsd](https://github.com/lsd-rs/lsd)
+- [mise](https://github.com/jdx/mise)
 - [fzf](https://github.com/junegunn/fzf)
 - [neovim](https://neovim.io)
 
