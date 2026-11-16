@@ -43,7 +43,8 @@ if (( $+commands[bw] )); then
     fi
   }
 
-  if ! bw_is_unlocked; then
+  # Before `bw login` (see `make setup-bitwarden-login`) there is no vault to unlock.
+  if ! bw_is_unlocked && bw login --check >/dev/null 2>&1; then
     bw_unlock
   fi
 fi
