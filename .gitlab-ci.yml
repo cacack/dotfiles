@@ -15,3 +15,35 @@ mise-lock:
     # The desktop pypi tools resolve their locked dependencies with python.
     - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install python
     - make mise-lock-check
+
+# Known vulnerabilities in the pypi tools' locked dependency trees (uv.lock).
+# Needs no tool install, so it runs on merge requests and on the schedule.
+security-deps:
+  image: ubuntu:24.04
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+        - configs/.config/mise/**/*
+        - .osv-scanner.toml
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq ca-certificates curl git make >/dev/null
+  script:
+    - make install-mise
+    - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install aqua:google/osv-scanner
+    - make security-deps
+
+# Installs the whole desktop tool set and scans it with Trivy. Too heavy for
+# every merge request: runs from a pipeline schedule (Build > Pipeline
+# schedules, weekly) or a manual "Run pipeline".
+security-tools:
+  image: ubuntu:24.04
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq ca-certificates curl git make tar unzip xz-utils libatomic1 >/dev/null
+  script:
+    - make install-mise
+    - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install
+    - make security-tools

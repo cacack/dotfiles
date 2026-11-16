@@ -1,0 +1,12 @@
+# Accepted osv-scanner findings for the mise tool lockfiles (`make security-deps`).
+# Each entry names the exact version, says why it is safe, and expires so it
+# gets re-checked. osv-scanner does not evaluate uv.lock environment markers,
+# so packages pinned only for Python versions we never install show up here.
+
+[[PackageOverrides]]
+name = "filelock"
+version = "4.1.0"
+ecosystem = "PyPI"
+ignore = true
+effectiveUntil = 2027-02-16
+reason = "poetry's uv.lock pins 4.1.0 only for python_full_version < '3.11'; mise installs Python 3.13, which resolves filelock 4.2.10 (fixed)."

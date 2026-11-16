@@ -1,0 +1,75 @@
+# Accepted Trivy findings in the installed mise tools (`make security-tools`).
+# Every entry is code bundled inside an upstream release that only a new
+# upstream version (then a Renovate bump) can fix. Each expires so it is
+# re-checked: on expiry, bump the tool if a fixed release exists, otherwise
+# re-justify and extend. Baseline taken 2026-11-16.
+
+vulnerabilities:
+  # npm bundled with node 26.13.1
+  - id: CVE-2026-102276
+    statement: brace-expansion 5.0.9 in node's bundled npm; fixed by a node release shipping a newer npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-102278
+    statement: brace-expansion 5.0.9 in node's bundled npm; fixed by a node release shipping a newer npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-19534
+    statement: undici 6.28.0 in node's bundled npm; fixed by a node release shipping a newer npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-87018
+    statement: undici 6.28.0 in node's bundled npm; fixed by a node release shipping a newer npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-109383
+    statement: undici 6.28.0 in node's bundled npm; fixed by a node release shipping a newer npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-109869
+    statement: undici 6.28.0 in node's bundled npm; fixed by a node release shipping a newer npm.
+    expired_at: 2027-01-16
+
+  # Python 3.13.18
+  - id: CVE-2025-47273
+    statement: >-
+      False positive: read from pip's _vendor/vendor.txt (setuptools==70.3.0). pip vendors only
+      pkg_resources, not setuptools.package_index where this path traversal lives.
+    expired_at: 2027-05-16
+
+  # Gems bundled with ruby 4.0.9
+  - id: CVE-2026-33210
+    statement: json 2.18.0 is a ruby 4.0.9 default gem; fixed by a ruby release shipping json >= 2.19.2.
+    expired_at: 2027-01-16
+  - id: CVE-2026-126366
+    statement: msgpack 1.8.0 gem bundled with ruby 4.0.9 (JRuby decoder issue; we run CRuby).
+    expired_at: 2027-01-16
+
+  # Go standard library / modules compiled into upstream binaries
+  - id: CVE-2026-78667
+    statement: direnv 2.38.2 built with Go 1.26.8; fixed by a direnv release built with Go >= 1.26.9.
+    expired_at: 2027-01-16
+  - id: CVE-2026-78669
+    statement: direnv 2.38.2 built with Go 1.26.8; fixed by a direnv release built with Go >= 1.26.9.
+    expired_at: 2027-01-16
+  - id: CVE-2026-97031
+    statement: direnv 2.38.2 built with Go 1.26.8; fixed by a direnv release built with Go >= 1.26.9.
+    expired_at: 2027-01-16
+  - id: CVE-2026-111943
+    statement: >-
+      Go stdlib in direnv 2.38.2 (Go 1.26.8) and gcloud 593.0.0's gcloud-crc32c (Go 1.27.2); fixed by
+      releases built with Go >= 1.26.10 / 1.27.3.
+    expired_at: 2027-01-16
+  - id: CVE-2026-78661
+    statement: golang.org/x/net v0.61.0 in gh 2.104.0; fixed by a gh release with x/net >= 0.62.0.
+    expired_at: 2027-01-16
+
+  # Linux only: gcloud 593.0.0 bundles its own Python 3.14 (platform/bundledpythonunix),
+  # whose pip vendors these; fixed by a gcloud release shipping a newer pip.
+  - id: CVE-2026-97687
+    statement: urllib3 2.7.0 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16
+  - id: CVE-2026-97689
+    statement: urllib3 2.7.0 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16
+  - id: CVE-2026-114613
+    statement: msgpack 1.1.2 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16
+  - id: GHSA-6v7p-g79w-8964
+    statement: msgpack 1.1.2 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16

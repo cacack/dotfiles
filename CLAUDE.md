@@ -41,7 +41,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### Tools Managed
 
 - **CLI Tools**: fd, fzf, lsd, ripgrep, zoxide
-- **Cloud/DevOps**: AWS CLI, Azure CLI, gcloud, gh, glab, OpenStack CLI, s5cmd
+- **Cloud/DevOps**: AWS CLI, Azure CLI, gcloud, gh, glab, OpenStack CLI
 - **Development**: Go, Node.js, Python, Ruby, uv (all via mise)
 - **Editor**: neovim (custom config in packages/neovim/)
 - **Shell**: zsh with zinit plugin manager, starship prompt
@@ -102,6 +102,7 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `linux-settings.mk`: GNOME/XFCE settings
 - `macos-settings.mk`: System preferences, dock config
 - `mise.mk`: mise install (pinned), profiles, `tools`, `mise-lock`, `mise-lock-check`
+- `security.mk`: `security` (osv-scanner + Trivy over the pinned tools)
 - `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux)
 - `testing.mk`: Test suite
 - Tool-specific: `claude-code.mk`, `ghostty.mk`, `kitty.mk`, `neovim.mk` (config only), `tmux.mk`, etc.
@@ -154,6 +155,8 @@ Set automatically by `.make.d/00_make.mk`:
 **Two-layer verification system:**
 1. **Upstream binaries**: mise tools are checksummed per platform in `mise.lock`; the rest store checksums in their .mk files as variables (mise itself checks its release's `SHASUMS256.txt`)
 2. **Makefile modules**: Checksums in `.make.d/makefile-checksums.txt` to verify .mk files themselves
+
+**Vulnerability scans** (`security.mk`, README "Supply-Chain Defenses"): `make security` runs osv-scanner on the uv locks and Trivy on installed tools. A new finding is fixed by a bump if one exists; otherwise add it to `.osv-scanner.toml` / `.trivyignore.yaml` with a reason and an expiry, never without. Prefer dropping an unmaintained tool over ignoring its findings (s5cmd was dropped this way).
 
 **Implementation:** See `.make.d/00_make.mk` for `verify_checksum` function.
 

@@ -73,7 +73,25 @@ the lockfiles committed.
 ```bash
 make tools       # install exactly what the lockfiles pin (also part of `make update`)
 make mise-lock   # regenerate both lockfiles after editing a config; commit them together
+make security    # scan the pinned tools for known vulnerabilities
 ```
+
+### Supply-Chain Defenses
+
+Each layer catches what the others miss:
+
+| Layer | Guards against | Where |
+|---|---|---|
+| Exact pins + per-platform checksums | a tampered or swapped download | `mise.lock`, `locked = true` |
+| Signed provenance re-verified on install (GitHub attestations, SLSA, cosign) where upstream publishes it | a release not built by the project's CI | `locked_verify_provenance` in `config.toml` |
+| 7-day minimum release age (vulnerability fixes exempt) | a compromised release, usually yanked within days | `renovate.json` |
+| Lockfile check on every merge request | a bump that skips the lock | `mise-lock` CI job |
+| osv-scanner on the Python tools' locked dependencies | known-vulnerable transitive packages | `make security-deps`, CI on merge requests + weekly |
+| Trivy on everything installed (HIGH/CRITICAL with a fix) | vulnerable Go modules, bundled npm/gems/Python packages | `make security-tools`, CI weekly |
+
+Accepted findings live in `.osv-scanner.toml` and `.trivyignore.yaml`, each with a
+reason and an expiry date, so they come back for review. The weekly scans need a
+pipeline schedule in GitLab (Build > Pipeline schedules).
 
 ### Optional Customization
 
