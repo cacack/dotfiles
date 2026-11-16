@@ -2,10 +2,26 @@
 --   light: every machine; self-contained binaries, no language runtime needed.
 --   heavy: desktop installs (MISE_ENV=desktop), where mise provides go, node,
 --          python and rust for the packages below.
+-- The tier comes from $MISE_ENV, or from the profile file `make desktop` writes
+-- when Neovim was not started from zsh (GUI launcher, bash, ssh host nvim).
 -- `mason` lists Mason packages (https://mason-registry.dev/registry/list);
 -- `servers` maps language servers to enable onto their config.
 
+local function profile()
+  if vim.env.MISE_ENV then
+    return vim.env.MISE_ENV
+  end
+  local file = io.open(vim.fn.expand "~/.config/dotfiles/mise-env")
+  if not file then
+    return nil
+  end
+  local value = vim.trim(file:read "*a")
+  file:close()
+  return value
+end
+
 local M = {
+  desktop = profile() == "desktop",
   mason = {
     "hadolint",
     "lua-language-server",
@@ -68,16 +84,18 @@ local heavy = {
     terraformls = {},
     ts_ls = {},
     yamlls = {
-      yaml = {
-        schemas = {
-          ["./c7n-schema.json"] = "*.yml",
+      settings = {
+        yaml = {
+          schemas = {
+            ["./c7n-schema.json"] = "*.yml",
+          },
         },
       },
     },
   },
 }
 
-if vim.env.MISE_ENV == "desktop" then
+if M.desktop then
   vim.list_extend(M.mason, heavy.mason)
   M.servers = vim.tbl_extend("error", M.servers, heavy.servers)
 end

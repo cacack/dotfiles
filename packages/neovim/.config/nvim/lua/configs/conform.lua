@@ -1,4 +1,8 @@
 local options = {
+  -- Light installs lack most formatters (configs/tools.lua); only a desktop
+  -- should warn on save when one is missing.
+  notify_no_formatters = require("configs.tools").desktop,
+
   formatters_by_ft = {
 		css = { "prettier" },
 		go = { "gofumpt", "goimports-reviser" },
