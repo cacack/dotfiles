@@ -113,11 +113,12 @@ endif
 update-gui-apps:
 	@echo
 	# Updating GUI applications
+	@# GUI apps are desktop-only (`make desktop`); MISE_ENV comes from mise.mk.
 ifeq ($(OS),darwin)
-	brew upgrade --cask --greedy
+	@if [ "$(MISE_ENV)" = desktop ]; then brew upgrade --cask --greedy; else echo "Skipping: not a desktop install"; fi
 endif
 ifeq ($(OS),linux)
-	@if command -v flatpak >/dev/null 2>&1; then \
+	@if [ "$(MISE_ENV)" = desktop ] && command -v flatpak >/dev/null 2>&1; then \
 		flatpak update -y; \
 	fi
 endif
