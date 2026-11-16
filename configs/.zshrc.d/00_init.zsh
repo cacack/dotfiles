@@ -1,4 +1,4 @@
-# brew/fzf/zoxide/pyenv regenerate their init script by spawning their binary on
+# brew/mise/fzf/zoxide regenerate their init script by spawning their binary on
 # every shell start. Cache the generated script instead and only regenerate
 # when missing or the binary itself has been updated.
 _zsh_init_cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-init"

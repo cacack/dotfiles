@@ -79,6 +79,9 @@ zinit() {
     esac
 }
 
+# Mock the init-script cache helper defined in 00_init.zsh
+_cached_init() { return 0; }
+
 # Create mock files that bitwarden script expects
 touch "\$HOME/.ssh/bw.env" 2>/dev/null || true
 
@@ -208,7 +211,7 @@ test_aliases_availability() {
 export HOME="$temp_dir"
 
 # Mock the commands that aliases depend on
-eza() { echo "eza mock"; }
+lsd() { echo "lsd mock"; }
 nvim() { echo "nvim mock"; }
 
 # Source aliases

@@ -1,7 +1,5 @@
-# Prefer eza, fallback to lsd, then default ls
-if (( $+commands[eza] )); then
-  alias ls='eza'
-elif (( $+commands[lsd] )); then
+# Prefer lsd, fallback to default ls
+if (( $+commands[lsd] )); then
   alias ls='lsd'
 fi
 
