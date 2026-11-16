@@ -1,0 +1,48 @@
+# Global tool versions, installed with `make tools`.
+#
+# Every version is exact and locked (with per-platform checksums) in mise.lock
+# beside this file; Renovate bumps the pins. After editing this file run
+# `make mise-lock` and commit the lockfile changes with it.
+
+[settings]
+locked = true
+lockfile_platforms = ["linux-arm64", "linux-x64", "macos-arm64"]
+
+[tools]
+"aqua:neovim/neovim" = "0.12.6"
+aws-cli = "2.40.3"
+azure-cli = "2.92.0"
+bitwarden = "2026.10.1"
+direnv = "2.38.2"
+fd = "10.5.2"
+fzf = "0.75.0"
+gh = "2.104.0"
+git-filter-repo = "2.47.0"
+"github:david-strejc/claude-powerline-rust" = "1.2.0"
+glab = "1.130.0"
+go = "1.27.4"
+lsd = "1.2.0"
+node = "26.13.1"
+"pypi:poetry" = "2.5.1"
+# Held at 3.13 until pyyaml ships 3.15 wheels; without them mise cannot lock
+# the dependencies of the Python tools (azure-cli, yamllint, poetry).
+python = "3.13.18"
+ripgrep = "15.2.0"
+ruby = "4.0.9"
+s5cmd = "2.3.0"
+shellcheck = "0.11.0"
+starship = "1.27.0"
+uv = "0.13.8"
+yamllint = "1.38.0"
+zoxide = "0.10.0"
+
+# gcloud has no Renovate-supported mise backend; a custom Renovate manager in
+# renovate.json tracks the version below.
+[tools."http:gcloud"]
+version = "593.0.0"
+bin_path = "google-cloud-sdk/bin"
+
+[tools."http:gcloud".platforms]
+linux-arm64 = { url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-{{version}}-linux-arm.tar.gz" }
+linux-x64 = { url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-{{version}}-linux-x86_64.tar.gz" }
+macos-arm64 = { url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-{{version}}-darwin-arm.tar.gz" }
