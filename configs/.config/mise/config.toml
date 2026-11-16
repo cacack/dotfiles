@@ -9,6 +9,9 @@
 [settings]
 locked = true
 lockfile_platforms = ["linux-arm64", "linux-x64", "macos-arm64"]
+# Re-verify the signed provenance (GitHub attestations, SLSA, cosign) recorded
+# in the lockfile on every install, not only when the lock was written.
+locked_verify_provenance = true
 
 [tools]
 "aqua:neovim/neovim" = "0.12.6"
