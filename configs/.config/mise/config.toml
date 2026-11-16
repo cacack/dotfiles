@@ -9,8 +9,20 @@
 [settings]
 locked = true
 lockfile_platforms = ["linux-arm64", "linux-x64", "macos-arm64"]
+# Re-verify the signed provenance (GitHub attestations, SLSA, cosign) recorded
+# in the lockfile on every install, not only when the lock was written.
+locked_verify_provenance = true
 
 [tools]
+# Neovim's light-tier language servers and formatters (lua/configs/tools.lua,
+# conform.lua), plus hadolint for linting Dockerfiles from the shell.
+"aqua:JohnnyMorganz/StyLua" = "2.6.0"
+"aqua:LuaLS/lua-language-server" = "3.19.2"
+"aqua:artempyanykh/marksman" = "2026-02-08"
+"aqua:hadolint/hadolint" = "2.15.1"
+"aqua:mvdan/sh" = "3.14.1"
+"aqua:tamasfe/taplo" = "0.10.0"
+
 "aqua:neovim/neovim" = "0.12.6"
 "aqua:tmux/tmux-builds" = "3.8"
 direnv = "2.38.2"

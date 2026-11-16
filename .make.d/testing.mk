@@ -58,7 +58,7 @@ test-help:
 	@echo "  test-stow        - Run stow operation validation"
 	@echo "  test-makefile    - Run Makefile functionality tests"
 	@echo "  test-shellcheck  - Run ShellCheck linting"
-	@echo "  test-security    - Run security scanning"
+	@echo "  test-security    - Scan the repo for committed secrets (tool CVEs: make security)"
 	@echo "  test-permissions - Run file permissions validation"
 	@echo "  test-install     - Run the light install in a Docker container"
 	@echo "  test-help        - Show this help message"

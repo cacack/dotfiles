@@ -41,7 +41,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### Tools Managed
 
 - **CLI Tools**: fd, fzf, lsd, ripgrep, zoxide
-- **Cloud/DevOps**: AWS CLI, Azure CLI, gcloud, gh, glab, OpenStack CLI, s5cmd
+- **Cloud/DevOps**: AWS CLI, Azure CLI, gcloud, gh, glab, OpenStack CLI
 - **Development**: Go, Node.js, Python, Ruby, uv (all via mise)
 - **Editor**: neovim (custom config in packages/neovim/)
 - **Shell**: zsh with zinit plugin manager, starship prompt
@@ -65,7 +65,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 set (every install, no root, no language runtimes), `config.desktop.toml` the heavy
 set: runtimes and what needs them (`MISE_ENV=desktop`, recorded in
 `~/.config/dotfiles/mise-env` by `make desktop`). Neovim's `lua/configs/tools.lua`
-splits its Mason packages/LSPs on the same flag; keep the two in step.
+enables Neovim's language servers (installed by mise, not Mason) on the same flag; keep the two in step.
 Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
 - Exact versions only, locked in `mise.lock`/`mise.desktop.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
 - Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (restrict with `os = [...]` when upstream lacks one) (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.
@@ -75,7 +75,7 @@ Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
 
 **Use Makefiles for** machine setup mise can't do: GUI apps (Homebrew casks, apt/Flatpak), fonts, OS settings, NAS mounts, stow.
 
-**Zinit** loads shell plugins only (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, OMZ snippets); it installs no binaries.
+**Zinit** loads shell plugins only (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, OMZ snippets); it installs no binaries. Every plugin, OMZ and zinit itself is pinned to a commit in `_zinit_pins` (`00_init.zsh`, with a `# renovate: branch=` line each); load plugins with `ver"${_zinit_pins[...]}"` and OMZ files by pinned raw URL, never `OMZP::`. `make update` syncs them (`zinit-update`); never call `zinit update`/`self-update`, which ignore pins.
 
 **macOS prerequisite:** Homebrew (installed by `install.sh`) provides stow and casks; mise is installed by `make install-mise`, pinned in `.make.d/mise.mk`.
 
@@ -103,6 +103,7 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `macos-settings.mk`: System preferences, dock config
 - `mise.mk`: mise install (pinned), profiles, `tools`, `mise-lock`, `mise-lock-check`
 - `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux)
+- `security.mk`: `security` (osv-scanner + Trivy over the pinned tools)
 - `testing.mk`: Test suite
 - Tool-specific: `claude-code.mk`, `ghostty.mk`, `kitty.mk`, `neovim.mk` (config only), `tmux.mk`, etc.
 
@@ -154,6 +155,8 @@ Set automatically by `.make.d/00_make.mk`:
 **Two-layer verification system:**
 1. **Upstream binaries**: mise tools are checksummed per platform in `mise.lock`; the rest store checksums in their .mk files as variables (mise itself checks its release's `SHASUMS256.txt`)
 2. **Makefile modules**: Checksums in `.make.d/makefile-checksums.txt` to verify .mk files themselves
+
+**Vulnerability scans** (`security.mk`, README "Supply-Chain Defenses"): `make security` runs osv-scanner on the uv and npm (aube) locks and Trivy on installed tools. A new finding is fixed by a bump if one exists; otherwise add it to `.osv-scanner.toml` / `.trivyignore.yaml` with a reason and an expiry, never without, and scope Trivy entries with `paths` to the tool you reviewed (an ID-only entry hides that CVE in every tool). Prefer dropping an unmaintained tool over ignoring its findings (s5cmd was dropped this way).
 
 **Implementation:** See `.make.d/00_make.mk` for `verify_checksum` function.
 

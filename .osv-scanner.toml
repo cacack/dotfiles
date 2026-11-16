@@ -1,0 +1,24 @@
+# Accepted osv-scanner findings for the mise tool lockfiles (`make security-deps`).
+# Each entry names the exact version, says why it is safe, and expires so it
+# gets re-checked. osv-scanner does not evaluate uv.lock environment markers,
+# so packages pinned only for Python versions we never install show up here.
+
+[[PackageOverrides]]
+name = "filelock"
+version = "4.1.0"
+ecosystem = "PyPI"
+ignore = true
+effectiveUntil = 2027-02-16
+reason = "poetry's uv.lock pins 4.1.0 only for python_full_version < '3.11'; mise installs Python 3.13, which resolves filelock 4.2.10 (fixed)."
+
+# bash-language-server 5.8.1 (npm): fixes are in new major versions it does not
+# allow yet; only a bash-language-server release can adopt them.
+[[IgnoredVulns]]
+id = "GHSA-mrhx-c7xc-m3w5"
+effectiveUntil = 2027-01-16
+reason = "zod 3.25.76 in bash-language-server 5.8.1; fixed only in zod 4.6.6 (new major), awaiting an upstream release."
+
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+effectiveUntil = 2027-01-16
+reason = "minimatch 10.2.6 in bash-language-server 5.8.1; fixed only in minimatch 11.0.1 (new major), awaiting an upstream release."

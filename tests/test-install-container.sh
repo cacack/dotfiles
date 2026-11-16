@@ -5,11 +5,11 @@
 #
 # Checks: install.sh succeeds without root, every pinned tool is installed and
 # no language runtime is, the first interactive shell is quiet, and Neovim's
-# light Mason tier installs and its language servers attach. The desktop path
+# light-tier language servers (installed by mise) attach. The desktop path
 # (`install.sh --desktop`) is not covered.
 set -euo pipefail
 
-IMAGE="${IMAGE:-ubuntu:24.04}"
+IMAGE="${IMAGE:-ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8}"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 if [[ "${1:-}" != "--inside" ]]; then
@@ -47,6 +47,17 @@ for _ in 1 2; do as_dev 'zsh -i -c true' >/dev/null 2>&1 || true; done
 noise="$(as_dev 'zsh -i -c true' 2>&1 | grep -v "can't change option: zle" || true)"
 [[ -z "$noise" ]] && pass "shell starts silently once plugins are fetched" || fail "shell output: $noise"
 
+echo "Shell plugin pins:"
+# A fresh install must already sit on every pin, so syncing moves nothing.
+moved="$(as_dev 'cd ~/.dotfiles && make -s zinit-update' 2>&1 | grep -v '^# Syncing\|^$' || true)"
+[[ -z "$moved" ]] && pass "zinit and plugins installed at their pinned commits" || fail "not at pins: $moved"
+# Repinning a plugin (here to its parent commit) must move it on the next sync.
+plugin=/home/dev/.local/share/zinit/plugins/Aloxaf---fzf-tab
+parent="$(as_dev "git -C $plugin rev-parse HEAD~1")"
+as_dev "cd ~/.dotfiles && sed -i 's|^\(  Aloxaf/fzf-tab \)[0-9a-f]*|\1$parent|' configs/.zshrc.d/00_init.zsh && make -s zinit-update >/dev/null"
+[[ "$(as_dev "git -C $plugin rev-parse HEAD")" == "$parent" ]] && pass "make update moves a plugin to a changed pin" || fail "plugin did not follow its new pin"
+as_dev 'cd ~/.dotfiles && git checkout -q -- configs/.zshrc.d/00_init.zsh && make -s zinit-update >/dev/null'
+
 echo "Tools:"
 missing="$(as_dev 'zsh -i -c "mise ls --missing"' 2>/dev/null)"
 [[ -z "$missing" ]] && pass "every pinned tool is installed" || fail "not installed: $missing"
@@ -56,10 +67,8 @@ runtimes="$(as_dev 'zsh -i -c "for t in go node python3 ruby rustc; do (( \$+com
 echo "Neovim:"
 as_dev 'zsh -i -c "nvim --headless \"+Lazy! restore\" +qa"' >/tmp/lazy.log 2>&1 \
     && pass "plugins restored from lazy-lock.json" || fail "Lazy restore failed"
-mason="$(as_dev 'zsh -i -c "nvim --headless -c \"luafile ~/.dotfiles/tests/lib/mason-install.lua\" +qa"' 2>&1 | grep '^FAILED:' || true)"
-[[ "$mason" == "FAILED: none" ]] && pass "light Mason tier installed" || fail "Mason: ${mason:-no result}"
-as_dev 'cd /tmp && printf "# hi\n" > x.md && printf "a = 1\n" > x.toml'
-for f in x.md x.toml; do
+as_dev 'cd /tmp && printf "# hi\n" > x.md && printf "a = 1\n" > x.toml && printf "local a = 1\n" > x.lua'
+for f in x.md x.toml x.lua; do
     # NvChad loads lspconfig on User FilePost, which needs a UI; fire it by hand.
     clients="$(as_dev "cd /tmp && zsh -i -c 'nvim --headless $f \"+doautocmd User FilePost\" +e \"+sleep 4\" \"+lua io.stdout:write(#vim.lsp.get_clients({bufnr=0}))\" +qa'" 2>/dev/null | tail -c1)"
     [[ "$clients" == "1" ]] && pass "language server attaches to $f" || fail "no language server for $f"

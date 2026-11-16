@@ -1,0 +1,110 @@
+# Accepted Trivy findings in the installed mise tools (`make security-tools`).
+# Every entry is code bundled inside an upstream release that only a new
+# upstream version (then a Renovate bump) can fix. Each expires so it is
+# re-checked: on expiry, bump the tool if a fixed release exists, otherwise
+# re-justify and extend. Baseline taken 2026-11-16.
+#
+# `paths` scopes each entry to the tool it was reviewed for (globs, relative to
+# ~/.local/share/mise/installs; `*` for versions and platform dirs), so the
+# same ID turning up in another tool is still reported. Only findings Trivy
+# reports without a file path (marked below) are matched by ID alone.
+
+vulnerabilities:
+  # npm bundled with node; fixed by a node release shipping a newer npm.
+  - id: CVE-2026-102276
+    paths: ["node/*/lib/node_modules/npm/**"]
+    statement: brace-expansion 5.0.9 in node 26.13.1's bundled npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-102278
+    paths: ["node/*/lib/node_modules/npm/**"]
+    statement: brace-expansion 5.0.9 in node 26.13.1's bundled npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-19534
+    paths: ["node/*/lib/node_modules/npm/**"]
+    statement: undici 6.28.0 in node 26.13.1's bundled npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-87018
+    paths: ["node/*/lib/node_modules/npm/**"]
+    statement: undici 6.28.0 in node 26.13.1's bundled npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-109383
+    paths: ["node/*/lib/node_modules/npm/**"]
+    statement: undici 6.28.0 in node 26.13.1's bundled npm.
+    expired_at: 2027-01-16
+  - id: CVE-2026-109869
+    paths: ["node/*/lib/node_modules/npm/**"]
+    statement: undici 6.28.0 in node 26.13.1's bundled npm.
+    expired_at: 2027-01-16
+
+  # Gems bundled with ruby 4.0.9; fixed by a ruby release shipping newer gems.
+  - id: CVE-2026-33210
+    paths: ["ruby/*/lib/ruby/gems/*/specifications/**"]
+    statement: json 2.18.0 default gem; fixed in json >= 2.19.2.
+    expired_at: 2027-01-16
+  - id: CVE-2026-126366
+    paths: ["ruby/*/lib/ruby/gems/*/specifications/**"]
+    statement: msgpack 1.8.0 gem (JRuby decoder issue; we run CRuby).
+    expired_at: 2027-01-16
+
+  # Go standard library compiled into upstream binaries; fixed by releases
+  # built with a newer Go. All tools listed are at their latest release.
+  - id: CVE-2026-78667
+    paths: &go_stdlib_tools
+      - "direnv/*/direnv"
+      - "aqua-hashicorp-terraform-ls/*/terraform-ls"
+      - "aqua-mvdan-gofumpt/*/gofumpt"
+      - "aqua-mvdan-sh/*/shfmt"
+      - "github-incu6us-goimports-reviser/*/goimports-reviser"
+    statement: Go stdlib (Go 1.26.8 or older) in direnv, terraform-ls, gofumpt, shfmt, goimports-reviser.
+    expired_at: 2027-01-16
+  - id: CVE-2026-78669
+    paths: *go_stdlib_tools
+    statement: Go stdlib (Go 1.26.8 or older) in direnv, terraform-ls, gofumpt, shfmt, goimports-reviser.
+    expired_at: 2027-01-16
+  - id: CVE-2026-97031
+    paths: *go_stdlib_tools
+    statement: Go stdlib (Go 1.26.8 or older) in direnv, terraform-ls, gofumpt, shfmt, goimports-reviser.
+    expired_at: 2027-01-16
+  - id: CVE-2026-111943
+    paths:
+      - "direnv/*/direnv"
+      - "aqua-hashicorp-terraform-ls/*/terraform-ls"
+      - "aqua-mvdan-gofumpt/*/gofumpt"
+      - "aqua-mvdan-sh/*/shfmt"
+      - "github-incu6us-goimports-reviser/*/goimports-reviser"
+      - "http-gcloud/*/google-cloud-sdk/bin/gcloud-crc32c"
+    statement: Go stdlib in the tools above and gcloud's gcloud-crc32c (Go 1.27.2); fixed by Go >= 1.26.10 / 1.27.3.
+    expired_at: 2027-01-16
+  - id: CVE-2026-78661
+    paths: ["gh/*/*/bin/gh"]
+    statement: golang.org/x/net v0.61.0 in gh 2.104.0; fixed by a gh release with x/net >= 0.62.0.
+    expired_at: 2027-01-16
+  - id: CVE-2026-56864
+    paths: ["github-incu6us-goimports-reviser/*/goimports-reviser"]
+    statement: golang.org/x/mod v0.23.0 in goimports-reviser 3.13.2 (maintained); fixed with x/mod >= 0.40.0.
+    expired_at: 2027-01-16
+  - id: CVE-2026-56865
+    paths: ["github-incu6us-goimports-reviser/*/goimports-reviser"]
+    statement: golang.org/x/mod v0.23.0 in goimports-reviser 3.13.2 (maintained); fixed with x/mod >= 0.40.0.
+    expired_at: 2027-01-16
+
+  # No file path from Trivy, so matched by ID alone.
+  - id: CVE-2025-47273
+    statement: >-
+      False positive: read from pip's _vendor/vendor.txt (setuptools==70.3.0) in Python 3.13.18.
+      pip vendors only pkg_resources, not setuptools.package_index where this path traversal lives.
+    expired_at: 2027-05-16
+  # Linux only: gcloud bundles its own Python 3.14 (platform/bundledpythonunix),
+  # whose pip vendors these; fixed by a gcloud release shipping a newer pip.
+  - id: CVE-2026-97687
+    statement: urllib3 2.7.0 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16
+  - id: CVE-2026-97689
+    statement: urllib3 2.7.0 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16
+  - id: CVE-2026-114613
+    statement: msgpack 1.1.2 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16
+  - id: GHSA-6v7p-g79w-8964
+    statement: msgpack 1.1.2 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
+    expired_at: 2027-01-16

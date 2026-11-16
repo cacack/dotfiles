@@ -79,8 +79,9 @@ zinit() {
     esac
 }
 
-# Mock the init-script cache helper defined in 00_init.zsh
+# Mock the init-script cache helper and plugin pins defined in 00_init.zsh
 _cached_init() { return 0; }
+typeset -A _zinit_pins
 
 # Create mock files that bitwarden script expects
 touch "\$HOME/.ssh/bw.env" 2>/dev/null || true
@@ -237,6 +238,38 @@ EOF
     fi
 }
 
+# Every zinit plugin must load at its pinned commit: a missing or mistyped pin
+# expands to ver"" and silently loads the branch head instead.
+test_zinit_pins() {
+    echo "Testing zinit plugin pins:"
+    local zdir="$DOTFILES_DIR/configs/.zshrc.d" problems="" line repo key
+    local pins
+    pins="$(sed -nE 's/^ +([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+) ([0-9a-f]{40})$/\1/p' "$zdir/00_init.zsh")"
+    [[ -n "$pins" ]] || problems+=$'\n    no pins parsed from _zinit_pins in 00_init.zsh'
+    # Plugin loads: `zinit light|load owner/repo`, or an owner/repo item in a `for` list.
+    while IFS= read -r line; do
+        repo="$(grep -oE '[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+( \\)?$' <<<"$line" | sed 's/ \\$//')"
+        [[ -z "$repo" || "$repo" == */*.zsh ]] && continue
+        [[ "$line" == *"_zinit_pins[$repo]"* ]] || problems+=$'\n    unpinned plugin load: '"$repo"
+    done < <(grep -hvE '^\s*#' "$zdir"/*.zsh | awk '
+        /zinit (light|load) / { print; next }
+        infor { print; if ($0 !~ /\\$/) infor = 0; next }
+        /zinit .* for \\$/ { infor = 1 }' | grep -v 'https://\|\${_omz}')
+    # Every pin referenced must exist.
+    while IFS= read -r key; do
+        grep -qxF "$key" <<<"$pins" || problems+=$'\n    no pin named: '"$key"
+    done < <(grep -hoE '_zinit_pins\[[^]]+\]' "$zdir"/*.zsh | sed -E 's/_zinit_pins\[(.*)\]/\1/' | sort -u)
+    # Oh My Zsh shorthands always fetch master.
+    grep -hvE '^\s*#' "$zdir"/*.zsh | grep -qE 'OMZ[PL]?::' && problems+=$'\n    OMZ:: shorthand loads Oh My Zsh master; use the pinned ${_omz} URL'
+
+    if [[ -z "$problems" ]]; then
+        echo -e "  ${GREEN}✓${NC} Every zinit plugin loads at a pinned commit"
+        return 0
+    fi
+    echo -e "  ${RED}✗${NC} zinit pin problems:$problems"
+    return 1
+}
+
 main() {
     print_header
 
@@ -263,6 +296,11 @@ main() {
     # Test aliases
     total=$((total + 1))
     if ! test_aliases_availability; then
+        failures=$((failures + 1))
+    fi
+
+    total=$((total + 1))
+    if ! test_zinit_pins; then
         failures=$((failures + 1))
     fi
 

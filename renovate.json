@@ -1,6 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
+  "description": "Wait a week before adopting a release, so compromised or broken releases are usually pulled first; vulnerability fixes skip the wait",
+  "minimumReleaseAge": "7 days",
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null
+  },
   "customDatasources": {
     "gcloud": {
       "defaultRegistryUrlTemplate": "https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json",
@@ -26,6 +32,25 @@
       "datasourceTemplate": "custom.gcloud",
       "depNameTemplate": "gcloud",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Container test image, pinned by digest like the CI images",
+      "managerFilePatterns": ["/^tests/test-install-container\\.sh$/"],
+      "matchStrings": [
+        "IMAGE=\"\\$\\{IMAGE:-(?<depName>[^:]+):(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\\}\""
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "zinit, zsh plugins and Oh My Zsh, pinned to commits in _zinit_pins",
+      "managerFilePatterns": ["/^configs/\\.zshrc\\.d/00_init\\.zsh$/"],
+      "matchStrings": [
+        "# renovate: branch=(?<currentValue>\\S+)\\n\\s+(?<depName>[\\w.-]+/[\\w.-]+) (?<currentDigest>[0-9a-f]{40})"
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
     }
   ],
   "packageRules": [
@@ -33,6 +58,19 @@
       "description": "mise ships near-daily; take it monthly",
       "matchDepNames": ["jdx/mise"],
       "schedule": ["* 0-5 1 * *"]
+    },
+    {
+      "description": "The gcloud feed has no release timestamps, which minimumReleaseAge requires",
+      "matchDatasources": ["custom.gcloud"],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "Shell code pins track branch heads (Oh My Zsh moves daily) and git-refs has no timestamps for minimumReleaseAge: one reviewed MR a month instead",
+      "matchDatasources": ["git-refs"],
+      "matchFileNames": ["configs/.zshrc.d/00_init.zsh"],
+      "groupName": "zsh plugins",
+      "schedule": ["* 0-5 1 * *"],
+      "minimumReleaseAge": null
     }
   ]
 }

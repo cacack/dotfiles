@@ -14,7 +14,7 @@ My various configuration files to make ${HOME} home.
 |---|---|---|
 | CLI, no root (headless/remote) | `curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh \| bash` | zsh, make, stow, git, curl, tar, unzip already installed |
 | CLI, with root | same command | sudo or root; installs whatever of the above is missing |
-| Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps (plus libatomic on Linux arm64) |
+| Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps, plus libatomic |
 
 - **CLI** runs `make install`: stows configs and installs the light tool set
   (shell utilities, prompt, tmux, Neovim with binary-only language servers;
@@ -73,7 +73,26 @@ the lockfiles committed.
 ```bash
 make tools       # install exactly what the lockfiles pin (also part of `make update`)
 make mise-lock   # regenerate both lockfiles after editing a config; commit them together
+make security    # scan the pinned tools for known vulnerabilities
 ```
+
+### Supply-Chain Defenses
+
+Each layer catches what the others miss:
+
+| Layer | Guards against | Where |
+|---|---|---|
+| Exact pins + per-platform checksums | a tampered or swapped download | `mise.lock`, `locked = true` |
+| Shell plugins, Oh My Zsh and zinit pinned to commits | a malicious push to a plugin repo reaching every shell | `_zinit_pins` in `configs/.zshrc.d/00_init.zsh` |
+| Signed provenance re-verified on install (GitHub attestations, SLSA, cosign) where upstream publishes it | a release not built by the project's CI | `locked_verify_provenance` in `config.toml` |
+| 7-day minimum release age (vulnerability fixes exempt) | a compromised release, usually yanked within days | `renovate.json` |
+| Lockfile check on every merge request | a bump that skips the lock | `mise-lock` CI job |
+| osv-scanner on the Python and npm tools' locked dependencies | known-vulnerable transitive packages | `make security-deps`, CI on merge requests + weekly |
+| Trivy on everything installed (HIGH/CRITICAL with a fix) | vulnerable Go modules, bundled npm/gems/Python packages | `make security-tools`, CI weekly |
+
+Accepted findings live in `.osv-scanner.toml` and `.trivyignore.yaml`, each with a
+reason and an expiry date, so they come back for review. The weekly scans need a
+pipeline schedule in GitLab (Build > Pipeline schedules).
 
 ### Optional Customization
 

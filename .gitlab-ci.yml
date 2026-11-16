@@ -2,7 +2,7 @@
 # Renovate bumps only the configs, so its merge requests fail here until
 # `make mise-lock` is run on the branch and the lockfiles are committed.
 mise-lock:
-  image: ubuntu:24.04
+  image: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
   rules:
     - changes:
         - configs/.config/mise/**/*
@@ -15,3 +15,37 @@ mise-lock:
     # The desktop pypi tools resolve their locked dependencies with python.
     - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install python
     - make mise-lock-check
+
+# Known vulnerabilities in the pypi tools' locked dependency trees (uv.lock).
+# Needs no tool install, so it runs on merge requests and on the schedule.
+security-deps:
+  image: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+        - configs/.config/mise/**/*
+        - .osv-scanner.toml
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq ca-certificates curl git make >/dev/null
+  script:
+    - make install-mise
+    - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install aqua:google/osv-scanner
+    - make security-deps
+
+# Installs the whole desktop tool set and scans it with Trivy. Too heavy for
+# every merge request: runs from a pipeline schedule (Build > Pipeline
+# schedules, weekly) or a manual "Run pipeline". It makes ~60 GitHub downloads
+# plus provenance checks; if runs hit GitHub's anonymous rate limit, add a
+# read-only GITHUB_TOKEN as a masked CI/CD variable (mise uses it).
+security-tools:
+  image: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq ca-certificates curl git make tar unzip xz-utils libatomic1 >/dev/null
+  script:
+    - make install-mise
+    - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install
+    - make security-tools

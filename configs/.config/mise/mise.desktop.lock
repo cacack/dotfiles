@@ -2,6 +2,184 @@
 
 lockfile_version = 4
 
+[[tools."aqua:aquasecurity/trivy"]]
+version = "0.76.2"
+backend = "aqua:aquasecurity/trivy"
+specifiers = ["0.76.2"]
+
+[tools."aqua:aquasecurity/trivy"."platforms.linux-arm64"]
+checksum = "sha256:ab9d51f86e6a5fb936f605faff6b593ac51bc378fff4d3e8b9d58358b9c367c3"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.2/trivy_0.76.2_Linux-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/713401022"
+provenance = "cosign"
+
+[tools."aqua:aquasecurity/trivy"."platforms.linux-x64"]
+checksum = "sha256:bc0fc726e017b8927a62b2d3531d7a84ee01769daf5c99ed866dced54089fdbf"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.2/trivy_0.76.2_Linux-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/713401165"
+provenance = "cosign"
+
+[tools."aqua:aquasecurity/trivy"."platforms.macos-arm64"]
+checksum = "sha256:ae7ea358326960406b703c77b2ac490190797d80b306b5b50c2a27221da0a5b8"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.2/trivy_0.76.2_macOS-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/713400755"
+provenance = "cosign"
+
+[[tools."aqua:astral-sh/ruff"]]
+version = "0.17.5"
+backend = "aqua:astral-sh/ruff"
+specifiers = ["0.17.5"]
+
+[tools."aqua:astral-sh/ruff"."platforms.linux-arm64"]
+checksum = "sha256:4d959d4322a8cd3effe11e9fc6743da1dbb41cd0b2476e433b6e6bfd9a69b626"
+url = "https://github.com/astral-sh/ruff/releases/download/0.17.5/ruff-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/ruff/releases/assets/740496838"
+provenance = "github-attestations"
+
+[tools."aqua:astral-sh/ruff"."platforms.linux-x64"]
+checksum = "sha256:7d261fc981a784668e19e9fa6ad437bfd95b67f2dc263fc1eab87d54d72fcc90"
+url = "https://github.com/astral-sh/ruff/releases/download/0.17.5/ruff-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/ruff/releases/assets/740497139"
+provenance = "github-attestations"
+
+[tools."aqua:astral-sh/ruff"."platforms.macos-arm64"]
+checksum = "sha256:4ffadabec5c5fee1ddb2eecac0787ffe6fa18c665b73da9258b84211f40c5829"
+url = "https://github.com/astral-sh/ruff/releases/download/0.17.5/ruff-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/ruff/releases/assets/740496814"
+provenance = "github-attestations"
+
+[[tools."aqua:google/osv-scanner"]]
+version = "2.7.1"
+backend = "aqua:google/osv-scanner"
+specifiers = ["2.7.1"]
+
+[tools."aqua:google/osv-scanner"."platforms.linux-arm64"]
+checksum = "sha256:983d22fbad9724514e3fcc6acc83b5fa64c5ffa6b0d9f510028f22c1b223ff81"
+checksum_source = "mise-versions"
+url = "https://github.com/google/osv-scanner/releases/download/v2.7.1/osv-scanner_linux_arm64"
+url_api = "https://api.github.com/repos/google/osv-scanner/releases/assets/726165576"
+
+[tools."aqua:google/osv-scanner"."platforms.linux-x64"]
+checksum = "sha256:fb7dab19a8bd9bbe5c3189f09d4b7ee1820c9553a23bac202648a56efd2f6ee8"
+checksum_source = "mise-versions"
+url = "https://github.com/google/osv-scanner/releases/download/v2.7.1/osv-scanner_linux_amd64"
+url_api = "https://api.github.com/repos/google/osv-scanner/releases/assets/726165286"
+
+[tools."aqua:google/osv-scanner"."platforms.macos-arm64"]
+checksum = "sha256:b22c02877a811c8f78956e8643efa554932b7378f590d13f8e97d4e9448a29f3"
+checksum_source = "mise-versions"
+url = "https://github.com/google/osv-scanner/releases/download/v2.7.1/osv-scanner_darwin_arm64"
+url_api = "https://api.github.com/repos/google/osv-scanner/releases/assets/726165290"
+
+[[tools."aqua:hashicorp/terraform-ls"]]
+version = "0.39.1"
+backend = "aqua:hashicorp/terraform-ls"
+specifiers = ["0.39.1"]
+
+[tools."aqua:hashicorp/terraform-ls"."platforms.linux-arm64"]
+checksum = "sha256:a72a6d9f72580cfc30cc06d3c973fd5f55790f62e3ddb195998435070d9af36d"
+url = "https://releases.hashicorp.com/terraform-ls/0.39.1/terraform-ls_0.39.1_linux_arm64.zip"
+
+[tools."aqua:hashicorp/terraform-ls"."platforms.linux-x64"]
+checksum = "sha256:fe2a158e4a1a8ec8047dae9e06c439b468412aa579929ba28b2e1258cedef9c0"
+url = "https://releases.hashicorp.com/terraform-ls/0.39.1/terraform-ls_0.39.1_linux_amd64.zip"
+
+[tools."aqua:hashicorp/terraform-ls"."platforms.macos-arm64"]
+checksum = "sha256:07748aa989fc3b9f6e4538ff83bc2e607ebc20c7587ce6556ae555d631e70b1b"
+url = "https://releases.hashicorp.com/terraform-ls/0.39.1/terraform-ls_0.39.1_darwin_arm64.zip"
+
+[[tools."aqua:mvdan/gofumpt"]]
+version = "0.12.0"
+backend = "aqua:mvdan/gofumpt"
+specifiers = ["0.12.0"]
+
+[tools."aqua:mvdan/gofumpt"."platforms.linux-arm64"]
+checksum = "sha256:4322f081241ab0618356aa5921a8c110e4c7acfc17175cc15dc57b2f4a4b652d"
+checksum_source = "mise-versions"
+url = "https://github.com/mvdan/gofumpt/releases/download/v0.12.0/gofumpt_v0.12.0_linux_arm64"
+url_api = "https://api.github.com/repos/mvdan/gofumpt/releases/assets/549473501"
+
+[tools."aqua:mvdan/gofumpt"."platforms.linux-x64"]
+checksum = "sha256:3bc4fcad497439918f5f56d4987de4709a99da0a355e6bec13a7278532b01d38"
+checksum_source = "mise-versions"
+url = "https://github.com/mvdan/gofumpt/releases/download/v0.12.0/gofumpt_v0.12.0_linux_amd64"
+url_api = "https://api.github.com/repos/mvdan/gofumpt/releases/assets/549473521"
+
+[tools."aqua:mvdan/gofumpt"."platforms.macos-arm64"]
+checksum = "sha256:1a3e325b956ed12c21031d9e13382bd51a4fabb57de8d40428819b9583c3cfb9"
+checksum_source = "mise-versions"
+url = "https://github.com/mvdan/gofumpt/releases/download/v0.12.0/gofumpt_v0.12.0_darwin_arm64"
+url_api = "https://api.github.com/repos/mvdan/gofumpt/releases/assets/549473536"
+
+[[tools."aqua:psf/black"]]
+version = "26.10.1"
+backend = "aqua:psf/black"
+specifiers = ["26.10.1"]
+
+[tools."aqua:psf/black"."platforms.linux-arm64"]
+checksum = "sha256:a470befedf349ea38391b00f0a10b84bdca645cc9df0cd5db70d4cf7a4efa2b5"
+checksum_source = "mise-versions"
+url = "https://github.com/psf/black/releases/download/26.10.1/black_linux-arm"
+url_api = "https://api.github.com/repos/psf/black/releases/assets/626959069"
+
+[tools."aqua:psf/black"."platforms.linux-x64"]
+checksum = "sha256:94324773c2d112e7a4d62052ac9d7ed811ff1c826599f6d394e7b65d16ab1278"
+checksum_source = "mise-versions"
+url = "https://github.com/psf/black/releases/download/26.10.1/black_linux"
+url_api = "https://api.github.com/repos/psf/black/releases/assets/626959177"
+
+[tools."aqua:psf/black"."platforms.macos-arm64"]
+checksum = "sha256:1336c90c027f854e9806ca8476c4f4ce84d3a3eb4bc5495797f0446ee253d2c2"
+checksum_source = "mise-versions"
+url = "https://github.com/psf/black/releases/download/26.10.1/black_macos"
+url_api = "https://api.github.com/repos/psf/black/releases/assets/626959768"
+
+[[tools."aqua:rust-lang/rust-analyzer"]]
+version = "2026-11-09"
+backend = "aqua:rust-lang/rust-analyzer"
+specifiers = ["2026-11-09"]
+
+[tools."aqua:rust-lang/rust-analyzer"."platforms.linux-arm64"]
+checksum = "sha256:813ca3cec78ac6dab99c7bc9d51e63578f6d401b994ecf29cc0dcad86f9b2cd4"
+checksum_source = "mise-versions"
+url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-11-09/rust-analyzer-aarch64-unknown-linux-gnu.gz"
+url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/726381032"
+
+[tools."aqua:rust-lang/rust-analyzer"."platforms.linux-x64"]
+checksum = "sha256:8c039b25cb338b3970c731646677a4c9d4e9dd7a92c9ab9ae459c71467fbf4a9"
+checksum_source = "mise-versions"
+url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-11-09/rust-analyzer-x86_64-unknown-linux-gnu.gz"
+url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/726381773"
+
+[tools."aqua:rust-lang/rust-analyzer"."platforms.macos-arm64"]
+checksum = "sha256:e43a65008f8f4291320f33c0545dd577ad7623a7407b584a27155833d3722dfb"
+checksum_source = "mise-versions"
+url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-11-09/rust-analyzer-aarch64-apple-darwin.gz"
+url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/726380774"
+
+[[tools."aqua:terraform-linters/tflint"]]
+version = "0.66.0"
+backend = "aqua:terraform-linters/tflint"
+specifiers = ["0.66.0"]
+
+[tools."aqua:terraform-linters/tflint"."platforms.linux-arm64"]
+checksum = "sha256:1105a0a5ddee7cdac7957a3475571a946b839192ea1bc0c722c6c4686001067e"
+url = "https://github.com/terraform-linters/tflint/releases/download/v0.66.0/tflint_linux_arm64.zip"
+url_api = "https://api.github.com/repos/terraform-linters/tflint/releases/assets/724463994"
+provenance = "github-attestations"
+
+[tools."aqua:terraform-linters/tflint"."platforms.linux-x64"]
+checksum = "sha256:22be11cadc25cd02401e94c0ccc91aa63467debb8485c2a755d98f4c0a9d1e2e"
+url = "https://github.com/terraform-linters/tflint/releases/download/v0.66.0/tflint_linux_amd64.zip"
+url_api = "https://api.github.com/repos/terraform-linters/tflint/releases/assets/724464090"
+provenance = "github-attestations"
+
+[tools."aqua:terraform-linters/tflint"."platforms.macos-arm64"]
+checksum = "sha256:859b26af07ead7e65cee7eec9d050b2e2571dc28395b7a39191cae088cd67803"
+url = "https://github.com/terraform-linters/tflint/releases/download/v0.66.0/tflint_darwin_arm64.zip"
+url_api = "https://api.github.com/repos/terraform-linters/tflint/releases/assets/724463988"
+provenance = "github-attestations"
+
 [[tools.aws-cli]]
 version = "2.40.3"
 backend = "aqua:aws/aws-cli"
@@ -52,6 +230,23 @@ checksum_source = "mise-versions"
 url = "https://github.com/bitwarden/clients/releases/download/cli-v2026.10.1/bw-macos-arm64-2026.10.1.zip"
 url_api = "https://api.github.com/repos/bitwarden/clients/releases/assets/688476006"
 
+[[tools.deno]]
+version = "2.9.8"
+backend = "core:deno"
+specifiers = ["2.9.8"]
+
+[tools.deno."platforms.linux-arm64"]
+checksum = "sha256:2664fcd6a58a37676449e5750ef2140cd46c18f2bbc08be0e03cbcb26ca4de22"
+url = "https://dl.deno.land/release/v2.9.8/deno-aarch64-unknown-linux-gnu.zip"
+
+[tools.deno."platforms.linux-x64"]
+checksum = "sha256:a39762429792913fe762ef0b59c9cba41dbd38195984da99221a193b13d97b40"
+url = "https://dl.deno.land/release/v2.9.8/deno-x86_64-unknown-linux-gnu.zip"
+
+[tools.deno."platforms.macos-arm64"]
+checksum = "sha256:5882caa6c9b7ab7adb06f23ec1894ac5bec0b1a5df1195157f75829a0d3cb651"
+url = "https://dl.deno.land/release/v2.9.8/deno-aarch64-apple-darwin.zip"
+
 [[tools.git-filter-repo]]
 version = "2.47.0"
 backend = "pypi:git-filter-repo"
@@ -75,6 +270,29 @@ checksum_source = "mise-versions"
 url = "https://github.com/david-strejc/claude-powerline-rust/releases/download/v1.2.0/claude-powerline-macos-arm64.tar.gz"
 url_api = "https://api.github.com/repos/david-strejc/claude-powerline-rust/releases/assets/285929305"
 
+[[tools."github:incu6us/goimports-reviser"]]
+version = "3.13.2"
+backend = "github:incu6us/goimports-reviser"
+specifiers = ["3.13.2"]
+
+[tools."github:incu6us/goimports-reviser"."platforms.linux-arm64"]
+checksum = "sha256:d06aabbbfc9a39f153598c1affc7fae264cddf531460961acbad9883dee78834"
+checksum_source = "mise-versions"
+url = "https://github.com/incu6us/goimports-reviser/releases/download/v3.13.2/goimports-reviser_3.13.2_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/incu6us/goimports-reviser/releases/assets/534970124"
+
+[tools."github:incu6us/goimports-reviser"."platforms.linux-x64"]
+checksum = "sha256:a358c8030c55e95bb567c8d5ccc826ff88f858a16d4fb0a4a981bd772c96d469"
+checksum_source = "mise-versions"
+url = "https://github.com/incu6us/goimports-reviser/releases/download/v3.13.2/goimports-reviser_3.13.2_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/incu6us/goimports-reviser/releases/assets/534970122"
+
+[tools."github:incu6us/goimports-reviser"."platforms.macos-arm64"]
+checksum = "sha256:90d3f361659bdd5f8b985055f8469f88ce6e195bfa39682afaf56b52c5b67cf8"
+checksum_source = "mise-versions"
+url = "https://github.com/incu6us/goimports-reviser/releases/download/v3.13.2/goimports-reviser_3.13.2_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/incu6us/goimports-reviser/releases/assets/534970125"
+
 [[tools.go]]
 version = "1.27.4"
 backend = "core:go"
@@ -91,6 +309,11 @@ url = "https://dl.google.com/go/go1.27.4.linux-amd64.tar.gz"
 [tools.go."platforms.macos-arm64"]
 checksum = "sha256:91a44a2b8a716600ad94a4f143e156116620db8828086a6e3602291be9bd0bb4"
 url = "https://dl.google.com/go/go1.27.4.darwin-arm64.tar.gz"
+
+[[tools."go:golang.org/x/tools/gopls"]]
+version = "0.24.0"
+backend = "go:golang.org/x/tools/gopls"
+specifiers = ["0.24.0"]
 
 [[tools."http:gcloud"]]
 version = "593.0.0"
@@ -125,6 +348,54 @@ url = "https://nodejs.org/dist/v26.13.1/node-v26.13.1-linux-x64.tar.gz"
 [tools.node."platforms.macos-arm64"]
 checksum = "sha256:aec2514ea1ceb2ba52455e9ec65986f6749a06dd759e5db2a72e6889668c9735"
 url = "https://nodejs.org/dist/v26.13.1/node-v26.13.1-darwin-arm64.tar.gz"
+
+[[tools."npm:bash-language-server"]]
+version = "5.8.1"
+aube = { path = "locks/mise.desktop/npm-bash-language-server/5.8.1", digest = "sha256:c211b6123e6e8967e02b459ea1721e5bb36cd9f4c200f2523ae1339118087bfa" }
+backend = "npm:bash-language-server"
+specifiers = ["5.8.1"]
+
+[[tools."npm:prettier"]]
+version = "3.10.1"
+aube = { path = "locks/mise.desktop/npm-prettier/3.10.1", digest = "sha256:2d1e8d35e9c42e9df167e305f2f8d5fc6fa8ab982cf1070a7e5148d73b5c5534" }
+backend = "npm:prettier"
+specifiers = ["3.10.1"]
+
+[[tools."npm:pyright"]]
+version = "1.1.414"
+aube = { path = "locks/mise.desktop/npm-pyright/1.1.414", digest = "sha256:69cd62e5613c907964fbb78b05a85eb9d12a503285d716f6529144cc884cf656" }
+backend = "npm:pyright"
+specifiers = ["1.1.414"]
+
+[[tools."npm:typescript"]]
+version = "6.0.3"
+aube = { path = "locks/mise.desktop/npm-typescript/6.0.3", digest = "sha256:bfd4f60761264c1fe455bfca4cc3841cabe82be4d3aa7c85d578f29f6a674804" }
+backend = "npm:typescript"
+specifiers = ["6.0.3"]
+
+[[tools."npm:typescript-language-server"]]
+version = "6.1.0"
+aube = { path = "locks/mise.desktop/npm-typescript-language-server/6.1.0", digest = "sha256:f86c7cfd9fe629ca833f239e754750b6d0cf1dd9524941638366bcaca28b85fe" }
+backend = "npm:typescript-language-server"
+specifiers = ["6.1.0"]
+
+[[tools."npm:vscode-langservers-extracted"]]
+version = "4.10.0"
+aube = { path = "locks/mise.desktop/npm-vscode-langservers-extracted/4.10.0", digest = "sha256:cfcde76c1138b72ec42fbaa9ffa06cc0e4a64bb3343ae5399e3a54d8b9a15de6" }
+backend = "npm:vscode-langservers-extracted"
+specifiers = ["4.10.0"]
+
+[[tools."npm:yaml-language-server"]]
+version = "2.0.0"
+aube = { path = "locks/mise.desktop/npm-yaml-language-server/2.0.0", digest = "sha256:c3af71936aec4dd7835182cd5072c200f346781557fafa6bc5b2eee0f4904a3a" }
+backend = "npm:yaml-language-server"
+specifiers = ["2.0.0"]
+
+[[tools."pypi:mdformat"]]
+version = "1.0.0"
+backend = "pypi:mdformat"
+specifiers = ["1.0.0"]
+uv = { path = "locks/mise.desktop/pypi-mdformat/1.0.0", digest = "sha256:34525a761757eb130d4e0993a14545a7f6af5ae3a7b7ed66e6c5806fe02bce6a" }
 
 [[tools."pypi:poetry"]]
 version = "2.5.1"
@@ -186,26 +457,6 @@ specifiers = ["1.100.0"]
 [tools.rust.options]
 components = "rustfmt"
 profile = "minimal"
-
-[[tools.s5cmd]]
-version = "2.3.0"
-backend = "aqua:peak/s5cmd"
-specifiers = ["2.3.0"]
-
-[tools.s5cmd."platforms.linux-arm64"]
-checksum = "sha256:1439f0d00ecedcd2a2f1f2c6749bbb0152b2257bf5086f29646ec8ae38798e24"
-url = "https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/peak/s5cmd/releases/assets/213717270"
-
-[tools.s5cmd."platforms.linux-x64"]
-checksum = "sha256:de0fdbfa3aceae55e069ba81a0fc17b2026567637603734a387b2fca06c299b4"
-url = "https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-64bit.tar.gz"
-url_api = "https://api.github.com/repos/peak/s5cmd/releases/assets/213717269"
-
-[tools.s5cmd."platforms.macos-arm64"]
-checksum = "sha256:ae007bc96276f498ae3c1fb017e57630cf93ef260cfe7e97b365522e240c973f"
-url = "https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_macOS-arm64.tar.gz"
-url_api = "https://api.github.com/repos/peak/s5cmd/releases/assets/213717274"
 
 [[tools.uv]]
 version = "0.13.8"
