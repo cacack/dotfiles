@@ -1,0 +1,38 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customDatasources": {
+    "gcloud": {
+      "defaultRegistryUrlTemplate": "https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json",
+      "transformTemplates": ["{\"releases\": [{\"version\": version}]}"]
+    }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "mise itself, pinned in .make.d/mise.mk",
+      "managerFilePatterns": ["/^\\.make\\.d/mise\\.mk$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\nMISE_VERSION := (?<currentValue>\\S+)"
+      ]
+    },
+    {
+      "customType": "regex",
+      "description": "gcloud, installed through mise's http backend",
+      "managerFilePatterns": ["/^configs/\\.config/mise/config\\.toml$/"],
+      "matchStrings": [
+        "\\[tools\\.\"http:gcloud\"\\]\\nversion = \"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "custom.gcloud",
+      "depNameTemplate": "gcloud",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "mise ships near-daily; take it monthly",
+      "matchDepNames": ["jdx/mise"],
+      "schedule": ["* 0-5 1 * *"]
+    }
+  ]
+}
