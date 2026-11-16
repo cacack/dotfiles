@@ -1,6 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
+  "description": "Wait a week before adopting a release, so compromised or broken releases are usually pulled first; vulnerability fixes skip the wait",
+  "minimumReleaseAge": "7 days",
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null
+  },
   "customDatasources": {
     "gcloud": {
       "defaultRegistryUrlTemplate": "https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json",
@@ -33,6 +39,11 @@
       "description": "mise ships near-daily; take it monthly",
       "matchDepNames": ["jdx/mise"],
       "schedule": ["* 0-5 1 * *"]
+    },
+    {
+      "description": "The gcloud feed has no release timestamps, which minimumReleaseAge requires",
+      "matchDatasources": ["custom.gcloud"],
+      "minimumReleaseAge": null
     }
   ]
 }
