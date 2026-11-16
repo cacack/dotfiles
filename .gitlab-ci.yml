@@ -2,7 +2,7 @@
 # Renovate bumps only the configs, so its merge requests fail here until
 # `make mise-lock` is run on the branch and the lockfiles are committed.
 mise-lock:
-  image: ubuntu:24.04
+  image: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
   rules:
     - changes:
         - configs/.config/mise/**/*
@@ -19,7 +19,7 @@ mise-lock:
 # Known vulnerabilities in the pypi tools' locked dependency trees (uv.lock).
 # Needs no tool install, so it runs on merge requests and on the schedule.
 security-deps:
-  image: ubuntu:24.04
+  image: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -37,7 +37,7 @@ security-deps:
 # every merge request: runs from a pipeline schedule (Build > Pipeline
 # schedules, weekly) or a manual "Run pipeline".
 security-tools:
-  image: ubuntu:24.04
+  image: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
   before_script:

@@ -32,6 +32,15 @@
       "datasourceTemplate": "custom.gcloud",
       "depNameTemplate": "gcloud",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Container test image, pinned by digest like the CI images",
+      "managerFilePatterns": ["/^tests/test-install-container\\.sh$/"],
+      "matchStrings": [
+        "IMAGE=\"\\$\\{IMAGE:-(?<depName>[^:]+):(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\\}\""
+      ],
+      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
