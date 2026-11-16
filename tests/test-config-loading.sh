@@ -210,9 +210,11 @@ test_aliases_availability() {
 #!/usr/bin/env zsh
 export HOME="$temp_dir"
 
-# Mock the commands that aliases depend on
-lsd() { echo "lsd mock"; }
-nvim() { echo "nvim mock"; }
+# Mock the commands that aliases depend on. Stub executables, not functions:
+# the aliases test \$+commands[...], which only sees PATH.
+mkdir -p "\$HOME/bin"
+for cmd in lsd nvim; do printf '#!/bin/sh\n' > "\$HOME/bin/\$cmd"; chmod +x "\$HOME/bin/\$cmd"; done
+export PATH="\$HOME/bin:\$PATH"
 
 # Source aliases
 source "$DOTFILES_DIR/configs/.zshrc.d/20_aliases.zsh"
