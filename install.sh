@@ -19,7 +19,7 @@ for arg in "$@"; do
 done
 
 # Repository configuration
-repo_url="https://gitlab.com/cacack/dotfiles.git"
+repo_url="https://github.com/cacack/dotfiles.git"
 dotfiles_dir="${HOME}/.dotfiles"
 
 # Logging functions

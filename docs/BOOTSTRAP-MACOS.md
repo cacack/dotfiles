@@ -7,7 +7,7 @@ This guide walks through setting up this dotfiles repository on a fresh Mac from
 The installation script now automatically installs all prerequisites. Just run:
 
 ```bash
-curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/cacack/dotfiles/main/install.sh | bash
 ```
 
 The script will:
@@ -84,13 +84,13 @@ Now that prerequisites are met, install the dotfiles:
 
 **Option A: Using the install script**
 ```bash
-curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/cacack/dotfiles/main/install.sh | bash
 ```
 
 **Option B: Manual installation**
 ```bash
 # Clone the repository
-git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
+git clone https://github.com/cacack/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 
 # Run basic installation
@@ -206,7 +206,7 @@ If you prefer a local Homebrew installation in `~/.local/opt/homebrew` instead o
 
 ```bash
 # Clone the repository first
-git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
+git clone https://github.com/cacack/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 
 # Install Homebrew locally
@@ -228,7 +228,7 @@ When setting up a new Mac with this repo already configured:
 
 ```bash
 # Install dotfiles (prerequisites are automatically installed)
-curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/cacack/dotfiles/main/install.sh | bash
 
 # Install desktop components (fonts, GUI apps, settings)
 cd ~/.dotfiles

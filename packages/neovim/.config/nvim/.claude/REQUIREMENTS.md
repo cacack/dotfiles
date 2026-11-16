@@ -27,6 +27,6 @@ This repository follows [Conventional Commits](https://www.conventionalcommits.o
 - **fix**: Bug fixes or security vulnerability fixes
 - **refactor**: Code changes without altering functionality
 - **docs**: Documentation changes
-- **ci**: Pipeline, tests, or GitLab configuration changes
+- **ci**: Pipeline, tests, or CI configuration changes
 
 Use `!` at the end of type for breaking changes (e.g., `feat!:`).

@@ -12,7 +12,7 @@ My various configuration files to make ${HOME} home.
 
 | Path | Command | Needs |
 |---|---|---|
-| CLI, no root (headless/remote) | `curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh \| bash` | zsh, make, stow, git, curl, tar, unzip already installed |
+| CLI, no root (headless/remote) | `curl -sSL https://raw.githubusercontent.com/cacack/dotfiles/main/install.sh \| bash` | zsh, make, stow, git, curl, tar, unzip already installed |
 | CLI, with root | same command | sudo or root; installs whatever of the above is missing |
 | Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps, plus libatomic |
 
@@ -45,7 +45,7 @@ Log out and back in to activate the new setup (zinit will install plugins automa
 ### Manual Install (Optional)
 
 ```bash
-git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
+git clone https://github.com/cacack/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 make install    # CLI
 make desktop    # or: full desktop
@@ -66,7 +66,7 @@ to pick its language servers (`lua/configs/tools.lua`). Without it a machine is
 light: **desktops set up before mise must run `make desktop` once**, or they lose
 their runtimes, cloud CLIs and GUI app updates on the next `make update`.
 
-Renovate opens merge requests to bump the pins. A bump only changes the config,
+Renovate opens pull requests to bump the pins. A bump only changes the config,
 so the `mise-lock` CI job fails until `make mise-lock` is run on the branch and
 the lockfiles committed.
 
@@ -86,13 +86,13 @@ Each layer catches what the others miss:
 | Shell plugins, Oh My Zsh and zinit pinned to commits | a malicious push to a plugin repo reaching every shell | `_zinit_pins` in `configs/.zshrc.d/00_init.zsh` |
 | Signed provenance re-verified on install (GitHub attestations, SLSA, cosign) where upstream publishes it | a release not built by the project's CI | `locked_verify_provenance` in `config.toml` |
 | 7-day minimum release age (vulnerability fixes exempt) | a compromised release, usually yanked within days | `renovate.json` |
-| Lockfile check on every merge request | a bump that skips the lock | `mise-lock` CI job |
-| osv-scanner on the Python and npm tools' locked dependencies | known-vulnerable transitive packages | `make security-deps`, CI on merge requests + weekly |
+| Lockfile check on every pull request | a bump that skips the lock | `mise-lock` CI job |
+| osv-scanner on the Python and npm tools' locked dependencies | known-vulnerable transitive packages | `make security-deps`, CI on pull requests + weekly |
 | Trivy on everything installed (HIGH/CRITICAL with a fix) | vulnerable Go modules, bundled npm/gems/Python packages | `make security-tools`, CI weekly |
 
 Accepted findings live in `.osv-scanner.toml` and `.trivyignore.yaml`, each with a
-reason and an expiry date, so they come back for review. The weekly scans need a
-pipeline schedule in GitLab (Build > Pipeline schedules).
+reason and an expiry date, so they come back for review. CI is
+`.github/workflows/supply-chain.yml`; the weekly scans run on its schedule.
 
 ### Optional Customization
 
