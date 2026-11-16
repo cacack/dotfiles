@@ -12,11 +12,6 @@ setup-git-config:
 	ln -nsf $(DOTFILES_CONFIG_DIR)/dot.config/git ${HOME}/.config/git.d
 	ln -nsf $(DOTFILES_CONFIG_DIR)/dot.gitconfig ${HOME}/.gitconfig
 
-setup-git-filter-repo:
-	@echo
-	curl -o $(USER_BIN_DIR)/git-filter-repo https://raw.githubusercontent.com/newren/git-filter-repo/main/git-filter-repo
-	chmod 755 $(USER_BIN_DIR)/git-filter-repo
-
 ################################################################################
 #SETUP +=
 

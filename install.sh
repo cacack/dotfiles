@@ -9,6 +9,15 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Install target: `make install` (CLI) by default, `make desktop` with --desktop
+make_target="install"
+for arg in "$@"; do
+    case "${arg}" in
+        --desktop) make_target="desktop" ;;
+        *) echo "Usage: install.sh [--desktop]" >&2; exit 1 ;;
+    esac
+done
+
 # Repository configuration
 repo_url="https://gitlab.com/cacack/dotfiles.git"
 dotfiles_dir="${HOME}/.dotfiles"
@@ -118,61 +127,60 @@ install_macos_prereqs() {
     fi
 }
 
-# Install prerequisites for Linux
+# Install prerequisites for Linux. The package manager is only used when
+# something is missing; without root or sudo, report what an admin must add.
 install_linux_prereqs() {
-    info "Installing Linux prerequisites..."
+    info "Checking Linux prerequisites..."
 
-    # Detect package manager
-    if command_exists apt-get; then
-        PKG_MANAGER="apt-get"
-        PKG_UPDATE="sudo apt-get update"
-        PKG_INSTALL="sudo apt-get install -y"
-    elif command_exists dnf; then
-        PKG_MANAGER="dnf"
-        PKG_UPDATE="sudo dnf check-update || true"
-        PKG_INSTALL="sudo dnf install -y"
-    elif command_exists yum; then
-        PKG_MANAGER="yum"
-        PKG_UPDATE="sudo yum check-update || true"
-        PKG_INSTALL="sudo yum install -y"
-    elif command_exists pacman; then
-        PKG_MANAGER="pacman"
-        PKG_UPDATE="sudo pacman -Sy"
-        PKG_INSTALL="sudo pacman -S --noconfirm"
-    elif command_exists zypper; then
-        PKG_MANAGER="zypper"
-        PKG_UPDATE="sudo zypper refresh"
-        PKG_INSTALL="sudo zypper install -y"
-    else
-        error "No supported package manager found (apt, dnf, yum, pacman, zypper)"
-        error "Please install zsh, make, stow, and git manually"
-        exit 1
+    local missing=()
+    local pkg
+    # Keep in step with PREREQS in .make.d/10_base.mk.
+    for pkg in zsh make stow git curl tar unzip; do
+        command_exists "${pkg}" || missing+=("${pkg}")
+    done
+    # Node (desktop tool set) links against libatomic on linux-arm64.
+    local need_atomic=false
+    if [ "${make_target}" = "desktop" ] && [ "${ARCH}" = "aarch64" ] && ! ls /lib/*/libatomic.so.1 /usr/lib/*/libatomic.so.1 /usr/lib64/libatomic.so.1 2>/dev/null | grep -q .; then
+        need_atomic=true
     fi
 
-    info "Using package manager: ${PKG_MANAGER}"
+    if [ ${#missing[@]} -eq 0 ] && [ "${need_atomic}" = false ]; then
+        success "All prerequisites present"
+        return 0
+    fi
 
-    # Update package database
-    info "Updating package database..."
-    eval "${PKG_UPDATE}"
-
-    # Required packages
-    PACKAGES=("zsh" "make" "stow" "git")
-
-    # Check and install each package
-    for pkg in "${PACKAGES[@]}"; do
-        if ! command_exists "${pkg}"; then
-            info "Installing ${pkg}..."
-            eval "${PKG_INSTALL} ${pkg}"
-
-            if ! command_exists "${pkg}"; then
-                error "Failed to install ${pkg}"
-                exit 1
-            fi
-            success "${pkg} installed successfully"
+    local sudo=""
+    if [ "$(id -u)" -ne 0 ]; then
+        if command_exists sudo; then
+            sudo="sudo"
         else
-            success "${pkg} already installed"
+            ${need_atomic} && missing+=("libatomic")
+            error "Missing prerequisites: ${missing[*]}"
+            error "No root or sudo available: ask an admin to install them, then re-run."
+            exit 1
         fi
-    done
+    fi
+
+    local update install atomic_pkg
+    if command_exists apt-get; then
+        update="${sudo} apt-get update"; install="${sudo} apt-get install -y"; atomic_pkg="libatomic1"
+    elif command_exists dnf; then
+        update="${sudo} dnf check-update || true"; install="${sudo} dnf install -y"; atomic_pkg="libatomic"
+    elif command_exists pacman; then
+        update="${sudo} pacman -Sy"; install="${sudo} pacman -S --noconfirm"; atomic_pkg="gcc-libs"
+    elif command_exists zypper; then
+        update="${sudo} zypper refresh"; install="${sudo} zypper install -y"; atomic_pkg="libatomic1"
+    else
+        error "No supported package manager found (apt, dnf, pacman, zypper)"
+        error "Please install manually: ${missing[*]}"
+        exit 1
+    fi
+    ${need_atomic} && missing+=("${atomic_pkg}")
+
+    info "Installing: ${missing[*]}"
+    eval "${update}"
+    eval "${install} ${missing[*]}"
+    success "Prerequisites installed"
 }
 
 # Install prerequisites based on platform
@@ -213,7 +221,7 @@ run_installation() {
     info "Running dotfiles installation..."
     (
         cd "${dotfiles_dir}" || exit 1
-        make install
+        make "${make_target}"
     )
     success "Dotfiles installation complete!"
 }
@@ -239,10 +247,10 @@ main() {
     echo ""
     success "=== Installation Complete! ==="
     info "Next steps:"
-    info "  1. Restart your terminal or run: exec \$SHELL"
-    info "  2. Optional: Run 'make install-desktop' for GUI apps and fonts"
-    info "  3. Optional: Run 'make install-apps' for additional CLI tools"
-    info "  4. See 'make help' for more options"
+    info "  1. Make zsh your shell: chsh -s \"\$(command -v zsh)\""
+    info "     Without chsh rights, add to ~/.bash_profile: [ -x \"\$(command -v zsh)\" ] && exec zsh -l"
+    info "  2. Restart your terminal"
+    info "  3. See 'make help' for more options"
     echo ""
 }
 

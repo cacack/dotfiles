@@ -1,0 +1,17 @@
+# Fails when a pinned tool version is missing from the mise lockfiles.
+# Renovate bumps only the configs, so its merge requests fail here until
+# `make mise-lock` is run on the branch and the lockfiles are committed.
+mise-lock:
+  image: ubuntu:24.04
+  rules:
+    - changes:
+        - configs/.config/mise/**/*
+        - .make.d/mise.mk
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq ca-certificates curl git make >/dev/null
+  script:
+    - make install-mise
+    # The desktop pypi tools resolve their locked dependencies with python.
+    - MISE_ENV=desktop MISE_CONFIG_DIR="$CI_PROJECT_DIR/configs/.config/mise" "$HOME/.local/bin/mise" install python
+    - make mise-lock-check

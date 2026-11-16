@@ -1,0 +1,35 @@
+# Heavy tool set: language runtimes and the tools that need them, layered
+# over config.toml when MISE_ENV=desktop (set by `make desktop`). Locked in
+# mise.desktop.lock.
+
+[tools]
+aws-cli = "2.40.3"
+azure-cli = "2.92.0"
+bitwarden = "2026.10.1"
+git-filter-repo = "2.47.0"
+# No linux-arm64 build upstream.
+"github:david-strejc/claude-powerline-rust" = { version = "1.2.0", os = ["linux/x64", "macos/arm64"] }
+# go, node, python and rust also serve Neovim's desktop language servers
+# (lua/configs/tools.lua).
+go = "1.27.4"
+node = "26.13.1"
+"pypi:poetry" = "2.5.1"
+# Held at 3.13 until pyyaml ships 3.15 wheels; without them mise cannot lock
+# the dependencies of the Python tools (azure-cli, yamllint, poetry).
+python = "3.13.18"
+ruby = "4.0.9"
+rust = { version = "1.100.0", profile = "minimal", components = "rustfmt" }
+s5cmd = "2.3.0"
+uv = "0.13.8"
+yamllint = "1.38.0"
+
+# gcloud has no Renovate-supported mise backend; a custom Renovate manager in
+# renovate.json tracks the version below.
+[tools."http:gcloud"]
+version = "593.0.0"
+bin_path = "google-cloud-sdk/bin"
+
+[tools."http:gcloud".platforms]
+linux-arm64 = { url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-{{version}}-linux-arm.tar.gz" }
+linux-x64 = { url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-{{version}}-linux-x86_64.tar.gz" }
+macos-arm64 = { url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-{{version}}-darwin-arm.tar.gz" }

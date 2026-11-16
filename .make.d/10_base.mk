@@ -1,6 +1,25 @@
 CLEAN += clean-stow clean-bashrc
 UPDATE += zinit-update zinit-prune-completions
 
+# What `make install` needs but cannot provide itself. None of it needs root
+# once present. unzip is for Neovim's Mason; Node's linux-arm64 build also
+# needs libatomic.
+PREREQS := curl git make stow tar unzip zsh
+
+.PHONY: check-prereqs
+check-prereqs:
+	@missing=""; \
+	for cmd in $(PREREQS); do command -v $$cmd >/dev/null 2>&1 || missing="$$missing $$cmd"; done; \
+	if [ "$(MISE_ENV)" = "desktop" ] && [ "$(OS)" = "linux" ] && [ "$(ARCH)" = "aarch64" ] && \
+		! ls /lib/*/libatomic.so.1 /usr/lib/*/libatomic.so.1 /usr/lib64/libatomic.so.1 2>/dev/null | grep -q .; then \
+		missing="$$missing libatomic"; \
+	fi; \
+	if [ -n "$$missing" ]; then \
+		echo "ERROR: missing prerequisites:$$missing"; \
+		echo "Install them (or ask an admin to), then re-run."; \
+		exit 1; \
+	fi
+
 .PHONY: base-dirs
 base-dirs:
 	@echo

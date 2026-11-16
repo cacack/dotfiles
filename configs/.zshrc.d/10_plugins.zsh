@@ -2,10 +2,8 @@
 zinit light Aloxaf/fzf-tab
 zinit snippet OMZP::aws
 
-# Google Cloud SDK: set CLOUDSDK_HOME for Linux custom install path
-if [[ -d "${HOME}/.local/opt/google-cloud-sdk" ]]; then
-  export CLOUDSDK_HOME="${HOME}/.local/opt/google-cloud-sdk"
-fi
+# Google Cloud SDK: point the gcloud snippet at mise's install (bin/gcloud -> SDK root)
+(( $+commands[gcloud] )) && export CLOUDSDK_HOME="${commands[gcloud]:A:h:h}"
 zinit snippet OMZP::gcloud
 
 ZVM_INIT_MODE=sourcing
@@ -21,41 +19,9 @@ zinit wait lucid light-mode for \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   zsh-users/zsh-syntax-highlighting
 
-zinit ice from"gh-r" as"program"
-zinit light junegunn/fzf
+# CLI tools themselves are installed by mise (10_mise.zsh); init their shell hooks.
 _cached_init fzf 'fzf --zsh' fzf
-
-# eza: modern ls replacement (default)
-# Note: On macOS, eza is installed via Homebrew (make setup-eza)
-# GitHub releases only provide Linux binaries
-if [[ "$(uname -s)" == "Linux" ]]; then
-  zinit ice from"gh-r" as"program" bpick"*$(uname -m)*linux*.tar.gz" pick"bin/eza"
-  zinit light eza-community/eza
-fi
-
-# lsd: backup ls replacement
-zinit ice from"gh-r" as"program" mv"lsd-*/lsd -> lsd"
-zinit light lsd-rs/lsd
-
-zinit ice from"gh-r" as"program"
-zinit light starship/starship
-
-zinit ice from"gh-r" as"program"
-zinit light ajeetdsouza/zoxide
 _cached_init zoxide 'zoxide init --cmd cd zsh' zoxide
-
-zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"
-zinit light BurntSushi/ripgrep
-
-zinit ice from"gh-r" as"program" mv"fd-*/fd -> fd"
-zinit light sharkdp/fd
-
-# Pyenv
-if [[ -d ${HOME}/.local/opt/pyenv ]]; then
-  export PYENV_ROOT="${HOME}/.local/opt/pyenv"
-  command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
-  _cached_init pyenv 'pyenv init -' pyenv
-fi
 
 # _cached_init is defined in 00_init.zsh; this file is its last user.
 unset -f _cached_init

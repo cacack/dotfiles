@@ -1,0 +1,25 @@
+# Light tool set for every install (CLI and desktop), installed with
+# `make tools`: shell, prompt, editor and their helpers, no language runtimes.
+# Desktop installs add the heavy set in config.desktop.toml (MISE_ENV=desktop).
+#
+# Every version is exact and locked (with per-platform checksums) in
+# mise.lock beside this file; Renovate bumps the pins. After editing run
+# `make mise-lock` and commit the lockfile changes with it.
+
+[settings]
+locked = true
+lockfile_platforms = ["linux-arm64", "linux-x64", "macos-arm64"]
+
+[tools]
+"aqua:neovim/neovim" = "0.12.6"
+"aqua:tmux/tmux-builds" = "3.8"
+direnv = "2.38.2"
+fd = "10.5.2"
+fzf = "0.75.0"
+gh = "2.104.0"
+glab = "1.130.0"
+lsd = "1.2.0"
+ripgrep = "15.2.0"
+shellcheck = "0.11.0"
+starship = "1.27.0"
+zoxide = "0.10.0"

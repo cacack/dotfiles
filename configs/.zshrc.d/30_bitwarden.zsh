@@ -43,7 +43,17 @@ if (( $+commands[bw] )); then
     fi
   }
 
-  if ! bw_is_unlocked; then
-    bw_unlock
+  # Before `bw login` (see `make setup-bitwarden-login`) there is no vault to
+  # unlock. Remember a failed login check for bw_check_ttl, like the unlock
+  # check, so each new shell doesn't spawn bw twice just to learn that again.
+  bw_logged_out="${HOME}/.ssh/bw.logged-out"
+  bw_logged_out_recent=( ${bw_logged_out}(Nms-${bw_check_ttl}) )
+  if (( ! ${#bw_logged_out_recent} )) && ! bw_is_unlocked; then
+    if bw login --check >/dev/null 2>&1; then
+      bw_unlock
+    else
+      mkdir -p "${bw_logged_out:h}" && touch "$bw_logged_out"
+    fi
   fi
+  unset bw_logged_out_recent
 fi

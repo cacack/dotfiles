@@ -17,7 +17,7 @@ print_header() {
 check_shellcheck_available() {
     if ! command -v shellcheck >/dev/null 2>&1; then
         echo -e "${RED}ERROR: shellcheck not found${NC}"
-        echo -e "${YELLOW}Install with: make install-shellcheck${NC}"
+        echo -e "${YELLOW}Install with: make tools${NC}"
         return 1
     fi
     return 0

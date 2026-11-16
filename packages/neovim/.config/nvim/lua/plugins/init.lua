@@ -16,61 +16,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = {
-      -- https://mason-registry.dev/registry/list
-      ensure_installed = {
-        -- python
-        "pyright",
-        "ruff",
-        "black",
-
-        -- go
-        "gofumpt",
-        "goimports-reviser",
-        "gopls",
-
-        --rust
-        "rust-analyzer",
-        "rustfmt",
-
-        -- terraform
-        "terraform-ls",
-        "tflint",
-        "tfsec",
-
-        -- lua stuff
-        "lua-language-server",
-        "stylua",
-
-        -- web dev stuff
-        "css-lsp",
-        "deno",
-        "html-lsp",
-        "prettier",
-        "typescript-language-server",
-        "yaml-language-server",
-        "json-lsp",
-
-        -- markdown
-        "marksman",
-
-        -- toml
-        "taplo",
-
-        -- shell stuffs
-        "bash-language-server",
-        "shellcheck",
-        "shfmt",
-        "autotools-language-server",
-
-        -- docker stuffs
-        "hadolint",
-
-        -- misc
-        -- remark seems to be NodeJS specific; https://github.com/remarkjs/remark-language-server/issues/6
-        -- "remark-language-server",
-        -- "remark-cli",
-        "mdformat",
-      },
+      ensure_installed = require("configs.tools").mason,
     },
   },
 

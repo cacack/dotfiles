@@ -40,9 +40,9 @@ The `.zshrc` sources modular scripts from multiple directories:
 
 ### Tools Managed
 
-- **CLI Tools**: eza, fd, fzf, lsd, ripgrep, zoxide (via zinit on Linux, mixed on macOS)
+- **CLI Tools**: fd, fzf, lsd, ripgrep, zoxide
 - **Cloud/DevOps**: AWS CLI, Azure CLI, gcloud, gh, glab, OpenStack CLI, s5cmd
-- **Development**: Go, Node.js (nvm), Python (pyenv), Ruby, uv
+- **Development**: Go, Node.js, Python, Ruby, uv (all via mise)
 - **Editor**: neovim (custom config in packages/neovim/)
 - **Shell**: zsh with zinit plugin manager, starship prompt
 - **Storage**: Bitwarden CLI, NAS auto-mount (launchd on macOS, autofs on Linux)
@@ -54,33 +54,30 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### When Adding New Tools
 
 1. **Choose installation method** (see criteria below)
-2. **Create `.mk` file** in `.make.d/` following existing patterns if using Makefile
+2. **mise tools**: add an exact version to `config.toml` (light) or `config.desktop.toml` (heavy) in `configs/.config/mise/`, run `make mise-lock`, commit config and lockfiles; otherwise create a `.mk` file in `.make.d/`
 3. **Add configuration** in `configs/` (dotfiles) or `packages/` (app configs)
 4. **Test thoroughly** with `make test` and `make clean-stow && make stow`
 5. **Update documentation** in README.md if user-facing
 
 ### Installation Method Selection
 
-**Use Zinit for:**
-- Shell-focused utilities and enhancements
-- Simple CLI tools used primarily in shell contexts
-- Tools available as GitHub releases
-- Tools where automatic updates are preferred
-- Utilities that benefit from lazy loading
+**Use mise** for every CLI tool and language runtime: `config.toml` is the light
+set (every install, no root, no language runtimes), `config.desktop.toml` the heavy
+set: runtimes and what needs them (`MISE_ENV=desktop`, recorded in
+`~/.config/dotfiles/mise-env` by `make desktop`). Neovim's `lua/configs/tools.lua`
+splits its Mason packages/LSPs on the same flag; keep the two in step.
+Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
+- Exact versions only, locked in `mise.lock`/`mise.desktop.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
+- Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (restrict with `os = [...]` when upstream lacks one) (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.
+- `pypi:` tools lock their dependencies only without `uvx_args`; tools needing injected plugins (OpenStack CLI) stay in make via `uv tool install`.
+- Not in Renovate's mise manager (e.g. `http:` backend, mise itself): add a custom manager in `renovate.json`.
+- Renovate bumps only the config, never the lockfiles; CI (`.gitlab-ci.yml`, `make mise-lock-check`) fails until `make mise-lock` is committed on the branch.
 
-**Use Makefiles for:**
-- Applications needed before shell initialization
-- Complex installations requiring system-wide availability
-- Language runtimes and development environments
-- System services and applications (kitty, neovim, tmux)
-- Tools requiring platform-specific installation logic
-- Tools requiring specific version pinning
+**Use Makefiles for** machine setup mise can't do: GUI apps (Homebrew casks, apt/Flatpak), fonts, OS settings, NAS mounts, stow.
 
-**Current Zinit-managed tools:**
-- CLI: `eza` (Linux only), `fd`, `fzf`, `lsd`, `ripgrep`, `starship`, `zoxide`
-- Plugins: syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, git, aws
+**Zinit** loads shell plugins only (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, OMZ snippets); it installs no binaries.
 
-**Note:** `eza` on macOS uses Homebrew via `make setup-eza` (not zinit)
+**macOS prerequisite:** Homebrew (installed by `install.sh`) provides stow and casks; mise is installed by `make install-mise`, pinned in `.make.d/mise.mk`.
 
 ### Making Configuration Changes
 
@@ -104,9 +101,10 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `gui-apps.mk`: GUI apps (cross-platform)
 - `linux-settings.mk`: GNOME/XFCE settings
 - `macos-settings.mk`: System preferences, dock config
+- `mise.mk`: mise install (pinned), profiles, `tools`, `mise-lock`, `mise-lock-check`
 - `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux)
 - `testing.mk`: Test suite
-- Tool-specific: `claude-code.mk`, `golang.mk`, `kitty.mk`, `neovim.mk`, `python.mk`, etc.
+- Tool-specific: `claude-code.mk`, `ghostty.mk`, `kitty.mk`, `neovim.mk` (config only), `tmux.mk`, etc.
 
 **Local overrides:** `.make.d/99_local.mk` is gitignored and auto-included
 last. Use it for personal-infrastructure targets (private repos, host-
@@ -125,6 +123,7 @@ specific paths) that should not be committed to a public dotfiles repo.
 - `make clean-stow` - Remove symlinked dotfiles
 - `make test` - Run complete test suite
 - `make test-<type>` - Run specific test (syntax, config, stow, makefile, shellcheck, security, permissions)
+- `make test-install` - Light install end to end in a Docker container (not in `make test`); run after changing install.sh, prerequisites, mise configs or Neovim's tools.lua
 - `make update` - Update all configured tools
 
 **Note:** Use `make help` or `make list-targets` to discover all available commands.
@@ -146,13 +145,14 @@ Set automatically by `.make.d/00_make.mk`:
 
 ### Platform Differences
 
-- **Linux**: apt for packages, source/release installs, zinit for CLI tools
-- **macOS**: Homebrew for packages, Homebrew for many CLI tools (not all via zinit)
+- **Both**: mise for CLI tools and runtimes
+- **Linux**: apt/Flatpak for system packages and GUI apps
+- **macOS**: Homebrew for stow, system packages and casks
 
 ### Security: SHA256 Checksum Verification
 
 **Two-layer verification system:**
-1. **Upstream binaries**: Checksums stored in individual .mk files as variables
+1. **Upstream binaries**: mise tools are checksummed per platform in `mise.lock`; the rest store checksums in their .mk files as variables (mise itself checks its release's `SHASUMS256.txt`)
 2. **Makefile modules**: Checksums in `.make.d/makefile-checksums.txt` to verify .mk files themselves
 
 **Implementation:** See `.make.d/00_make.mk` for `verify_checksum` function.

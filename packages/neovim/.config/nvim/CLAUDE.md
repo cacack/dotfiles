@@ -34,7 +34,12 @@ Uses **Lazy.nvim** as the plugin manager with NvChad as the base framework:
 
 ## Language Support
 
-### LSP Servers (configured in `lua/configs/lspconfig.lua`)
+Tools come in two tiers, both listed in `lua/configs/tools.lua`: light (every
+machine, binaries only: Lua, Markdown, TOML, shell lint/format, Docker) and
+heavy (added when `MISE_ENV=desktop`; needs the go/node/python/rust runtimes
+that the dotfiles' desktop mise profile installs).
+
+### LSP Servers (enabled by `lua/configs/lspconfig.lua` from `tools.lua`)
 
 - **Python**: pyright, ruff
 - **Go**: gopls
@@ -44,8 +49,9 @@ Uses **Lazy.nvim** as the plugin manager with NvChad as the base framework:
 - **Web**: css-lsp, html-lsp
 - **Shell**: bash-language-server
 - **Lua**: lua-language-server
+- **Markdown**: marksman
+- **TOML**: taplo
 - **YAML**: yaml-language-server (with Cloud Custodian schema support)
-- **Build tools**: autotools-language-server
 
 ### Treesitter Parsers
 
@@ -53,13 +59,13 @@ Syntax highlighting and parsing for: bash, css, dockerfile, go, html, javascript
 
 ### Formatters & Tools (via Mason)
 
-- **Python**: ruff
+- **Python**: ruff, black
 - **Go**: gofumpt, goimports-reviser
-- **Rust**: rustfmt
+- **Rust**: rustfmt (from the mise rust toolchain, not Mason)
 - **Terraform**: tflint, tfsec
 - **Lua**: stylua
 - **Web**: prettier
-- **Shell**: shfmt, shellcheck
+- **Shell**: shfmt (shellcheck comes from the dotfiles' light mise set)
 - **Docker**: hadolint
 - **Markdown**: mdformat
 
@@ -69,13 +75,9 @@ Syntax highlighting and parsing for: bash, css, dockerfile, go, html, javascript
 
 Base configuration with "onedark" theme selected
 
-### lua/plugins/init.lua:18-66
+### lua/configs/tools.lua
 
-Mason tool installation list - modify the `ensure_installed` table to add/remove language servers and tools
-
-### lua/configs/lspconfig.lua:17-23
-
-YAML LSP with Cloud Custodian schema support configured
+Mason packages and language servers per tier (Mason's `ensure_installed` and lspconfig both read it), including the YAML LSP's Cloud Custodian schema
 
 ### lua/options.lua:8-9
 
@@ -85,10 +87,9 @@ Spell checking enabled for US English
 
 ### Adding Language Support
 
-1. Add LSP server to `lua/plugins/init.lua` Mason ensure_installed list
-1. Configure LSP in `lua/configs/lspconfig.lua` servers table
+1. Add the Mason package and the LSP server to `lua/configs/tools.lua`: light only if it is a self-contained binary, otherwise heavy
 1. Add Treesitter parser to `lua/plugins/init.lua` treesitter ensure_installed
-1. Add formatter to Mason ensure_installed if needed
+1. Add a formatter to `tools.lua` and `lua/configs/conform.lua` if needed
 
 ### Theme Customization
 

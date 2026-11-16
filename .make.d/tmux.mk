@@ -1,15 +1,15 @@
-# macos: https://gist.github.com/bbqtd/a4ac060d6f6b9ea6fe3aabe735aa9d95
-setup-tmux: install-tmux
-
-install-tmux:
-	@echo
+# tmux itself is installed by mise (configs/.config/mise/config.toml).
+# macOS lacks a tmux-256color terminfo entry; build it from ncurses' source.
+# https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+.PHONY: setup-tmux
+setup-tmux:
 ifeq ($(OS),darwin)
-	# This doesn't work within kitty as it's terminfo doesn't contain tmux...
-	# https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
-	#${HOMEBREW_PREFIX}/opt/ncurses/bin/infocmp -x tmux-256color > ~/tmux-256color.src
-	# So pull down ncurses terminfo file directly
-	curl -o - -LO https://invisible-island.net/datafiles/current/terminfo.src.gz | gunzip > terminfo.src
-	/usr/bin/tic -x -o ${HOME}/.local/share/terminfo -e tmux-256color terminfo.src
-	rm terminfo.src
-	brew install tmux
+	@echo
+	@if infocmp -A ${HOME}/.local/share/terminfo tmux-256color >/dev/null 2>&1; then \
+		echo "tmux-256color terminfo already installed"; \
+	else \
+		curl -fsSL https://invisible-island.net/datafiles/current/terminfo.src.gz | gunzip > terminfo.src && \
+		/usr/bin/tic -x -o ${HOME}/.local/share/terminfo -e tmux-256color terminfo.src; \
+		status=$$?; rm -f terminfo.src; exit $$status; \
+	fi
 endif

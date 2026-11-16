@@ -2,28 +2,7 @@
 require("nvchad.configs.lspconfig").defaults()
 
 -- https://nvchad.com/docs/recipes#clean_lspconfig_syntax
-local servers = {
-  autotools_ls = {},
-  bashls = {},
-  cssls = {},
-  gopls = {},
-  html = {},
-  jsonls = {},
-  marksman = {},
-  pyright = {},
-  ruff = {},
-  rust_analyzer = {},
-  taplo = {},
-  terraformls = {},
-  ts_ls = {},
-  yamlls = {
-    yaml = {
-      schemas = {
-        ["./c7n-schema.json"] = "*.yml",
-      },
-    },
-  },
-}
+local servers = require("configs.tools").servers
 
 -- lsps with default config
 for name, opts in pairs(servers) do

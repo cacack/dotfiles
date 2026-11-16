@@ -36,11 +36,13 @@ agent_add_keys() {
 }
 
 agent_load_env() {
+  [ -f "$env" ] || return 0
   # shellcheck disable=SC1090
   . "$env" >/dev/null
 }
 
 agent_start() {
+  mkdir -p -m 700 "${env:h}"
   (umask 077; ssh-agent >"$env")
   # shellcheck disable=SC1090
   . "$env" >/dev/null

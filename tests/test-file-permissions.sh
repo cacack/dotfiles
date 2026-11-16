@@ -30,6 +30,7 @@ test_executable_scripts() {
         "tests/test-shellcheck.sh"
         "tests/test-security-scan.sh"
         "tests/test-file-permissions.sh"
+        "tests/test-install-container.sh"
     )
 
     for file_path in "${should_be_executable[@]}"; do
