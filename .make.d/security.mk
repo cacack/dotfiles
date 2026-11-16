@@ -10,7 +10,7 @@
 # without shell activation (CI) and always uses the pinned scanner version.
 # Naming the tool keeps mise from installing the rest of the desktop set first.
 MISE_SCAN = MISE_ENV=desktop MISE_CONFIG_DIR=$(MISE_CONFIG_DIR) $(MISE) exec $(1) --
-MISE_INSTALLS ?= ${HOME}/.local/share/mise/installs
+MISE_INSTALLS ?= $(or $(MISE_DATA_DIR),${HOME}/.local/share/mise)/installs
 
 .PHONY: security security-deps security-tools
 security: security-deps security-tools

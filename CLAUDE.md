@@ -156,7 +156,7 @@ Set automatically by `.make.d/00_make.mk`:
 1. **Upstream binaries**: mise tools are checksummed per platform in `mise.lock`; the rest store checksums in their .mk files as variables (mise itself checks its release's `SHASUMS256.txt`)
 2. **Makefile modules**: Checksums in `.make.d/makefile-checksums.txt` to verify .mk files themselves
 
-**Vulnerability scans** (`security.mk`, README "Supply-Chain Defenses"): `make security` runs osv-scanner on the uv and npm (aube) locks and Trivy on installed tools. A new finding is fixed by a bump if one exists; otherwise add it to `.osv-scanner.toml` / `.trivyignore.yaml` with a reason and an expiry, never without. Prefer dropping an unmaintained tool over ignoring its findings (s5cmd was dropped this way).
+**Vulnerability scans** (`security.mk`, README "Supply-Chain Defenses"): `make security` runs osv-scanner on the uv and npm (aube) locks and Trivy on installed tools. A new finding is fixed by a bump if one exists; otherwise add it to `.osv-scanner.toml` / `.trivyignore.yaml` with a reason and an expiry, never without, and scope Trivy entries with `paths` to the tool you reviewed (an ID-only entry hides that CVE in every tool). Prefer dropping an unmaintained tool over ignoring its findings (s5cmd was dropped this way).
 
 **Implementation:** See `.make.d/00_make.mk` for `verify_checksum` function.
 
