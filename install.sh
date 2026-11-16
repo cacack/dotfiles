@@ -134,7 +134,7 @@ install_linux_prereqs() {
 
     local missing=()
     local pkg
-    for pkg in zsh make stow git curl; do
+    for pkg in zsh make stow git curl unzip; do
         command_exists "${pkg}" || missing+=("${pkg}")
     done
     # Node's linux-arm64 build links against libatomic.

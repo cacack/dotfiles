@@ -2,8 +2,9 @@ CLEAN += clean-stow clean-bashrc
 UPDATE += zinit-update zinit-prune-completions
 
 # What `make install` needs but cannot provide itself. None of it needs root
-# once present; Node's linux-arm64 build also needs libatomic.
-PREREQS := curl git make stow tar zsh
+# once present. unzip is for Neovim's Mason; Node's linux-arm64 build also
+# needs libatomic.
+PREREQS := curl git make stow tar unzip zsh
 
 .PHONY: check-prereqs
 check-prereqs:
