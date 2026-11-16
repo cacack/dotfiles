@@ -8,7 +8,6 @@ bitwarden = "2026.10.1"
 git-filter-repo = "2.47.0"
 # No linux-arm64 build upstream.
 "github:david-strejc/claude-powerline-rust" = { version = "1.2.0", os = ["linux/x64", "macos/arm64"] }
-go = "1.27.4"
 "pypi:poetry" = "2.5.1"
 ruby = "4.0.9"
 s5cmd = "2.3.0"

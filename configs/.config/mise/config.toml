@@ -17,8 +17,9 @@ fd = "10.5.2"
 fzf = "0.75.0"
 gh = "2.104.0"
 glab = "1.130.0"
+go = "1.27.4"
 lsd = "1.2.0"
-# node and python are here for Neovim's Mason language servers.
+# go, node and python are here for Neovim's Mason language servers.
 node = "26.13.1"
 # Held at 3.13 until pyyaml ships 3.15 wheels; without them mise cannot lock
 # the dependencies of the Python tools (azure-cli, yamllint, poetry).

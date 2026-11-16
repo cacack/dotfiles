@@ -75,23 +75,6 @@ checksum_source = "mise-versions"
 url = "https://github.com/david-strejc/claude-powerline-rust/releases/download/v1.2.0/claude-powerline-macos-arm64.tar.gz"
 url_api = "https://api.github.com/repos/david-strejc/claude-powerline-rust/releases/assets/285929305"
 
-[[tools.go]]
-version = "1.27.4"
-backend = "core:go"
-specifiers = ["1.27.4"]
-
-[tools.go."platforms.linux-arm64"]
-checksum = "sha256:3392582988a273a87ab5043ee1b2c9c17a2c3c00580bf9326c47a2e0aaaeac92"
-url = "https://dl.google.com/go/go1.27.4.linux-arm64.tar.gz"
-
-[tools.go."platforms.linux-x64"]
-checksum = "sha256:7226736c2339719cda28fbf3a54d71aa63bcefe376e98cef00034268dab24840"
-url = "https://dl.google.com/go/go1.27.4.linux-amd64.tar.gz"
-
-[tools.go."platforms.macos-arm64"]
-checksum = "sha256:91a44a2b8a716600ad94a4f143e156116620db8828086a6e3602291be9bd0bb4"
-url = "https://dl.google.com/go/go1.27.4.darwin-arm64.tar.gz"
-
 [[tools."http:gcloud"]]
 version = "593.0.0"
 backend = "http:gcloud"
