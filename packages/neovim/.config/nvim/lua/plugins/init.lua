@@ -30,7 +30,6 @@ return {
 
         --rust
         "rust-analyzer",
-        "rustfmt",
 
         -- terraform
         "terraform-ls",
@@ -60,7 +59,6 @@ return {
         "bash-language-server",
         "shellcheck",
         "shfmt",
-        "autotools-language-server",
 
         -- docker stuffs
         "hadolint",

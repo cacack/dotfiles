@@ -3,7 +3,6 @@ require("nvchad.configs.lspconfig").defaults()
 
 -- https://nvchad.com/docs/recipes#clean_lspconfig_syntax
 local servers = {
-  autotools_ls = {},
   bashls = {},
   cssls = {},
   gopls = {},
