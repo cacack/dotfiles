@@ -5,7 +5,11 @@
 setup-tmux:
 ifeq ($(OS),darwin)
 	@echo
-	curl -fsSL https://invisible-island.net/datafiles/current/terminfo.src.gz | gunzip > terminfo.src
-	/usr/bin/tic -x -o ${HOME}/.local/share/terminfo -e tmux-256color terminfo.src
-	rm terminfo.src
+	@if infocmp -A ${HOME}/.local/share/terminfo tmux-256color >/dev/null 2>&1; then \
+		echo "tmux-256color terminfo already installed"; \
+	else \
+		curl -fsSL https://invisible-island.net/datafiles/current/terminfo.src.gz | gunzip > terminfo.src && \
+		/usr/bin/tic -x -o ${HOME}/.local/share/terminfo -e tmux-256color terminfo.src; \
+		status=$$?; rm -f terminfo.src; exit $$status; \
+	fi
 endif

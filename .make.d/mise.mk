@@ -22,7 +22,11 @@ MISE_ENV ?= $(shell cat $(MISE_ENV_FILE) 2>/dev/null)
 export MISE_ENV
 
 ifeq ($(OS),darwin)
+ifeq ($(ARCH),arm64)
 MISE_PLATFORM := macos-arm64
+else
+MISE_PLATFORM := unsupported
+endif
 endif
 ifeq ($(OS),linux)
 ifeq ($(ARCH),x86_64)
@@ -39,6 +43,9 @@ MISE_RELEASE_URL := https://github.com/jdx/mise/releases/download/v$(MISE_VERSIO
 install-mise:
 	@echo
 	# Installing mise $(MISE_VERSION)
+	@if [ "$(MISE_PLATFORM)" = unsupported ]; then \
+		echo "ERROR: unsupported platform $(OS)/$(ARCH) (macOS needs Apple Silicon)"; exit 1; \
+	fi
 	@if [ "$$($(MISE) --version 2>/dev/null | awk '{print $$1}')" = "$(MISE_VERSION)" ]; then \
 		echo "mise $(MISE_VERSION) already installed"; \
 	else \
