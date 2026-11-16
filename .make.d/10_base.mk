@@ -10,7 +10,7 @@ PREREQS := curl git make stow tar unzip zsh
 check-prereqs:
 	@missing=""; \
 	for cmd in $(PREREQS); do command -v $$cmd >/dev/null 2>&1 || missing="$$missing $$cmd"; done; \
-	if [ "$(OS)" = "linux" ] && [ "$(ARCH)" = "aarch64" ] && \
+	if [ "$(MISE_ENV)" = "desktop" ] && [ "$(OS)" = "linux" ] && [ "$(ARCH)" = "aarch64" ] && \
 		! ls /lib/*/libatomic.so.1 /usr/lib/*/libatomic.so.1 /usr/lib64/libatomic.so.1 2>/dev/null | grep -q .; then \
 		missing="$$missing libatomic"; \
 	fi; \

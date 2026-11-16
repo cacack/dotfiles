@@ -12,9 +12,9 @@ My various configuration files to make ${HOME} home.
 
 | Path | Command | Needs |
 |---|---|---|
-| CLI, no root (headless/remote) | `curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh \| bash` | zsh, make, stow, git, curl, unzip already installed (plus libatomic on Linux arm64) |
+| CLI, no root (headless/remote) | `curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh \| bash` | zsh, make, stow, git, curl, tar, unzip already installed |
 | CLI, with root | same command | sudo or root; installs whatever of the above is missing |
-| Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps |
+| Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps (plus libatomic on Linux arm64) |
 
 - **CLI** runs `make install`: stows configs and installs the light tool set
   (shell utilities, prompt, tmux, Neovim with binary-only language servers;

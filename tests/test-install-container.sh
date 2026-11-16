@@ -5,7 +5,8 @@
 #
 # Checks: install.sh succeeds without root, every pinned tool is installed and
 # no language runtime is, the first interactive shell is quiet, and Neovim's
-# light Mason tier installs and its language servers attach.
+# light Mason tier installs and its language servers attach. The desktop path
+# (`install.sh --desktop`) is not covered.
 set -euo pipefail
 
 IMAGE="${IMAGE:-ubuntu:24.04}"
@@ -18,14 +19,15 @@ if [[ "${1:-}" != "--inside" ]]; then
         bash /repo/tests/test-install-container.sh --inside
 fi
 
-# --- Inside the container, as root: baseline prerequisites only. ---
+# --- Inside the container, as root: baseline prerequisites only (no libatomic;
+# only the desktop set needs it). ---
 failures=0
 pass() { echo "  ✓ $1"; }
 fail() { echo "  ✗ $1"; failures=$((failures + 1)); }
 as_dev() { su - dev -c "$1"; }
 
 apt-get update -qq >/dev/null
-apt-get install -y -qq ca-certificates curl git make stow unzip zsh libatomic1 >/dev/null 2>&1
+apt-get install -y -qq ca-certificates curl git make stow tar unzip zsh >/dev/null 2>&1
 useradd -m -s /bin/bash dev
 cp -a /repo /home/dev/.dotfiles
 chown -R dev:dev /home/dev/.dotfiles

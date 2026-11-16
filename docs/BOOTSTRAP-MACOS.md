@@ -120,7 +120,7 @@ Zinit will automatically install plugins on first launch.
 ## What Gets Installed
 
 ### Basic Installation (`make install`)
-- Checks prerequisites (zsh, make, stow, git, curl, unzip)
+- Checks prerequisites (zsh, make, stow, git, curl, tar, unzip)
 - Creates directory structure (`~/devel`, `~/.config`, `~/.local/*`)
 - Symlinks dotfiles from `configs/` to `$HOME`
 - Installs mise and the light tool set (`make tools`)
