@@ -65,7 +65,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 set (every install, no root, no language runtimes), `config.desktop.toml` the heavy
 set: runtimes and what needs them (`MISE_ENV=desktop`, recorded in
 `~/.config/dotfiles/mise-env` by `make desktop`). Neovim's `lua/configs/tools.lua`
-splits its Mason packages/LSPs on the same flag; keep the two in step.
+enables Neovim's language servers (installed by mise, not Mason) on the same flag; keep the two in step.
 Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
 - Exact versions only, locked in `mise.lock`/`mise.desktop.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
 - Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (restrict with `os = [...]` when upstream lacks one) (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.

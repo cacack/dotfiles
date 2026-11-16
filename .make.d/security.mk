@@ -15,11 +15,14 @@ MISE_INSTALLS ?= ${HOME}/.local/share/mise/installs
 .PHONY: security security-deps security-tools
 security: security-deps security-tools
 
-# Locked dependency trees of the pypi tools (their uv.lock files); no install needed.
+# Locked dependency trees of the pypi and npm tools; no install needed. The
+# npm locks are pnpm-format files named aube-lock.yaml, so name their format.
+NPM_LOCKS = $(wildcard $(MISE_CONFIG_DIR)/locks/*/*/*/aube-lock.yaml)
 security-deps:
 	@echo
 	# Scanning locked tool dependencies (osv-scanner)
-	$(call MISE_SCAN,aqua:google/osv-scanner) osv-scanner scan source --config $(REPO_DIR)/.osv-scanner.toml -r $(MISE_CONFIG_DIR)/locks
+	$(call MISE_SCAN,aqua:google/osv-scanner) osv-scanner scan source --config $(REPO_DIR)/.osv-scanner.toml \
+		-r $(MISE_CONFIG_DIR)/locks $(foreach lock,$(NPM_LOCKS),-L pnpm-lock.yaml:$(lock))
 
 # Everything mise installed: Go modules compiled into binaries and the npm,
 # Python and Ruby packages bundled with tools. Fails on HIGH/CRITICAL findings

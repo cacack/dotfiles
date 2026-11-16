@@ -5,7 +5,7 @@
 #
 # Checks: install.sh succeeds without root, every pinned tool is installed and
 # no language runtime is, the first interactive shell is quiet, and Neovim's
-# light Mason tier installs and its language servers attach. The desktop path
+# light-tier language servers (installed by mise) attach. The desktop path
 # (`install.sh --desktop`) is not covered.
 set -euo pipefail
 
@@ -56,10 +56,8 @@ runtimes="$(as_dev 'zsh -i -c "for t in go node python3 ruby rustc; do (( \$+com
 echo "Neovim:"
 as_dev 'zsh -i -c "nvim --headless \"+Lazy! restore\" +qa"' >/tmp/lazy.log 2>&1 \
     && pass "plugins restored from lazy-lock.json" || fail "Lazy restore failed"
-mason="$(as_dev 'zsh -i -c "nvim --headless -c \"luafile ~/.dotfiles/tests/lib/mason-install.lua\" +qa"' 2>&1 | grep '^FAILED:' || true)"
-[[ "$mason" == "FAILED: none" ]] && pass "light Mason tier installed" || fail "Mason: ${mason:-no result}"
-as_dev 'cd /tmp && printf "# hi\n" > x.md && printf "a = 1\n" > x.toml'
-for f in x.md x.toml; do
+as_dev 'cd /tmp && printf "# hi\n" > x.md && printf "a = 1\n" > x.toml && printf "local a = 1\n" > x.lua'
+for f in x.md x.toml x.lua; do
     # NvChad loads lspconfig on User FilePost, which needs a UI; fire it by hand.
     clients="$(as_dev "cd /tmp && zsh -i -c 'nvim --headless $f \"+doautocmd User FilePost\" +e \"+sleep 4\" \"+lua io.stdout:write(#vim.lsp.get_clients({bufnr=0}))\" +qa'" 2>/dev/null | tail -c1)"
     [[ "$clients" == "1" ]] && pass "language server attaches to $f" || fail "no language server for $f"

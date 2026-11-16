@@ -34,10 +34,11 @@ Uses **Lazy.nvim** as the plugin manager with NvChad as the base framework:
 
 ## Language Support
 
-Tools come in two tiers, both listed in `lua/configs/tools.lua`: light (every
-machine, binaries only: Lua, Markdown, TOML, shell lint/format, Docker) and
-heavy (added when `MISE_ENV=desktop`; needs the go/node/python/rust runtimes
-that the dotfiles' desktop mise profile installs).
+Language servers and formatters are installed, pinned and locked by the
+dotfiles' mise configs, not Mason: light tier in `configs/.config/mise/config.toml`
+(every machine: Lua, Markdown, TOML, shell, Docker), heavy tier in
+`config.desktop.toml` (desktops). `lua/configs/tools.lua` enables the servers for
+the machine's tier (`MISE_ENV=desktop`, or the profile file).
 
 ### LSP Servers (enabled by `lua/configs/lspconfig.lua` from `tools.lua`)
 
@@ -57,12 +58,12 @@ that the dotfiles' desktop mise profile installs).
 
 Syntax highlighting and parsing for: bash, css, dockerfile, go, html, javascript, json, lua, make, markdown, python, rust, terraform, toml, typescript, vim, xml, yaml
 
-### Formatters & Tools (via Mason)
+### Formatters & Tools (via mise)
 
 - **Python**: ruff, black
 - **Go**: gofumpt, goimports-reviser
-- **Rust**: rustfmt (from the mise rust toolchain, not Mason)
-- **Terraform**: tflint, tfsec
+- **Rust**: rustfmt (from the mise rust toolchain)
+- **Terraform**: tflint (tfsec was folded into Trivy, which the dotfiles install)
 - **Lua**: stylua
 - **Web**: prettier
 - **Shell**: shfmt (shellcheck comes from the dotfiles' light mise set)
@@ -77,7 +78,7 @@ Base configuration with "onedark" theme selected
 
 ### lua/configs/tools.lua
 
-Mason packages and language servers per tier (Mason's `ensure_installed` and lspconfig both read it), including the YAML LSP's Cloud Custodian schema
+Language servers to enable per tier (lspconfig reads it), including the YAML LSP's Cloud Custodian schema and ts_ls's tsserver path
 
 ### lua/options.lua:8-9
 
@@ -87,9 +88,9 @@ Spell checking enabled for US English
 
 ### Adding Language Support
 
-1. Add the Mason package and the LSP server to `lua/configs/tools.lua`: light only if it is a self-contained binary, otherwise heavy
+1. Pin the server in the dotfiles' mise config (`config.toml` if it is a self-contained binary, else `config.desktop.toml`), run `make mise-lock`, and enable it in `lua/configs/tools.lua` in the same tier
 1. Add Treesitter parser to `lua/plugins/init.lua` treesitter ensure_installed
-1. Add a formatter to `tools.lua` and `lua/configs/conform.lua` if needed
+1. Add a formatter to the mise config and `lua/configs/conform.lua` if needed
 
 ### Theme Customization
 
@@ -103,7 +104,7 @@ Add to `lua/mappings.lua` (loaded via vim.schedule in init.lua)
 
 Neovim configuration installs automatically via Lazy.nvim:
 
-- Language servers and tools via Mason
+- Language servers and formatters via the dotfiles' `make tools` (mise); Mason installs nothing
 - Plugins via Lazy.nvim
 - Treesitter parsers automatically
 

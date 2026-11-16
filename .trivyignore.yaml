@@ -73,3 +73,11 @@ vulnerabilities:
   - id: GHSA-6v7p-g79w-8964
     statement: msgpack 1.1.2 vendored by pip in gcloud 593.0.0's bundled Python (Linux).
     expired_at: 2027-01-16
+
+  # goimports-reviser 3.13.2 (Neovim Go formatter), maintained; next release should update x/mod.
+  - id: CVE-2026-56864
+    statement: golang.org/x/mod v0.23.0 in goimports-reviser 3.13.2; fixed by a release built with x/mod >= 0.40.0.
+    expired_at: 2027-01-16
+  - id: CVE-2026-56865
+    statement: golang.org/x/mod v0.23.0 in goimports-reviser 3.13.2; fixed by a release built with x/mod >= 0.40.0.
+    expired_at: 2027-01-16

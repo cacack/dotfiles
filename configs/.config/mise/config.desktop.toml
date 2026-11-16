@@ -25,6 +25,28 @@ rust = { version = "1.100.0", profile = "minimal", components = "rustfmt" }
 uv = "0.13.8"
 yamllint = "1.38.0"
 
+# Neovim's heavy-tier language servers and formatters (lua/configs/tools.lua).
+"aqua:astral-sh/ruff" = "0.17.5"
+"aqua:hashicorp/terraform-ls" = "0.39.1"
+"aqua:mvdan/gofumpt" = "0.12.0"
+"aqua:psf/black" = "26.10.1"
+"aqua:rust-lang/rust-analyzer" = "2026-11-09"
+"aqua:terraform-linters/tflint" = "0.66.0"
+deno = "2.9.8"
+"github:incu6us/goimports-reviser" = "3.13.2"
+# No prebuilt gopls; the go backend builds it with the pinned Go (checksum
+# database verified), as Mason did.
+"go:golang.org/x/tools/gopls" = "0.24.0"
+"npm:bash-language-server" = "5.8.1"
+"npm:prettier" = "3.10.1"
+"npm:pyright" = "1.1.414"
+"npm:typescript-language-server" = "6.1.0"
+# 7.x is the native compiler and ships no tsserver, which ts_ls needs.
+"npm:typescript" = "6.0.3"
+"npm:vscode-langservers-extracted" = "4.10.0"
+"npm:yaml-language-server" = "2.0.0"
+"pypi:mdformat" = "1.0.0"
+
 # gcloud has no Renovate-supported mise backend; a custom Renovate manager in
 # renovate.json tracks the version below.
 [tools."http:gcloud"]

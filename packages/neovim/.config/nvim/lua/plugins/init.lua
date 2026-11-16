@@ -14,13 +14,6 @@ return {
   },
 
   {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = require("configs.tools").mason,
-    },
-  },
-
-  {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
