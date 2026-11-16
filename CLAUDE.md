@@ -54,16 +54,18 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### When Adding New Tools
 
 1. **Choose installation method** (see criteria below)
-2. **mise tools**: add an exact version to `config.toml` (base) or `config.desktop.toml` in `configs/.config/mise/`, run `make mise-lock`, commit config and lockfiles; otherwise create a `.mk` file in `.make.d/`
+2. **mise tools**: add an exact version to `config.toml` (light) or `config.desktop.toml` (heavy) in `configs/.config/mise/`, run `make mise-lock`, commit config and lockfiles; otherwise create a `.mk` file in `.make.d/`
 3. **Add configuration** in `configs/` (dotfiles) or `packages/` (app configs)
 4. **Test thoroughly** with `make test` and `make clean-stow && make stow`
 5. **Update documentation** in README.md if user-facing
 
 ### Installation Method Selection
 
-**Use mise** for every CLI tool and language runtime: `config.toml` is the base
-set (every install, no root), `config.desktop.toml` adds desktop-only tools
-(`MISE_ENV=desktop`, recorded in `~/.config/dotfiles/mise-env` by `make desktop`).
+**Use mise** for every CLI tool and language runtime: `config.toml` is the light
+set (every install, no root, no language runtimes), `config.desktop.toml` the heavy
+set: runtimes and what needs them (`MISE_ENV=desktop`, recorded in
+`~/.config/dotfiles/mise-env` by `make desktop`). Neovim's `lua/configs/tools.lua`
+splits its Mason packages/LSPs on the same flag; keep the two in step.
 Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
 - Exact versions only, locked in `mise.lock`/`mise.desktop.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
 - Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (restrict with `os = [...]` when upstream lacks one) (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.

@@ -123,7 +123,7 @@ Zinit will automatically install plugins on first launch.
 - Checks prerequisites (zsh, make, stow, git, curl, unzip)
 - Creates directory structure (`~/devel`, `~/.config`, `~/.local/*`)
 - Symlinks dotfiles from `configs/` to `$HOME`
-- Installs mise and the base tool set (`make tools`)
+- Installs mise and the light tool set (`make tools`)
 - Links the Neovim config and builds the tmux-256color terminfo
 
 ### Full Desktop (`make desktop`, or `install.sh --desktop`)

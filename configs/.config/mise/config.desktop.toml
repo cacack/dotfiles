@@ -1,5 +1,6 @@
-# Desktop-only tool versions, layered over config.toml when MISE_ENV=desktop
-# (set by `make desktop`). Locked in mise.desktop.lock.
+# Heavy tool set: language runtimes and the tools that need them, layered
+# over config.toml when MISE_ENV=desktop (set by `make desktop`). Locked in
+# mise.desktop.lock.
 
 [tools]
 aws-cli = "2.40.3"
@@ -8,8 +9,16 @@ bitwarden = "2026.10.1"
 git-filter-repo = "2.47.0"
 # No linux-arm64 build upstream.
 "github:david-strejc/claude-powerline-rust" = { version = "1.2.0", os = ["linux/x64", "macos/arm64"] }
+# go, node, python and rust also serve Neovim's desktop language servers
+# (lua/configs/tools.lua).
+go = "1.27.4"
+node = "26.13.1"
 "pypi:poetry" = "2.5.1"
+# Held at 3.13 until pyyaml ships 3.15 wheels; without them mise cannot lock
+# the dependencies of the Python tools (azure-cli, yamllint, poetry).
+python = "3.13.18"
 ruby = "4.0.9"
+rust = { version = "1.100.0", profile = "minimal", components = "rustfmt" }
 s5cmd = "2.3.0"
 shellcheck = "0.11.0"
 yamllint = "1.38.0"

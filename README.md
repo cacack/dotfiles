@@ -16,12 +16,13 @@ My various configuration files to make ${HOME} home.
 | CLI, with root | same command | sudo or root; installs whatever of the above is missing |
 | Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps |
 
-- **CLI** runs `make install`: stows configs and installs the base tool set
-  (shell utilities, tmux, Neovim with Node/Python for its language servers).
-  Nothing needs root. Without root or sudo, `install.sh` lists any missing
+- **CLI** runs `make install`: stows configs and installs the light tool set
+  (shell utilities, prompt, tmux, Neovim with binary-only language servers;
+  no language runtimes, nothing compiled). Nothing needs root. Without root or sudo, `install.sh` lists any missing
   prerequisites for an admin to install.
-- **Desktop** runs `make desktop`: the CLI install plus the desktop tool set
-  (cloud CLIs, Go, Ruby, Bitwarden CLI, …), fonts, GUI apps and OS settings.
+- **Desktop** runs `make desktop`: the CLI install plus the heavy tool set
+  (Go, Node, Python, Ruby, Rust, cloud CLIs, Bitwarden CLI, …, plus Neovim's
+  full language servers), fonts, GUI apps and OS settings.
 
 Supported platforms: macOS (Apple Silicon), Ubuntu/Debian, Fedora/RHEL, Arch, openSUSE (x86_64 and arm64)
 
@@ -55,11 +56,13 @@ make desktop    # or: full desktop
 CLI tools and language runtimes are installed by [mise](https://mise.jdx.dev).
 Every version is pinned exactly and locked, with per-platform checksums:
 
-- `configs/.config/mise/config.toml` → `mise.lock`: base tools (every install)
-- `configs/.config/mise/config.desktop.toml` → `mise.desktop.lock`: desktop tools
+- `configs/.config/mise/config.toml` → `mise.lock`: light tools (every install)
+- `configs/.config/mise/config.desktop.toml` → `mise.desktop.lock`: heavy tools
+  (language runtimes and what needs them)
 
 `make desktop` records the machine's profile in `~/.config/dotfiles/mise-env`
-(`MISE_ENV=desktop`). Renovate opens merge requests to bump the pins.
+(`MISE_ENV=desktop`); Neovim reads the same flag to pick its language servers
+(`lua/configs/tools.lua`). Renovate opens merge requests to bump the pins.
 
 ```bash
 make tools       # install exactly what the lockfiles pin (also part of `make update`)

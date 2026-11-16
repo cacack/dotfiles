@@ -1,5 +1,6 @@
-# Base tool versions for every install (CLI and desktop), installed with
-# `make tools`. Desktop installs add config.desktop.toml (MISE_ENV=desktop).
+# Light tool set for every install (CLI and desktop), installed with
+# `make tools`: shell, prompt, editor and their helpers, no language runtimes.
+# Desktop installs add the heavy set in config.desktop.toml (MISE_ENV=desktop).
 #
 # Every version is exact and locked (with per-platform checksums) in
 # mise.lock beside this file; Renovate bumps the pins. After editing run
@@ -17,13 +18,7 @@ fd = "10.5.2"
 fzf = "0.75.0"
 gh = "2.104.0"
 glab = "1.130.0"
-go = "1.27.4"
 lsd = "1.2.0"
-# go, node and python are here for Neovim's Mason language servers.
-node = "26.13.1"
-# Held at 3.13 until pyyaml ships 3.15 wheels; without them mise cannot lock
-# the dependencies of the Python tools (azure-cli, yamllint, poetry).
-python = "3.13.18"
 ripgrep = "15.2.0"
 starship = "1.27.0"
 uv = "0.13.8"
