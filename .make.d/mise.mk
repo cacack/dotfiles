@@ -72,7 +72,9 @@ mise-env-desktop:
 mise-lock: install-mise
 	MISE_ENV=desktop MISE_CONFIG_DIR=$(MISE_CONFIG_DIR) $(MISE) lock --global
 
-# Fail if mise.lock is out of step with config.toml.
+# Fail if any pinned version (base and desktop) is missing from the lockfiles,
+# e.g. a Renovate bump merged without `make mise-lock`. Downloads nothing, but
+# the desktop pypi tools need python installed first (`mise install python`).
 .PHONY: mise-lock-check
-mise-lock-check: mise-lock
-	git -C $(REPO_DIR) diff --exit-code -- configs/.config/mise
+mise-lock-check: install-mise
+	MISE_ENV=desktop MISE_CONFIG_DIR=$(MISE_CONFIG_DIR) $(MISE) install --dry-run

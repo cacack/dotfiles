@@ -66,7 +66,9 @@ to pick its language servers (`lua/configs/tools.lua`). Without it a machine is
 light: **desktops set up before mise must run `make desktop` once**, or they lose
 their runtimes, cloud CLIs and GUI app updates on the next `make update`.
 
-Renovate opens merge requests to bump the pins.
+Renovate opens merge requests to bump the pins. A bump only changes the config,
+so the `mise-lock` CI job fails until `make mise-lock` is run on the branch and
+the lockfiles committed.
 
 ```bash
 make tools       # install exactly what the lockfiles pin (also part of `make update`)
