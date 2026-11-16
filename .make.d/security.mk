@@ -3,7 +3,7 @@
 # checksums and signed provenance (mise.mk), Renovate's minimumReleaseAge, and
 # these scans. The scanners are pinned in config.desktop.toml; accepted
 # findings, each with a reason and an expiry, live in .osv-scanner.toml and
-# .trivyignore.yaml. CI runs both (.gitlab-ci.yml).
+# .trivyignore.yaml. CI runs both (.github/workflows/supply-chain.yml).
 ################################################################################
 
 # Run a scanner through mise with the repo's desktop config, so this works
