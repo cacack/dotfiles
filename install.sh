@@ -138,9 +138,9 @@ install_linux_prereqs() {
     for pkg in zsh make stow git curl tar unzip; do
         command_exists "${pkg}" || missing+=("${pkg}")
     done
-    # Node (desktop tool set) links against libatomic on linux-arm64.
+    # Node (desktop tool set) links against libatomic on Linux.
     local need_atomic=false
-    if [ "${make_target}" = "desktop" ] && [ "${ARCH}" = "aarch64" ] && ! ls /lib/*/libatomic.so.1 /usr/lib/*/libatomic.so.1 /usr/lib64/libatomic.so.1 2>/dev/null | grep -q .; then
+    if [ "${make_target}" = "desktop" ] && ! ls /lib/*/libatomic.so.1 /usr/lib/*/libatomic.so.1 /usr/lib64/libatomic.so.1 2>/dev/null | grep -q .; then
         need_atomic=true
     fi
 
