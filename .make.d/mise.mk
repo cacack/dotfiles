@@ -84,4 +84,5 @@ mise-lock: install-mise
 # the desktop pypi tools need python installed first (`mise install python`).
 .PHONY: mise-lock-check
 mise-lock-check: install-mise
+	@[ -f "$(MISE_CONFIG_DIR)/config.toml" ] || { echo "ERROR: no mise config at $(MISE_CONFIG_DIR)"; exit 1; }
 	MISE_ENV=desktop MISE_CONFIG_DIR=$(MISE_CONFIG_DIR) $(MISE) install --dry-run

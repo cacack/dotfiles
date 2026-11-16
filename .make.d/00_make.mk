@@ -17,7 +17,9 @@ DOTFILES_CONFIG_DIR := ${HOME}/.dotfiles/configs
 DOTFILES_SCRIPT_DIR := ${HOME}/.dotfiles/scripts
 USER_BIN_DIR := ${HOME}/.local/bin
 
-REPO_DIR := $(shell git rev-parse --show-toplevel)
+# The top-level Makefile's directory: needs no git, so it also works where git
+# refuses the checkout (CI containers running as another user) or there is none.
+REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword $(MAKEFILE_LIST)))))
 REPO_URL := $(shell git remote get-url --push origin)
 REPO_NAME := $(shell git remote get-url --push origin | awk -F '/' '{print $$NF}' | awk -F '.' '{print $$1}')
 
