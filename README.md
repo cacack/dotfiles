@@ -8,24 +8,33 @@ My various configuration files to make ${HOME} home.
 
 ## Installation
 
-### One-Command Install (No Prerequisites Needed!)
+### Install Paths
 
-The installation script automatically detects your platform and installs all prerequisites. Just run:
+| Path | Command | Needs |
+|---|---|---|
+| CLI, no root (headless/remote) | `curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh \| bash` | zsh, make, stow, git, curl already installed (plus libatomic on Linux arm64) |
+| CLI, with root | same command | sudo or root; installs whatever of the above is missing |
+| Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps |
 
-```sh
-curl -sSL https://gitlab.com/cacack/dotfiles/-/raw/main/install.sh | bash
-```
+- **CLI** runs `make install`: stows configs and installs the base tool set
+  (shell utilities, tmux, Neovim with Node/Python for its language servers).
+  Nothing needs root. Without root or sudo, `install.sh` lists any missing
+  prerequisites for an admin to install.
+- **Desktop** runs `make desktop`: the CLI install plus the desktop tool set
+  (cloud CLIs, Go, Ruby, Bitwarden CLI, …), fonts, GUI apps and OS settings.
 
-The script will automatically install:
-- **macOS**: Command Line Tools, Homebrew, GNU Stow
-- **Linux**: zsh, make, stow, git (via your package manager)
-
-Supported platforms: macOS (Intel/Apple Silicon), Ubuntu/Debian, Fedora/RHEL/CentOS, Arch, openSUSE
+Supported platforms: macOS (Apple Silicon), Ubuntu/Debian, Fedora/RHEL, Arch, openSUSE (x86_64 and arm64)
 
 **Then change shells to zsh:**
 
 ```sh
 chsh -s "$(command -v zsh)"
+```
+
+Without `chsh` rights (e.g. directory-managed accounts), add this to `~/.bash_profile` instead:
+
+```sh
+[ -x "$(command -v zsh)" ] && exec zsh -l
 ```
 
 Log out and back in to activate the new setup (zinit will install plugins automatically).
@@ -34,33 +43,27 @@ Log out and back in to activate the new setup (zinit will install plugins automa
 
 ### Manual Install (Optional)
 
-If you prefer to install prerequisites manually or need more control over the process:
-
 ```bash
-# Clone the repository
 git clone https://gitlab.com/cacack/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-
-# Basic installation (creates directories, symlinks configs, installs CLI tools via mise)
-make install
-
-# Desktop installation (adds fonts, kitty, GUI apps, system settings)
-make install-desktop
-
-# Full application installation (all CLI and GUI tools)
-make install-apps
+make install    # CLI
+make desktop    # or: full desktop
 ```
 
 ### CLI Tools and Runtimes (mise)
 
 CLI tools and language runtimes are installed by [mise](https://mise.jdx.dev).
-Every version is pinned in `configs/.config/mise/config.toml` and locked, with
-per-platform checksums, in `mise.lock` beside it. Renovate opens merge requests
-to bump the pins.
+Every version is pinned exactly and locked, with per-platform checksums:
+
+- `configs/.config/mise/config.toml` → `mise.lock`: base tools (every install)
+- `configs/.config/mise/config.desktop.toml` → `mise.desktop.lock`: desktop tools
+
+`make desktop` records the machine's profile in `~/.config/dotfiles/mise-env`
+(`MISE_ENV=desktop`). Renovate opens merge requests to bump the pins.
 
 ```bash
-make tools       # install exactly what the lockfile pins (also part of `make update`)
-make mise-lock   # regenerate mise.lock after editing config.toml; commit both
+make tools       # install exactly what the lockfiles pin (also part of `make update`)
+make mise-lock   # regenerate both lockfiles after editing a config; commit them together
 ```
 
 ### Optional Customization

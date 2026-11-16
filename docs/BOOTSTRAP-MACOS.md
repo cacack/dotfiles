@@ -120,10 +120,15 @@ Zinit will automatically install plugins on first launch.
 ## What Gets Installed
 
 ### Basic Installation (`make install`)
+- Checks prerequisites (zsh, make, stow, git, curl)
 - Creates directory structure (`~/devel`, `~/.config`, `~/.local/*`)
 - Symlinks dotfiles from `configs/` to `$HOME`
-- Installs mise and every pinned CLI tool and runtime (`make tools`)
-- Links the Neovim config
+- Installs mise and the base tool set (`make tools`)
+- Links the Neovim config and builds the tmux-256color terminfo
+
+### Full Desktop (`make desktop`, or `install.sh --desktop`)
+- Records the machine as a desktop (`MISE_ENV=desktop`) and adds the desktop tool set
+- Runs basic, desktop and app installation below
 
 ### Desktop Installation (`make install-desktop`)
 - All of basic installation
@@ -135,7 +140,6 @@ Zinit will automatically install plugins on first launch.
 ### App Installation (`make install-apps`)
 - Installs Homebrew (if not present)
 - Installs Ghostty terminal
-- Installs Tmux
 
 ## Customization
 

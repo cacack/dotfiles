@@ -23,9 +23,10 @@ help:
 	@echo "=========================="
 	@echo ""
 	@echo "INSTALLATION COMMANDS:"
-	@echo "  make install              - Basic installation (directories, stow, mise tools, neovim config)"
+	@echo "  make install              - CLI installation, no root needed (stow, mise base tools, neovim config)"
+	@echo "  make desktop              - Full desktop (install + desktop tools, GUI apps, fonts, settings)"
 	@echo "  make install-desktop      - Desktop installation (fonts, GUI apps, settings)"
-	@echo "  make install-apps         - Application installation (homebrew, ghostty, tmux)"
+	@echo "  make install-apps         - Application installation (homebrew, ghostty)"
 	@echo ""
 	@echo "CONFIGURATION MANAGEMENT:"
 	@echo "  make stow                 - Symlink dotfiles to \$$HOME"
@@ -74,13 +75,18 @@ help:
 	@echo "For a complete list of targets, run: make list-targets"
 
 .PHONY: install
-install: base-dirs stow tools setup-neovim
+install: check-prereqs base-dirs stow tools setup-neovim setup-tmux
 
 .PHONY: install-desktop
 install-desktop: desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
 
 .PHONY: install-apps
-install-apps: install-app-deps setup-ghostty setup-tmux
+install-apps: install-app-deps setup-ghostty
+
+# Full desktop: CLI install plus desktop tools, GUI apps, fonts and settings.
+.PHONY: desktop
+desktop: mise-env-desktop
+	$(MAKE) install install-desktop install-apps
 
 .PHONY: install-app-deps
 install-app-deps: install-homebrew

@@ -54,21 +54,23 @@ The `.zshrc` sources modular scripts from multiple directories:
 ### When Adding New Tools
 
 1. **Choose installation method** (see criteria below)
-2. **mise tools**: add an exact version to `configs/.config/mise/config.toml`, run `make mise-lock`, commit both; otherwise create a `.mk` file in `.make.d/`
+2. **mise tools**: add an exact version to `config.toml` (base) or `config.desktop.toml` in `configs/.config/mise/`, run `make mise-lock`, commit config and lockfiles; otherwise create a `.mk` file in `.make.d/`
 3. **Add configuration** in `configs/` (dotfiles) or `packages/` (app configs)
 4. **Test thoroughly** with `make test` and `make clean-stow && make stow`
 5. **Update documentation** in README.md if user-facing
 
 ### Installation Method Selection
 
-**Use mise** (`configs/.config/mise/config.toml`) for every CLI tool and
-language runtime. Rules:
-- Exact versions only, locked in `mise.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
-- Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.
+**Use mise** for every CLI tool and language runtime: `config.toml` is the base
+set (every install, no root), `config.desktop.toml` adds desktop-only tools
+(`MISE_ENV=desktop`, recorded in `~/.config/dotfiles/mise-env` by `make desktop`).
+Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
+- Exact versions only, locked in `mise.lock`/`mise.desktop.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
+- Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (restrict with `os = [...]` when upstream lacks one) (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.
 - `pypi:` tools lock their dependencies only without `uvx_args`; tools needing injected plugins (OpenStack CLI) stay in make via `uv tool install`.
 - Not in Renovate's mise manager (e.g. `http:` backend, mise itself): add a custom manager in `renovate.json`.
 
-**Use Makefiles for** machine setup mise can't do: GUI apps (Homebrew casks, apt/Flatpak), system packages (tmux), fonts, OS settings, NAS mounts, stow.
+**Use Makefiles for** machine setup mise can't do: GUI apps (Homebrew casks, apt/Flatpak), fonts, OS settings, NAS mounts, stow.
 
 **Zinit** loads shell plugins only (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, OMZ snippets); it installs no binaries.
 
@@ -96,7 +98,7 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `gui-apps.mk`: GUI apps (cross-platform)
 - `linux-settings.mk`: GNOME/XFCE settings
 - `macos-settings.mk`: System preferences, dock config
-- `mise.mk`: mise install (pinned), `tools`, `mise-lock`, `mise-lock-check`
+- `mise.mk`: mise install (pinned), profiles, `tools`, `mise-lock`, `mise-lock-check`
 - `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux)
 - `testing.mk`: Test suite
 - Tool-specific: `claude-code.mk`, `ghostty.mk`, `kitty.mk`, `neovim.mk` (config only), `tmux.mk`, etc.
