@@ -31,7 +31,9 @@ fi
 # exact commits (a commit hash names its exact content). New installs check them
 # out here and via ver"" in 10_plugins.zsh; `make update` moves existing ones to
 # them (`zinit update` would follow the branch head instead). Renovate bumps
-# them (renovate.json); each line's comment names the branch it tracks.
+# them (renovate.json); each line's comment names the branch it tracks. Keep
+# the "  owner/repo <sha>" line shape: .make.d/10_base.mk and renovate.json parse
+# it, and `make test` checks every plugin load in 10_plugins.zsh names a pin.
 typeset -A _zinit_pins=(
   # renovate: branch=main
   zdharma-continuum/zinit d7b10fcab51ea034aa7df5d241604b3e6bf46449
@@ -51,11 +53,19 @@ typeset -A _zinit_pins=(
 
 # Define zinit home directory
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-# Download Zinit at its pinned commit, if it's not there yet
+# Download Zinit at its pinned commit, if it's not there yet. Clone and check
+# out in a scratch dir and only then move it into place, so an interrupted or
+# failed checkout never leaves an unpinned zinit for later shells to source.
 if [ ! -d "$ZINIT_HOME" ]; then
    mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-   git -C "$ZINIT_HOME" -c advice.detachedHead=false checkout -q "${_zinit_pins[zdharma-continuum/zinit]}"
+   _zinit_tmp="$(mktemp -d)/zinit.git"
+   if git clone -q https://github.com/zdharma-continuum/zinit.git "$_zinit_tmp" &&
+      git -C "$_zinit_tmp" -c advice.detachedHead=false checkout -q "${_zinit_pins[zdharma-continuum/zinit]}"; then
+      mv "$_zinit_tmp" "$ZINIT_HOME"
+   else
+      print -u2 "zinit: could not install the pinned commit; plugins will not load"
+   fi
+   unset _zinit_tmp
 fi
 
 # Source zinit

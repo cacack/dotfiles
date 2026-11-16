@@ -26,6 +26,9 @@ local function tsserver_path()
   local tsc = vim.fn.exepath "tsc"
   local lib = vim.fn.fnamemodify(tsc, ":h:h") .. "/typescript/lib"
   if tsc == "" or vim.fn.filereadable(lib .. "/tsserver.js") == 0 then
+    vim.schedule(function()
+      vim.notify("ts_ls: no tsserver.js beside `tsc` on PATH (" .. lib .. "); run `make tools`", vim.log.levels.WARN)
+    end)
     return nil
   end
   return lib
@@ -40,30 +43,33 @@ local M = {
   },
 }
 
-local heavy = {
-  bashls = {},
-  cssls = {},
-  gopls = {},
-  html = {},
-  jsonls = {},
-  pyright = {},
-  ruff = {},
-  rust_analyzer = {},
-  terraformls = {},
-  ts_ls = { init_options = { tsserver = { path = tsserver_path() } } },
-  yamlls = {
-    settings = {
-      yaml = {
-        schemas = {
-          ["./c7n-schema.json"] = "*.yml",
+-- Built only on desktops, so light machines never look for tsserver.
+local function heavy()
+  return {
+    bashls = {},
+    cssls = {},
+    gopls = {},
+    html = {},
+    jsonls = {},
+    pyright = {},
+    ruff = {},
+    rust_analyzer = {},
+    terraformls = {},
+    ts_ls = { init_options = { tsserver = { path = tsserver_path() } } },
+    yamlls = {
+      settings = {
+        yaml = {
+          schemas = {
+            ["./c7n-schema.json"] = "*.yml",
+          },
         },
       },
     },
-  },
-}
+  }
+end
 
 if M.desktop then
-  M.servers = vim.tbl_extend("error", M.servers, heavy)
+  M.servers = vim.tbl_extend("error", M.servers, heavy())
 end
 
 return M

@@ -30,5 +30,6 @@ security-deps:
 security-tools:
 	@echo
 	# Scanning installed tools (trivy)
+	@[ -d "$(MISE_INSTALLS)" ] || { echo "ERROR: $(MISE_INSTALLS) not found; run make tools or set MISE_INSTALLS"; exit 1; }
 	$(call MISE_SCAN,aqua:aquasecurity/trivy) trivy rootfs --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed \
-		--ignorefile $(REPO_DIR)/.trivyignore.yaml --exit-code 1 $(MISE_INSTALLS)
+		--timeout 20m --ignorefile $(REPO_DIR)/.trivyignore.yaml --exit-code 1 $(MISE_INSTALLS)

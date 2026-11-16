@@ -14,7 +14,8 @@ lockfile_platforms = ["linux-arm64", "linux-x64", "macos-arm64"]
 locked_verify_provenance = true
 
 [tools]
-# Neovim's light-tier language servers and formatters (lua/configs/tools.lua).
+# Neovim's light-tier language servers and formatters (lua/configs/tools.lua,
+# conform.lua), plus hadolint for linting Dockerfiles from the shell.
 "aqua:JohnnyMorganz/StyLua" = "2.6.0"
 "aqua:LuaLS/lua-language-server" = "3.19.2"
 "aqua:artempyanykh/marksman" = "2026-02-08"

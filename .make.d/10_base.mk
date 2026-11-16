@@ -2,8 +2,8 @@ CLEAN += clean-stow clean-bashrc
 UPDATE += zinit-update zinit-prune-completions
 
 # What `make install` needs but cannot provide itself. None of it needs root
-# once present. unzip is for Neovim's Mason; on Linux desktops, Node (desktop
-# tool set) also needs libatomic.
+# once present. unzip unpacks tools shipped as .zip (terraform-ls, tflint,
+# aws-cli, bw); on Linux desktops, Node (desktop tool set) also needs libatomic.
 PREREQS := curl git make stow tar unzip zsh
 
 .PHONY: check-prereqs
@@ -35,12 +35,15 @@ stow:
 # Move zinit and each installed plugin to its pinned commit (_zinit_pins in
 # 00_init.zsh). Not `zinit self-update`/`zinit update`: those follow the branch
 # head and ignore the pins. Oh My Zsh snippets are pinned by URL and need nothing.
-ZINIT_DATA := ${HOME}/.local/share/zinit
+# The sed reads the pin block's exact shape ("  owner/repo <40-hex sha>"), as
+# does renovate.json; an empty result means the block was reformatted.
+ZINIT_DATA := $(or $(XDG_DATA_HOME),${HOME}/.local/share)/zinit
 ZINIT_PINS = $(shell sed -nE 's/^ +([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+) ([0-9a-f]{40})$$/\1=\2/p' $(REPO_DIR)/configs/.zshrc.d/00_init.zsh)
 .PHONY: zinit-update
 zinit-update:
 	@echo
 	# Syncing zinit and plugins to their pinned commits
+	@[ -n "$(ZINIT_PINS)" ] || { echo "ERROR: no pins parsed from _zinit_pins in 00_init.zsh"; exit 1; }
 	@for pin in $(ZINIT_PINS); do \
 		repo=$${pin%%=*}; sha=$${pin#*=}; \
 		case "$$repo" in \
