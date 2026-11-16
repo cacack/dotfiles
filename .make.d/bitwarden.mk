@@ -40,6 +40,7 @@ setup-bitwarden-login:
 		echo ""; \
 		echo "After logging in, Bitwarden will prompt for your password once per session."; \
 		echo "The session persists across terminal windows until it expires."; \
+		echo "Shells remember 'not logged in' for 15 minutes; run bw_unlock to unlock sooner."; \
 	else \
 		echo "Already logged in to BitWarden."; \
 	fi
