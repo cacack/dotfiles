@@ -3,7 +3,7 @@ revision = 5
 requires-python = ">=3.8"
 
 [options]
-exclude-newer = "2026-11-15T13:27:51.803873Z"
+exclude-newer = "2026-11-15T13:53:02.575576Z"
 
 [[package]]
 name = "git-filter-repo"

@@ -19,7 +19,7 @@
     {
       "customType": "regex",
       "description": "gcloud, installed through mise's http backend",
-      "managerFilePatterns": ["/^configs/\\.config/mise/config\\.toml$/"],
+      "managerFilePatterns": ["/^configs/\\.config/mise/config\\.desktop\\.toml$/"],
       "matchStrings": [
         "\\[tools\\.\"http:gcloud\"\\]\\nversion = \"(?<currentValue>[^\"]+)\""
       ],

@@ -3,5 +3,9 @@
 # files after this one (10_plugins.zsh, 10_prompt.zsh) that init fzf, zoxide
 # and starship.
 if (( $+commands[mise] )); then
+  # Desktop installs (`make desktop`) record MISE_ENV=desktop for this machine.
+  if [[ -r "${HOME}/.config/dotfiles/mise-env" ]]; then
+    export MISE_ENV="$(<"${HOME}/.config/dotfiles/mise-env")"
+  fi
   _cached_init mise 'mise activate zsh' mise
 fi
