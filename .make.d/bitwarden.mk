@@ -1,7 +1,7 @@
 ################################################################################
 # BitWarden CLI configuration
 #
-# The bw CLI is installed by mise (configs/.config/mise/config.toml).
+# The bw CLI is installed by mise (configs/.config/mise/config.desktop.toml).
 # Note: GUI app is installed via gui-apps.mk
 ################################################################################
 
@@ -10,7 +10,7 @@ setup-bitwarden-server:
 	@echo
 	# Configuring BitWarden server URL
 	@if ! bw status >/dev/null 2>&1; then \
-		echo "Error: BitWarden CLI not installed. Run 'make tools' first."; \
+		echo "Error: BitWarden CLI not installed. bw is in the desktop tool set: run 'make desktop'."; \
 		exit 1; \
 	fi
 	@echo "Current server configuration:"
@@ -27,7 +27,7 @@ setup-bitwarden-login:
 	@echo
 	# Setting up BitWarden login
 	@if ! bw status >/dev/null 2>&1; then \
-		echo "Error: BitWarden CLI not installed. Run 'make tools' first."; \
+		echo "Error: BitWarden CLI not installed. bw is in the desktop tool set: run 'make desktop'."; \
 		exit 1; \
 	fi
 	@bw_status=$$(bw status 2>/dev/null | grep -o '"status":"[^"]*"' | cut -d'"' -f4); \
