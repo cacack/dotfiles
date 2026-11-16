@@ -128,4 +128,4 @@ setup-sssd:
 	sudo systemctl restart sssd
 
 switch-repo-url:
-	cd ${HOME}/.dotfiles && git remote set-url origin git@gitlab.com:cacack/dotfiles.git
+	cd ${HOME}/.dotfiles && git remote set-url origin git@github.com:cacack/dotfiles.git
