@@ -47,6 +47,17 @@ for _ in 1 2; do as_dev 'zsh -i -c true' >/dev/null 2>&1 || true; done
 noise="$(as_dev 'zsh -i -c true' 2>&1 | grep -v "can't change option: zle" || true)"
 [[ -z "$noise" ]] && pass "shell starts silently once plugins are fetched" || fail "shell output: $noise"
 
+echo "Shell plugin pins:"
+# A fresh install must already sit on every pin, so syncing moves nothing.
+moved="$(as_dev 'cd ~/.dotfiles && make -s zinit-update' 2>&1 | grep -v '^# Syncing\|^$' || true)"
+[[ -z "$moved" ]] && pass "zinit and plugins installed at their pinned commits" || fail "not at pins: $moved"
+# Repinning a plugin (here to its parent commit) must move it on the next sync.
+plugin=/home/dev/.local/share/zinit/plugins/Aloxaf---fzf-tab
+parent="$(as_dev "git -C $plugin rev-parse HEAD~1")"
+as_dev "cd ~/.dotfiles && sed -i 's|^\(  Aloxaf/fzf-tab \)[0-9a-f]*|\1$parent|' configs/.zshrc.d/00_init.zsh && make -s zinit-update >/dev/null"
+[[ "$(as_dev "git -C $plugin rev-parse HEAD")" == "$parent" ]] && pass "make update moves a plugin to a changed pin" || fail "plugin did not follow its new pin"
+as_dev 'cd ~/.dotfiles && git checkout -q -- configs/.zshrc.d/00_init.zsh && make -s zinit-update >/dev/null'
+
 echo "Tools:"
 missing="$(as_dev 'zsh -i -c "mise ls --missing"' 2>/dev/null)"
 [[ -z "$missing" ]] && pass "every pinned tool is installed" || fail "not installed: $missing"

@@ -32,10 +32,28 @@ base-dirs:
 stow:
 	stow -v configs
 
+# Move zinit and each installed plugin to its pinned commit (_zinit_pins in
+# 00_init.zsh). Not `zinit self-update`/`zinit update`: those follow the branch
+# head and ignore the pins. Oh My Zsh snippets are pinned by URL and need nothing.
+ZINIT_DATA := ${HOME}/.local/share/zinit
+ZINIT_PINS = $(shell sed -nE 's/^ +([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+) ([0-9a-f]{40})$$/\1=\2/p' $(REPO_DIR)/configs/.zshrc.d/00_init.zsh)
+.PHONY: zinit-update
 zinit-update:
-	source "${HOME}/.local/share/zinit/zinit.git/zinit.zsh"; \
-	zinit self-update; \
-	zinit update --parallel
+	@echo
+	# Syncing zinit and plugins to their pinned commits
+	@for pin in $(ZINIT_PINS); do \
+		repo=$${pin%%=*}; sha=$${pin#*=}; \
+		case "$$repo" in \
+			ohmyzsh/ohmyzsh) continue ;; \
+			zdharma-continuum/zinit) dir="$(ZINIT_DATA)/zinit.git" ;; \
+			*) dir="$(ZINIT_DATA)/plugins/$${repo%%/*}---$${repo#*/}" ;; \
+		esac; \
+		[ -d "$$dir/.git" ] || continue; \
+		[ "$$(git -C "$$dir" rev-parse HEAD)" = "$$sha" ] && continue; \
+		echo "$$repo -> $$sha"; \
+		git -C "$$dir" fetch -q origin "$$sha" && \
+		git -C "$$dir" -c advice.detachedHead=false checkout -q "$$sha" || exit 1; \
+	done
 
 # Plugin updates can drop or relocate completion files, leaving dangling
 # symlinks in zinit's aggregated completions dir that break compinit on next

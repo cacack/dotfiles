@@ -79,8 +79,9 @@ zinit() {
     esac
 }
 
-# Mock the init-script cache helper defined in 00_init.zsh
+# Mock the init-script cache helper and plugin pins defined in 00_init.zsh
 _cached_init() { return 0; }
+typeset -A _zinit_pins
 
 # Create mock files that bitwarden script expects
 touch "\$HOME/.ssh/bw.env" 2>/dev/null || true

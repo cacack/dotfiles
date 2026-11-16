@@ -27,12 +27,35 @@ if [[ $OSTYPE == darwin* ]]; then
   fi
 fi
 
+# Shell code pins: zinit, every plugin and the Oh My Zsh snippets run at these
+# exact commits (a commit hash names its exact content). New installs check them
+# out here and via ver"" in 10_plugins.zsh; `make update` moves existing ones to
+# them (`zinit update` would follow the branch head instead). Renovate bumps
+# them (renovate.json); each line's comment names the branch it tracks.
+typeset -A _zinit_pins=(
+  # renovate: branch=main
+  zdharma-continuum/zinit d7b10fcab51ea034aa7df5d241604b3e6bf46449
+  # renovate: branch=master
+  Aloxaf/fzf-tab 24105b15714bfec37989ed5c5b6e60f572253019
+  # renovate: branch=master
+  jeffreytse/zsh-vi-mode 91cafe4a09b6670cb8e761aa413e5f7b9e00816f
+  # renovate: branch=master
+  ohmyzsh/ohmyzsh c0140703a53eb0d22be44f7bac318d0baacc927c
+  # renovate: branch=master
+  zsh-users/zsh-autosuggestions 85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5
+  # renovate: branch=master
+  zsh-users/zsh-completions 989b23277ab33e8d5e82df6aed936e846db9d8b8
+  # renovate: branch=master
+  zsh-users/zsh-syntax-highlighting e6683f20e5c38d3e5447f45845d04ddda75d0f23
+)
+
 # Define zinit home directory
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-# Download Zinit, if it's not there yet
+# Download Zinit at its pinned commit, if it's not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
    mkdir -p "$(dirname $ZINIT_HOME)"
    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+   git -C "$ZINIT_HOME" -c advice.detachedHead=false checkout -q "${_zinit_pins[zdharma-continuum/zinit]}"
 fi
 
 # Source zinit

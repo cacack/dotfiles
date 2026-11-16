@@ -75,7 +75,7 @@ Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
 
 **Use Makefiles for** machine setup mise can't do: GUI apps (Homebrew casks, apt/Flatpak), fonts, OS settings, NAS mounts, stow.
 
-**Zinit** loads shell plugins only (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, OMZ snippets); it installs no binaries.
+**Zinit** loads shell plugins only (syntax highlighting, autosuggestions, completions, vi-mode, fzf-tab, OMZ snippets); it installs no binaries. Every plugin, OMZ and zinit itself is pinned to a commit in `_zinit_pins` (`00_init.zsh`, with a `# renovate: branch=` line each); load plugins with `ver"${_zinit_pins[...]}"` and OMZ files by pinned raw URL, never `OMZP::`. `make update` syncs them (`zinit-update`); never call `zinit update`/`self-update`, which ignore pins.
 
 **macOS prerequisite:** Homebrew (installed by `install.sh`) provides stow and casks; mise is installed by `make install-mise`, pinned in `.make.d/mise.mk`.
 

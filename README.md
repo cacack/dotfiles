@@ -83,6 +83,7 @@ Each layer catches what the others miss:
 | Layer | Guards against | Where |
 |---|---|---|
 | Exact pins + per-platform checksums | a tampered or swapped download | `mise.lock`, `locked = true` |
+| Shell plugins, Oh My Zsh and zinit pinned to commits | a malicious push to a plugin repo reaching every shell | `_zinit_pins` in `configs/.zshrc.d/00_init.zsh` |
 | Signed provenance re-verified on install (GitHub attestations, SLSA, cosign) where upstream publishes it | a release not built by the project's CI | `locked_verify_provenance` in `config.toml` |
 | 7-day minimum release age (vulnerability fixes exempt) | a compromised release, usually yanked within days | `renovate.json` |
 | Lockfile check on every merge request | a bump that skips the lock | `mise-lock` CI job |
