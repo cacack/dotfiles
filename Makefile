@@ -23,9 +23,9 @@ help:
 	@echo "=========================="
 	@echo ""
 	@echo "INSTALLATION COMMANDS:"
-	@echo "  make install              - Basic installation (directories, neovim, AWS CLI, stow)"
+	@echo "  make install              - Basic installation (directories, stow, mise tools, neovim config)"
 	@echo "  make install-desktop      - Desktop installation (fonts, GUI apps, settings)"
-	@echo "  make install-apps         - Application installation (homebrew, dev tools)"
+	@echo "  make install-apps         - Application installation (homebrew, ghostty, tmux)"
 	@echo ""
 	@echo "CONFIGURATION MANAGEMENT:"
 	@echo "  make stow                 - Symlink dotfiles to \$$HOME"
@@ -36,6 +36,8 @@ help:
 	@echo "  make clean                - Clean temporary files"
 	@echo "  make clean-all            - Deep clean including configurations"
 	@echo "  make zinit-update         - Update zinit and all plugins"
+	@echo "  make tools                - Install locked tool versions (mise)"
+	@echo "  make mise-lock            - Regenerate mise.lock after editing tool pins"
 	@echo ""
 	@echo "TOOLS & APPLICATIONS:"
 	@echo "  make setup-<tool>         - Install/configure specific tool"
@@ -72,16 +74,16 @@ help:
 	@echo "For a complete list of targets, run: make list-targets"
 
 .PHONY: install
-install: base-dirs setup-neovim stow install-aws-cli
+install: base-dirs stow tools setup-neovim
 
 .PHONY: install-desktop
 install-desktop: desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
 
 .PHONY: install-apps
-install-apps: install-app-deps install-aws-cli install-azure-cli install-gcloud install-glab setup-bitwarden setup-direnv setup-eza setup-gh setup-ghostty setup-neovim setup-tmux
+install-apps: install-app-deps setup-ghostty setup-tmux
 
 .PHONY: install-app-deps
-install-app-deps: install-homebrew install-yarn
+install-app-deps: install-homebrew
 
 ################################################################################
 

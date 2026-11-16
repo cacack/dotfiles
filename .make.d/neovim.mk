@@ -1,32 +1,7 @@
 CLEAN_ALL += clean-neovim-config
 
 .PHONY: setup-neovim
-setup-neovim: install-neovim-dependencies install-neovim setup-neovim-config
-
-.PHONY: install-neovim-dependencies
-install-neovim-dependencies:
-	@echo
-ifeq ($(OS),linux)
-	# sudo apt update
-	# sudo apt install -y --no-install-recommends npm golang
-endif
-
-.PHONY: install-neovim
-install-neovim:
-	@echo
-	# Installing NeoVim
-ifeq ($(OS),linux)
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-	rm -rf ${HOME}/.local/opt/nvim-linux-x86_64
-	tar -C ${HOME}/.local/opt -xzf nvim-linux-x86_64.tar.gz
-	rm nvim-linux-x86_64.tar.gz
-endif
-ifeq ($(OS),darwin)
-	curl -LOs https://github.com/neovim/neovim/releases/latest/download/nvim-macos-$(ARCH).tar.gz
-	rm -rf ${HOME}/.local/opt/nvim-macos-$(ARCH)
-	tar -C ${HOME}/.local/opt -xzf nvim-macos-$(ARCH).tar.gz
-	rm nvim-macos-$(ARCH).tar.gz
-endif
+setup-neovim: setup-neovim-config
 
 .PHONY: setup-neovim-config
 setup-neovim-config:
