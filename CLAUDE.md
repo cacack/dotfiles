@@ -122,6 +122,7 @@ specific paths) that should not be committed to a public dotfiles repo.
 - `make clean-stow` - Remove symlinked dotfiles
 - `make test` - Run complete test suite
 - `make test-<type>` - Run specific test (syntax, config, stow, makefile, shellcheck, security, permissions)
+- `make test-install` - Light install end to end in a Docker container (not in `make test`); run after changing install.sh, prerequisites, mise configs or Neovim's tools.lua
 - `make update` - Update all configured tools
 
 **Note:** Use `make help` or `make list-targets` to discover all available commands.

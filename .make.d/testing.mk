@@ -1,4 +1,4 @@
-.PHONY: test test-syntax test-config test-stow test-makefile test-shellcheck test-security test-permissions test-help
+.PHONY: test test-syntax test-config test-stow test-makefile test-shellcheck test-security test-permissions test-install test-help
 
 # Main test target - runs all tests
 test:
@@ -42,6 +42,12 @@ test-permissions:
 	@echo "Running file permissions validation..."
 	@./tests/test-file-permissions.sh
 
+# End-to-end light install in a container (needs Docker and network; not in `test`)
+test-install:
+	@echo
+	@echo "Running container install test..."
+	@./tests/test-install-container.sh
+
 # Test help
 test-help:
 	@echo
@@ -54,5 +60,6 @@ test-help:
 	@echo "  test-shellcheck  - Run ShellCheck linting"
 	@echo "  test-security    - Run security scanning"
 	@echo "  test-permissions - Run file permissions validation"
+	@echo "  test-install     - Run the light install in a Docker container"
 	@echo "  test-help        - Show this help message"
 	@echo
