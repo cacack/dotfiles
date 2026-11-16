@@ -78,7 +78,7 @@ help:
 install: check-prereqs base-dirs stow tools setup-neovim setup-tmux
 
 .PHONY: install-desktop
-install-desktop: desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
+install-desktop: mise-env-desktop desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
 
 .PHONY: install-apps
 install-apps: install-app-deps setup-ghostty

@@ -60,9 +60,13 @@ Every version is pinned exactly and locked, with per-platform checksums:
 - `configs/.config/mise/config.desktop.toml` → `mise.desktop.lock`: heavy tools
   (language runtimes and what needs them)
 
-`make desktop` records the machine's profile in `~/.config/dotfiles/mise-env`
-(`MISE_ENV=desktop`); Neovim reads the same flag to pick its language servers
-(`lua/configs/tools.lua`). Renovate opens merge requests to bump the pins.
+`make desktop` (and `make install-desktop`) records the machine's profile in
+`~/.config/dotfiles/mise-env` (`MISE_ENV=desktop`); Neovim reads the same flag
+to pick its language servers (`lua/configs/tools.lua`). Without it a machine is
+light: **desktops set up before mise must run `make desktop` once**, or they lose
+their runtimes, cloud CLIs and GUI app updates on the next `make update`.
+
+Renovate opens merge requests to bump the pins.
 
 ```bash
 make tools       # install exactly what the lockfiles pin (also part of `make update`)

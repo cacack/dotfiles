@@ -131,7 +131,7 @@ Zinit will automatically install plugins on first launch.
 - Runs basic, desktop and app installation below
 
 ### Desktop Installation (`make install-desktop`)
-- All of basic installation
+- Records the machine as a desktop (`MISE_ENV=desktop`); run `make tools` to add the desktop tool set
 - Installs Nerd Fonts
 - Installs Kitty terminal
 - Installs GUI applications (if configured)
