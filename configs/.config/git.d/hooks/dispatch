@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Shared hooks for public repos, enabled by ~/.config/git.d/public-repo.
+# Each hook name in this directory is a symlink to this script. It runs the
+# private-terms check for that hook, then the repo's own hook, which
+# core.hooksPath would otherwise bypass (pre-commit framework, git-lfs).
+set -euo pipefail
+
+name="$(basename "$0")"
+check="$(dirname "$0")/check-private-terms"
+own="$(git rev-parse --git-common-dir)/hooks/$name"
+
+case "$name" in
+  pre-commit)
+    "$check" staged
+    ;;
+  commit-msg)
+    "$check" message "$1"
+    ;;
+  pre-push)
+    # Git passes the refs being pushed on stdin; keep them for the repo's hook.
+    input="$(cat)"
+    while read -r _ local_sha _ remote_sha; do
+      if [[ -z "$local_sha" || "$local_sha" =~ ^0+$ ]]; then continue; fi # deletion
+      if [[ "$remote_sha" =~ ^0+$ ]]; then
+        "$check" range "$local_sha" --not --remotes # new branch
+      else
+        "$check" range "$remote_sha..$local_sha"
+      fi
+    done <<<"$input"
+    if [[ -x "$own" ]]; then
+      printf '%s' "${input:+$input$'\n'}" | "$own" "$@"
+    fi
+    exit
+    ;;
+esac
+
+if [[ -x "$own" ]]; then exec "$own" "$@"; fi

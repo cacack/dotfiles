@@ -105,7 +105,8 @@ main() {
 
     # Lint shell scripts (.sh files)
     echo "Linting shell scripts:"
-    for file in "$DOTFILES_DIR"/*.sh "$DOTFILES_DIR"/tests/*.sh; do
+    for file in "$DOTFILES_DIR"/*.sh "$DOTFILES_DIR"/tests/*.sh \
+        "$DOTFILES_DIR"/configs/.config/git.d/hooks/{check-private-terms,dispatch}; do
         if [[ -f "$file" ]]; then
             total=$((total + 1))
             if ! lint_shell_script "$file"; then

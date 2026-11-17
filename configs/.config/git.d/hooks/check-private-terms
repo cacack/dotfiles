@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# Block private terms (employer names, internal hosts, ticket keys) from
+# reaching a public repository. Terms are extended regexes, one per line,
+# matched case-insensitively and kept outside any public repo:
+# $GIT_PRIVATE_TERMS, else ~/.config/git-private-terms. Reports only where a
+# term matched, never the matched text, so the output is safe in public CI logs.
+#
+# Usage:
+#   check-private-terms staged              # staged file names and contents,
+#                                           # author and committer
+#   check-private-terms message <file>      # a commit message file
+#   check-private-terms range <rev-list args>  # each commit: names, contents,
+#                                              # message, author and committer
+#   check-private-terms tree                # every tracked file at HEAD
+set -euo pipefail
+
+terms_src="${GIT_PRIVATE_TERMS:-$HOME/.config/git-private-terms}"
+if [[ ! -r "$terms_src" ]]; then
+  echo "private-terms: no term list at $terms_src; skipping check" >&2
+  exit 0
+fi
+
+terms="$(mktemp)"
+trap 'rm -f "$terms"' EXIT
+# A blank line would match everything, and comments are not terms.
+grep -v -E '^[[:space:]]*(#|$)' "$terms_src" >"$terms" || true
+if [[ ! -s "$terms" ]]; then
+  echo "private-terms: $terms_src has no terms; skipping check" >&2
+  exit 0
+fi
+
+found=0
+report() {
+  echo "private-terms: match in $1" >&2
+  found=1
+}
+
+matches() { grep -q -i -E -f "$terms"; }
+
+# Comma-separated line numbers of matching lines; binary content is skipped.
+match_lines() { { grep -n -I -i -E -f "$terms" || true; } | cut -d: -f1 | paste -s -d, -; }
+
+# A path that itself matches would print the term, so CI (public logs) gets a
+# placeholder; locally the path is shown.
+shown() { # <path>
+  if [[ -n "${CI:-}" ]] && printf '%s\n' "$1" | matches; then
+    echo "<redacted path>"
+  else
+    echo "$1"
+  fi
+}
+
+check_name() { # <label> <path>
+  if printf '%s\n' "$2" | matches; then report "$1 file name: $(shown "$2")"; fi
+}
+
+check_blob() { # <label> <path> <object>
+  local lines
+  lines="$(git cat-file blob "$3" | match_lines)"
+  if [[ -n "$lines" ]]; then report "$1$(shown "$2") line $lines"; fi
+}
+
+check_commit() { # <sha>
+  local c="$1" short f
+  short="$(git rev-parse --short "$c")"
+  if git log -1 --format='%an%n%ae%n%cn%n%ce%n%B' "$c" | matches; then
+    report "commit $short message, author or committer"
+  fi
+  while IFS= read -r -d '' f; do
+    check_name "commit $short" "$f"
+    check_blob "commit $short " "$f" "$c:$f"
+  done < <(git diff-tree -r -z --root --no-commit-id --name-only --diff-filter=ACMR "$c")
+}
+
+mode="${1:-}"
+case "$mode" in
+  staged)
+    if { git var GIT_AUTHOR_IDENT && git var GIT_COMMITTER_IDENT; } | matches; then
+      report "author or committer identity"
+    fi
+    while IFS= read -r -d '' f; do
+      check_name "staged" "$f"
+      check_blob "" "$f" ":$f"
+    done < <(git diff --cached -z --name-only --diff-filter=ACMR)
+    ;;
+  message)
+    if grep -v '^#' "$2" | matches; then report "commit message"; fi
+    ;;
+  range)
+    shift
+    while IFS= read -r c; do check_commit "$c"; done < <(git rev-list "$@")
+    ;;
+  tree)
+    while IFS= read -r -d '' f; do
+      check_name "tracked" "$f"
+      check_blob "" "$f" "HEAD:$f"
+    done < <(git ls-tree -r -z --name-only HEAD)
+    ;;
+  *)
+    echo "usage: check-private-terms staged | message <file> | range <rev-list args> | tree" >&2
+    exit 2
+    ;;
+esac
+
+if ((found)); then
+  echo "private-terms: blocked. Remove the matches, or narrow the term if it is a false positive." >&2
+  exit 1
+fi

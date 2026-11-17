@@ -13,6 +13,16 @@
   path = ~/.config/git.d/user
   path = ~/.config/git.local
 
+# Repos with a public remote get the shared hooks that block private terms.
+[includeIf "hasconfig:remote.*.url:git@github.com:cacack/**"]
+  path = ~/.config/git.d/public-repo
+[includeIf "hasconfig:remote.*.url:https://github.com/cacack/**"]
+  path = ~/.config/git.d/public-repo
+[includeIf "hasconfig:remote.*.url:git@gitlab.com:cacack/**"]
+  path = ~/.config/git.d/public-repo
+[includeIf "hasconfig:remote.*.url:https://gitlab.com/cacack/**"]
+  path = ~/.config/git.d/public-repo
+
 [credential]
 	helper = !aws codecommit credential-helper $@
 	UseHttpPath = true
