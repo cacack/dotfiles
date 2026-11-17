@@ -424,7 +424,7 @@ uv = { path = "locks/mise.desktop/pypi-mdformat/1.0.0", digest = "sha256:34525a7
 version = "2.5.1"
 backend = "pypi:poetry"
 specifiers = ["2.5.1"]
-uv = { path = "locks/mise.desktop/pypi-poetry/2.5.1", digest = "sha256:8e50db79db9b81e26e432e7720baf703a791f0358eb40759ec3f0f5cb89c8143" }
+uv = { path = "locks/mise.desktop/pypi-poetry/2.5.1", digest = "sha256:7b9d1679c30ea061110b19568b492561c18a209243876db9f017f01b94d94813" }
 
 [[tools.python]]
 version = "3.13.18"
