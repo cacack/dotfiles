@@ -84,7 +84,7 @@ endif
 
 # Personal-only apps (`make personal`), on top of the desktop ones.
 .PHONY: install-personal-apps
-install-personal-apps:
+install-personal-apps: brew-cask-tap
 	@echo
 	# Installing personal-only GUI applications
 ifeq ($(OS),darwin)
@@ -169,8 +169,16 @@ endif
 # Brewfile Management (macOS)
 ################################################################################
 
+# Without the JSON API (set on a ~/.local prefix, see 00_init.zsh), casks
+# resolve only from a local homebrew/cask tap, which nothing else creates.
+.PHONY: brew-cask-tap
+brew-cask-tap:
+ifeq ($(OS),darwin)
+	@if [ -n "$$HOMEBREW_NO_INSTALL_FROM_API" ]; then brew tap homebrew/cask; fi
+endif
+
 .PHONY: install-from-brewfile
-install-from-brewfile:
+install-from-brewfile: brew-cask-tap
 ifeq ($(OS),darwin)
 	@echo
 	# Installing GUI apps from Brewfile.gui

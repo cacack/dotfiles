@@ -142,7 +142,7 @@ verify-makefiles:
 		echo "  cd .make.d && $(SHASUM_CHECK) makefile-checksums.txt"; \
 		echo ""; \
 		echo "If changes are intentional, regenerate checksums:"; \
-		echo "  cd .make.d && shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt.new"; \
+		echo "  cd .make.d && ls *.mk | grep -vx 99_local.mk | xargs shasum -a 256 | sort -k2 > makefile-checksums.txt.new"; \
 		echo "  # Review changes, then:"; \
 		echo "  mv makefile-checksums.txt.new makefile-checksums.txt"; \
 		exit 1; \
