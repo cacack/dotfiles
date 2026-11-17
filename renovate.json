@@ -71,6 +71,12 @@
       "groupName": "zsh plugins",
       "schedule": ["* 0-5 1 * *"],
       "minimumReleaseAge": null
+    },
+    {
+      "description": "Python minor releases can break tools and language servers: take patches only, move minors by hand",
+      "matchDepNames": ["python"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
     }
   ]
 }
