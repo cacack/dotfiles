@@ -4,9 +4,10 @@
 # on the branch and the lockfiles are committed.
 # Every job runs in the digest-pinned Ubuntu image the container install test
 # uses; actions are pinned to commits. Renovate bumps both.
-# `mise-lock` and `security-deps` are required checks on main, so the workflow
-# runs on every pull request and the `changes` job skips them (a skip passes)
-# when no supply-chain file changed; a `paths:` filter would leave them pending.
+# `mise-lock`, `security-deps` and `security-tools` are required checks on
+# main, so the workflow runs on every pull request and the `changes` job skips
+# them (a skip passes) when no supply-chain file changed; a `paths:` filter
+# would leave them pending.
 name: supply-chain
 
 on:
