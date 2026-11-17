@@ -14,7 +14,7 @@ My various configuration files to make ${HOME} home.
 |---|---|---|
 | CLI, no root (headless/remote) | `curl -sSL https://raw.githubusercontent.com/cacack/dotfiles/main/install.sh \| bash` | zsh, make, stow, git, curl, tar, unzip already installed |
 | CLI, with root | same command | sudo or root; installs whatever of the above is missing |
-| Full desktop | same command with `\| bash -s -- --desktop` | macOS: admin (Command Line Tools, Homebrew); Linux: sudo for GUI apps, plus libatomic |
+| Full desktop | same command with `\| bash -s -- --desktop` | macOS: Command Line Tools (Homebrew goes to `~/.local/opt/homebrew` without admin); Linux: sudo for GUI apps, plus libatomic |
 
 - **CLI** runs `make install`: stows configs and installs the light tool set
   (shell utilities, prompt, tmux, Neovim with binary-only language servers;

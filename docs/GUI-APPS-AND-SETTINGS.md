@@ -296,7 +296,7 @@ git commit -m "feat: Add GUI app and desktop settings configuration"
 - Run `killall Dock` (macOS) or `killall Finder` (macOS) to restart
 
 **Apps not installing:**
-- macOS: Ensure Homebrew is installed (`make install-homebrew`)
+- macOS: Ensure Homebrew is installed (`install.sh` installs it)
 - Linux: Ensure apt/flatpak is available
 - Check for typos in app names
 
