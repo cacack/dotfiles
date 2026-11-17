@@ -75,10 +75,13 @@ jobs:
       - run: MISE_CONFIG_DIR="$GITHUB_WORKSPACE/configs/.config/mise" "$HOME/.local/bin/mise" install aqua:google/osv-scanner
       - run: make security-deps
 
-  # Installs the whole desktop tool set and scans it with Trivy. Too heavy for
-  # every pull request: weekly, or from the Actions tab (workflow_dispatch).
+  # Installs the whole desktop tool set and scans it with Trivy (~90s): on pull
+  # requests that change a supply-chain file, so a vulnerable bump is caught
+  # before merge, plus weekly for new CVEs and from the Actions tab
+  # (workflow_dispatch). Skipped on pushes to main, which merged PRs scanned.
   security-tools:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true' && github.event_name != 'push'
     runs-on: ubuntu-24.04
     container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
     steps:
