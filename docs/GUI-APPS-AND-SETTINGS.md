@@ -22,7 +22,7 @@ make install-desktop
 This will:
 - Create desktop directories
 - Install fonts
-- Set up Kitty terminal
+- Link the Ghostty config
 - Install GUI applications
 - Apply desktop settings
 
@@ -198,7 +198,7 @@ configure-dock-items:
 	dockutil --remove all --no-restart
 
 	# Add applications (order matters!)
-	dockutil --add /Applications/Kitty.app --no-restart
+	dockutil --add ~/Applications/Ghostty.app --no-restart
 	dockutil --add /Applications/Firefox.app --no-restart
 	dockutil --add /Applications/Bitwarden.app --no-restart
 

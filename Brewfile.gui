@@ -1,25 +1,17 @@
 ################################################################################
-# Brewfile for GUI Applications
-#
-# The macOS GUI app list: `make desktop` installs it (make install-from-brewfile).
+# Brewfile for desktop GUI apps: every desktop, work included (`make desktop`).
+# Personal-only apps live in Brewfile.personal (`make personal`).
 #
 # Usage:
 #   brew bundle install --file=Brewfile.gui      # Install all apps
 #   brew bundle cleanup --file=Brewfile.gui      # Remove unlisted apps
-#
 ################################################################################
 
 # Install into ~/Applications: no admin rights needed.
-# Casks that ship a .pkg installer (nextcloud) still need admin.
+# Casks that ship a .pkg installer still need admin.
 # adopt: take over an identical app already there (e.g. installed by hand).
 cask_args appdir: "~/Applications", adopt: true
 
-# === Browsers ===
-cask "firefox"
-# cask "brave-browser"
-cask "google-chrome"
-
-# === Password Managers ===
 # Bitwarden is installed from the Mac App Store, not the Homebrew cask: the cask
 # is auto_updates and fights the App Store / in-app self-updater, which breaks
 # `brew upgrade`. `mas` lets `brew bundle` reproduce the App Store install.
@@ -27,52 +19,9 @@ cask "google-chrome"
 brew "mas"
 mas "Bitwarden", id: 1352778147
 
-# === File Sync & Cloud ===
-cask "nextcloud"
-# cask "dropbox"
-# cask "google-drive"
-
-# === Communication ===
-cask "slack"
-cask "discord"
-# cask "zoom"
-# cask "signal"
-
-# === Terminal ===
+cask "claude"
 cask "ghostty"
-
-# === Development (GUI) ===
-# cask "visual-studio-code"
-# cask "docker"
-# cask "postman"
-# cask "tableplus"
-
-# === Media ===
-cask "vlc"
 cask "spotify"
-# cask "iina"
 
-# === Productivity ===
-# cask "obsidian"
-# cask "notion"
-# cask "rectangle"  # Window management
-# cask "alfred"     # Launcher
-
-# === Office ===
-cask "libreoffice"
-
-# === Graphics & Design ===
-cask "gimp"
-# cask "inkscape"
-
-# === Utilities ===
-# cask "the-unarchiver"
-# cask "appcleaner"
-# cask "stats"      # System monitor in menu bar
-
-################################################################################
-# Notes:
-#
-# 1. This Brewfile focuses on GUI apps (casks) only
-# 2. CLI tools belong in mise (configs/.config/mise/)
-################################################################################
+# Mark Text: the cask was disabled 2026-09-01 (fails Gatekeeper), so it cannot
+# be installed from here.

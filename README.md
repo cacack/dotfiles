@@ -102,7 +102,7 @@ reason and an expiry date, so they come back for review. CI is
 
 ## Tools I currently use
 
-- [kitty](https://github.com/kovidgoyal/kitty)
+- [ghostty](https://ghostty.org/)
 - [tmux](https://github.com/tmux/tmux)
 - [zsh](https://www.zsh.org/)
 - [starship](https://github.com/starship/starship)

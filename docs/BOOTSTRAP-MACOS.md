@@ -99,8 +99,8 @@ make install
 # Optional: Install desktop components
 make install-desktop
 
-# Optional: Install additional applications
-make install-apps
+# Optional, personal machines only: personal apps on top of the desktop
+make personal
 ```
 
 ### 5. Switch to Zsh (if needed)
@@ -128,17 +128,18 @@ Zinit will automatically install plugins on first launch.
 
 ### Full Desktop (`make desktop`, or `install.sh --desktop`)
 - Records the machine as a desktop (`MISE_ENV=desktop`) and adds the desktop tool set
-- Runs basic, desktop and app installation below
+- Runs basic and desktop installation below
 
 ### Desktop Installation (`make install-desktop`)
 - Records the machine as a desktop (`MISE_ENV=desktop`); run `make tools` to add the desktop tool set
 - Installs Nerd Fonts
-- Installs Kitty terminal
-- Installs GUI applications (if configured)
+- Installs the desktop GUI apps (`Brewfile.gui`) and links the Ghostty config
+- Installs the OpenStack CLI
 - Applies macOS settings (if configured)
 
-### App Installation (`make install-apps`)
-- Links the Ghostty config (Ghostty itself is in `Brewfile.gui`)
+### Personal Machines (`make personal`)
+- Runs the full desktop install, then adds the personal-only apps
+  (`Brewfile.personal`) and commitlint. Work machines skip this.
 
 ## Customization
 

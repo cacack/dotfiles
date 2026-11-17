@@ -5,9 +5,12 @@
 # - macOS: Homebrew Cask / Mac App Store via Brewfile.gui (into ~/Applications)
 # - Linux: apt (LINUX_GUI_APPS) and Flatpak (FLATPAK_APPS)
 #
+# Two tiers: desktop apps (every desktop, `make desktop`) and personal-only
+# apps (`make personal`: Brewfile.personal, FLATPAK_APPS_PERSONAL).
+#
 # To add new apps:
-# 1. For macOS: add a `cask` line to Brewfile.gui
-# 2. For Linux: Add to LINUX_GUI_APPS or FLATPAK_APPS
+# 1. For macOS: add a `cask` line to Brewfile.gui or Brewfile.personal
+# 2. For Linux: Add to LINUX_GUI_APPS, FLATPAK_APPS or FLATPAK_APPS_PERSONAL
 ################################################################################
 
 ################################################################################
@@ -35,20 +38,22 @@ LINUX_GUI_APPS := \
 
 # TODO: Add more Linux apt packages above
 
-# Linux apps via Flatpak (cross-distro, sandboxed)
+# Linux apps via Flatpak (cross-distro, sandboxed). No Claude Desktop for Linux.
 FLATPAK_APPS := \
 	com.bitwarden.desktop \
+	com.github.marktext.marktext \
+	com.spotify.Client
+
+FLATPAK_APPS_PERSONAL := \
 	com.discordapp.Discord \
+	com.google.AndroidStudio \
 	com.google.Chrome \
 	com.nextcloud.desktopclient.nextcloud \
 	com.slack.Slack \
-	com.spotify.Client \
 	org.gimp.GIMP \
 	org.libreoffice.LibreOffice \
 	org.mozilla.firefox \
 	org.videolan.VLC
-
-# TODO: Add more Flatpak apps above (use flatpak app IDs)
 
 ################################################################################
 
@@ -75,13 +80,29 @@ ifeq ($(OS),linux)
 		echo "Installing via apt..."; \
 		sudo apt-get update && sudo apt-get install -y $(LINUX_GUI_APPS); \
 	fi
-	@if command -v flatpak >/dev/null 2>&1 && [ -n "$(FLATPAK_APPS)" ]; then \
+	$(call flatpak_install,$(FLATPAK_APPS))
+endif
+
+# Personal-only apps (`make personal`), on top of the desktop ones.
+.PHONY: install-personal-apps
+install-personal-apps:
+	@echo
+	# Installing personal-only GUI applications
+ifeq ($(OS),darwin)
+	brew bundle install --file=Brewfile.personal
+endif
+ifeq ($(OS),linux)
+	$(call flatpak_install,$(FLATPAK_APPS_PERSONAL))
+endif
+
+define flatpak_install
+	@if command -v flatpak >/dev/null 2>&1; then \
 		echo "Installing via Flatpak..."; \
-		for app in $(FLATPAK_APPS); do \
+		for app in $(1); do \
 			flatpak install -y flathub $$app || true; \
 		done; \
 	fi
-endif
+endef
 
 .PHONY: update-gui-apps
 update-gui-apps:
