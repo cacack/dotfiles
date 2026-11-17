@@ -174,7 +174,7 @@ $(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
 
 **Makefile integrity:**
 - `make verify-makefiles` - Verify .mk files haven't been tampered with
-- After modifying .mk files: `cd .make.d && shasum -a 256 *.mk | sort -k2 > makefile-checksums.txt`
+- After modifying .mk files: `cd .make.d && ls *.mk | grep -vx 99_local.mk | xargs shasum -a 256 | sort -k2 > makefile-checksums.txt`
 
 **Important:** Checksum verification aborts on failure and removes the downloaded file. Always source checksums from official release pages.
 
