@@ -53,7 +53,7 @@ deno = "2.9.8"
 # gcloud has no Renovate-supported mise backend; a custom Renovate manager in
 # renovate.json tracks the version below.
 [tools."http:gcloud"]
-version = "593.0.0"
+version = "594.0.0"
 bin_path = "google-cloud-sdk/bin"
 
 [tools."http:gcloud".platforms]
