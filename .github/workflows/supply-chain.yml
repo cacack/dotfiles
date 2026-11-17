@@ -1,7 +1,7 @@
 # Supply-chain checks for the pinned tools (README "Supply-Chain Defenses").
-# Renovate updates the mise lockfiles with its bumps; one that leaves a lock
-# stale (an edited `uv.lock` sidecar) fails `mise-lock` until `make mise-lock`
-# is run on the branch and the lockfiles are committed.
+# A Renovate bump that leaves the mise lockfiles stale (a custom-manager bump,
+# an edited `uv.lock` sidecar) fails `mise-lock` until `make mise-lock` is run
+# on the branch and the lockfiles are committed.
 # Every job runs in the digest-pinned Ubuntu image the container install test
 # uses; actions are pinned to commits. Renovate bumps both.
 # `mise-lock` and `security-deps` are required checks on main, so the workflow
