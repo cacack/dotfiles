@@ -77,6 +77,17 @@
       "matchDepNames": ["python"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "description": "TypeScript 7 drops tsserver, which typescript-language-server (Neovim's tools.lua) runs on: stay on 6.x until Neovim moves to TypeScript 7's native language server",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7"
+    },
+    {
+      "description": "poetry's uv.lock holds filelock twice; the old copy is only for Python <3.11, which mise never installs, so Renovate's repeated vulnerability fix can't apply. Poetry bumps re-lock filelock",
+      "matchPackageNames": ["filelock"],
+      "matchFileNames": ["configs/.config/mise/locks/**/pypi-poetry/**"],
+      "enabled": false
     }
   ]
 }
