@@ -88,7 +88,7 @@ Each layer catches what the others miss:
 | 7-day minimum release age (vulnerability fixes exempt) | a compromised release, usually yanked within days | `renovate.json` |
 | Lockfile check on every pull request | a bump that skips the lock | `mise-lock` CI job |
 | osv-scanner on the Python and npm tools' locked dependencies | known-vulnerable transitive packages | `make security-deps`, CI on pull requests + weekly |
-| Trivy on everything installed (HIGH/CRITICAL with a fix) | vulnerable Go modules, bundled npm/gems/Python packages | `make security-tools`, CI weekly |
+| Trivy on everything installed (HIGH/CRITICAL with a fix) | vulnerable Go modules, bundled npm/gems/Python packages | `make security-tools`, CI on pull requests + weekly |
 
 Accepted findings live in `.osv-scanner.toml` and `.trivyignore.yaml`, each with a
 reason and an expiry date, so they come back for review. CI is
