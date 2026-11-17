@@ -1,4 +1,5 @@
-GHOSTTY_VERSION := 1.2.2
+# renovate: datasource=github-tags depName=ghostty-org/ghostty extractVersion=^v(?<version>.+)$
+GHOSTTY_VERSION := 1.4.0
 
 .PHONY: setup-ghostty
 setup-ghostty: install-ghostty setup-ghostty-config
