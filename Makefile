@@ -26,7 +26,7 @@ help:
 	@echo "  make install              - CLI installation, no root needed (stow, mise base tools, neovim config)"
 	@echo "  make desktop              - Full desktop (install + desktop tools, GUI apps, fonts, settings)"
 	@echo "  make install-desktop      - Desktop installation (fonts, GUI apps, settings)"
-	@echo "  make install-apps         - Application installation (homebrew, ghostty)"
+	@echo "  make install-apps         - Application installation (homebrew, ghostty config)"
 	@echo ""
 	@echo "CONFIGURATION MANAGEMENT:"
 	@echo "  make stow                 - Symlink dotfiles to \$$HOME"

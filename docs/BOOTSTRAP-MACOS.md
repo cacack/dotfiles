@@ -139,7 +139,7 @@ Zinit will automatically install plugins on first launch.
 
 ### App Installation (`make install-apps`)
 - Installs Homebrew (if not present)
-- Installs Ghostty terminal
+- Links the Ghostty config (Ghostty itself is in `Brewfile.gui`)
 
 ## Customization
 

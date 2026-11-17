@@ -1,27 +1,23 @@
 ################################################################################
 # Brewfile for GUI Applications
 #
-# This is an alternative to managing GUI apps via the Makefile.
-# Brewfile provides a declarative way to manage Homebrew packages.
+# The macOS GUI app list: `make desktop` installs it (make install-from-brewfile).
 #
 # Usage:
 #   brew bundle install --file=Brewfile.gui      # Install all apps
 #   brew bundle cleanup --file=Brewfile.gui      # Remove unlisted apps
-#   brew bundle dump --file=Brewfile.gui --force # Generate from current installs
-#
-# To integrate with Makefile, add this target to gui-apps.mk:
-#   .PHONY: install-from-brewfile
-#   install-from-brewfile:
-#   	brew bundle install --file=Brewfile.gui
 #
 ################################################################################
 
-# TODO: Uncomment and add your preferred GUI applications below
+# Install into ~/Applications: no admin rights needed.
+# Casks that ship a .pkg installer (nextcloud) still need admin.
+# adopt: take over an identical app already there (e.g. installed by hand).
+cask_args appdir: "~/Applications", adopt: true
 
 # === Browsers ===
-# cask "firefox"
+cask "firefox"
 # cask "brave-browser"
-# cask "google-chrome"
+cask "google-chrome"
 
 # === Password Managers ===
 # Bitwarden is installed from the Mac App Store, not the Homebrew cask: the cask
@@ -32,15 +28,18 @@ brew "mas"
 mas "Bitwarden", id: 1352778147
 
 # === File Sync & Cloud ===
-# cask "nextcloud"
+cask "nextcloud"
 # cask "dropbox"
 # cask "google-drive"
 
 # === Communication ===
-# cask "slack"
-# cask "discord"
+cask "slack"
+cask "discord"
 # cask "zoom"
 # cask "signal"
+
+# === Terminal ===
+cask "ghostty"
 
 # === Development (GUI) ===
 # cask "visual-studio-code"
@@ -49,8 +48,8 @@ mas "Bitwarden", id: 1352778147
 # cask "tableplus"
 
 # === Media ===
-# cask "vlc"
-# cask "spotify"
+cask "vlc"
+cask "spotify"
 # cask "iina"
 
 # === Productivity ===
@@ -59,8 +58,11 @@ mas "Bitwarden", id: 1352778147
 # cask "rectangle"  # Window management
 # cask "alfred"     # Launcher
 
+# === Office ===
+cask "libreoffice"
+
 # === Graphics & Design ===
-# cask "gimp"
+cask "gimp"
 # cask "inkscape"
 
 # === Utilities ===
@@ -72,8 +74,5 @@ mas "Bitwarden", id: 1352778147
 # Notes:
 #
 # 1. This Brewfile focuses on GUI apps (casks) only
-# 2. CLI tools should remain in the Makefile modules
-# 3. Run `brew bundle dump --file=Brewfile.gui --force` to generate this file
-#    from your currently installed casks
-# 4. Both Makefile and Brewfile approaches can coexist - choose what works best
+# 2. CLI tools belong in mise (configs/.config/mise/)
 ################################################################################

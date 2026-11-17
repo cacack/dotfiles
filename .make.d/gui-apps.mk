@@ -2,13 +2,12 @@
 # GUI Applications
 #
 # Manages installation of GUI applications across platforms:
-# - macOS: Uses Homebrew Cask
-# - Linux: Uses apt/flatpak/snap (depending on preference)
+# - macOS: Homebrew Cask / Mac App Store via Brewfile.gui (into ~/Applications)
+# - Linux: apt (LINUX_GUI_APPS) and Flatpak (FLATPAK_APPS)
 #
 # To add new apps:
-# 1. Add the app name to the appropriate TODO section below
-# 2. For macOS: Add to MACOS_GUI_APPS or use Brewfile
-# 3. For Linux: Add to LINUX_GUI_APPS or FLATPAK_APPS
+# 1. For macOS: add a `cask` line to Brewfile.gui
+# 2. For Linux: Add to LINUX_GUI_APPS or FLATPAK_APPS
 ################################################################################
 
 ################################################################################
@@ -27,26 +26,12 @@
 # - Docker Desktop (if needed)
 ################################################################################
 
-# macOS apps via Homebrew Cask
-# NOTE: Bitwarden is intentionally NOT here. On macOS it is installed from the
-# Mac App Store (see `mas` entry in Brewfile.gui); the brew cask is auto_updates
-# and collides with the App-Store/self-updater copy, breaking `brew upgrade`.
-MACOS_GUI_APPS := \
-	discord \
-	firefox \
-	gimp \
-	google-chrome \
-	libreoffice \
-	nextcloud \
-	slack \
-	spotify \
-	vlc
-
-# TODO: Add more macOS cask apps above (space-separated, use \ for line continuation)
+# macOS apps live in Brewfile.gui.
 
 # Linux apps via apt (for Debian/Ubuntu-based distros)
+# ghostty: Ubuntu 26.04+ (universe); not packaged by Debian.
 LINUX_GUI_APPS := \
-	# firefox-esr
+	ghostty
 
 # TODO: Add more Linux apt packages above
 
@@ -75,21 +60,10 @@ setup-gui-apps:
 	@echo
 	# Setting up GUI applications
 ifeq ($(OS),darwin)
-	$(MAKE) install-macos-gui-apps
+	$(MAKE) install-from-brewfile
 endif
 ifeq ($(OS),linux)
 	$(MAKE) install-linux-gui-apps
-endif
-
-.PHONY: install-macos-gui-apps
-install-macos-gui-apps:
-ifeq ($(OS),darwin)
-	@echo
-	# Installing macOS GUI applications via Homebrew Cask
-	@for app in $(MACOS_GUI_APPS); do \
-		echo "Installing $$app..."; \
-		brew install --cask $$app || true; \
-	done
 endif
 
 .PHONY: install-linux-gui-apps
@@ -151,7 +125,7 @@ ifeq ($(OS),darwin)
 	@cat /tmp/current-casks.txt
 	@echo ""
 	@echo "Output saved to /tmp/current-casks.txt"
-	@echo "Review and add desired apps to MACOS_GUI_APPS in .make.d/gui-apps.mk"
+	@echo "Review and add desired apps to Brewfile.gui"
 endif
 
 .PHONY: discover-linux-apps
@@ -172,7 +146,7 @@ ifeq ($(OS),linux)
 endif
 
 ################################################################################
-# Alternative: Brewfile Management (macOS)
+# Brewfile Management (macOS)
 ################################################################################
 
 .PHONY: install-from-brewfile
@@ -180,11 +154,7 @@ install-from-brewfile:
 ifeq ($(OS),darwin)
 	@echo
 	# Installing GUI apps from Brewfile.gui
-	@if [ -f Brewfile.gui ]; then \
-		brew bundle install --file=Brewfile.gui; \
-	else \
-		echo "Brewfile.gui not found. Create one or use MACOS_GUI_APPS instead."; \
-	fi
+	brew bundle install --file=Brewfile.gui
 endif
 
 .PHONY: generate-brewfile
