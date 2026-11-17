@@ -45,7 +45,7 @@ deno = "2.9.8"
 "npm:pyright" = "1.1.414"
 "npm:typescript-language-server" = "6.1.0"
 # 7.x is the native compiler and ships no tsserver, which ts_ls needs.
-"npm:typescript" = "6.0.3"
+"npm:typescript" = "7.0.2"
 "npm:vscode-langservers-extracted" = "4.10.0"
 "npm:yaml-language-server" = "2.0.0"
 "pypi:mdformat" = "1.0.0"

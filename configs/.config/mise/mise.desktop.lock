@@ -391,10 +391,10 @@ backend = "npm:pyright"
 specifiers = ["1.1.414"]
 
 [[tools."npm:typescript"]]
-version = "6.0.3"
-aube = { path = "locks/mise.desktop/npm-typescript/6.0.3", digest = "sha256:bfd4f60761264c1fe455bfca4cc3841cabe82be4d3aa7c85d578f29f6a674804" }
+version = "7.0.2"
+aube = { path = "locks/mise.desktop/npm-typescript/7.0.2", digest = "sha256:3d06b3b23564c68cdad7815c356edb1506fab1c42bfb8c54234134fd9650ec17" }
 backend = "npm:typescript"
-specifiers = ["6.0.3"]
+specifiers = ["7.0.2"]
 
 [[tools."npm:typescript-language-server"]]
 version = "6.1.0"
