@@ -41,7 +41,6 @@ LINUX_GUI_APPS := \
 # Linux apps via Flatpak (cross-distro, sandboxed). No Claude Desktop for Linux.
 FLATPAK_APPS := \
 	com.bitwarden.desktop \
-	com.github.marktext.marktext \
 	com.spotify.Client
 
 FLATPAK_APPS_PERSONAL := \

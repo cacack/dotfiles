@@ -25,7 +25,7 @@ help:
 	@echo "INSTALLATION COMMANDS:"
 	@echo "  make install              - CLI installation, no root needed (stow, mise base tools, neovim config)"
 	@echo "  make desktop              - Full desktop (install + desktop tools, GUI apps, fonts, settings)"
-	@echo "  make personal             - Desktop plus personal-only apps (Brewfile.personal, commitlint)"
+	@echo "  make personal             - Desktop plus personal-only apps (Brewfile.personal)"
 	@echo "  make install-desktop      - Desktop installation (fonts, GUI apps, settings)"
 	@echo ""
 	@echo "CONFIGURATION MANAGEMENT:"
@@ -89,7 +89,7 @@ desktop: mise-env-desktop
 # Personal machines: the full desktop plus apps work machines don't get.
 .PHONY: personal
 personal: desktop
-	$(MAKE) install-personal-apps setup-commitlint
+	$(MAKE) install-personal-apps
 
 ################################################################################
 

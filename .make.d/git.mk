@@ -4,9 +4,6 @@
 # Adapted from a shared make module.
 ################################################################################
 
-COMMITLINT_VERSION ?= 19.9.1
-COMMITLINT_START_REF ?= HEAD~20
-
 setup-git-config:
 	@echo
 	ln -nsf $(DOTFILES_CONFIG_DIR)/dot.config/git ${HOME}/.config/git.d
@@ -14,19 +11,6 @@ setup-git-config:
 
 ################################################################################
 #SETUP +=
-
-.PHONY: setup-commitlint
-setup-commitlint:
-	@echo
-	# https://github.com/conventionalcommit/commitlint/releases/download/v19.9.1/commitlint_19.9.1_Darwin_x86_64.tar.gz
-	curl -Ls -o commitlint.tar.gz https://github.com/conventionalcommit/commitlint/releases/download/v$(COMMITLINT_VERSION)/commitlint_$(COMMITLINT_VERSION)_$(UNAME)_$(ARCH).tar.gz
-	tar -xvzf commitlint.tar.gz -C $(BIN_DIR) commitlint
-	rm commitlint.tar.gz
-
-.PHONY: setup-git-hook-commitlint
-setup-git-hook-commitlint:
-	@echo
-	commitlint hook create --replace --hookspath .git/hooks/
 
 ################################################################################
 #UPDATE +=
@@ -51,11 +35,6 @@ lint-whitespace:
 	# Check for whitespace errors
 	git diff --check HEAD --
 
-.PHONY: lint-commit-messages
-lint-commit-messages:
-	@echo
-	# Lint previous 20 commits
-	git log --format=%s --no-merges -z $(COMMITLINT_START_REF)..HEAD | xargs -0 -L1 -I {} sh -c "echo {} | commitlint lint"
 
 
 ################################################################################

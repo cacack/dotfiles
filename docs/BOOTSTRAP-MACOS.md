@@ -139,7 +139,7 @@ Zinit will automatically install plugins on first launch.
 
 ### Personal Machines (`make personal`)
 - Runs the full desktop install, then adds the personal-only apps
-  (`Brewfile.personal`) and commitlint. Work machines skip this.
+  (`Brewfile.personal`). Work machines skip this.
 
 ## Customization
 

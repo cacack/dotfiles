@@ -16,10 +16,10 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "mise itself, pinned in .make.d/mise.mk",
-      "managerFilePatterns": ["/^\\.make\\.d/mise\\.mk$/"],
+      "description": "Versions pinned in .make.d (mise itself, Nerd Fonts), each under a '# renovate:' comment",
+      "managerFilePatterns": ["/^\\.make\\.d/[^/]+\\.mk$/"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\nMISE_VERSION := (?<currentValue>\\S+)"
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: extractVersion=(?<extractVersion>\\S+))?\\n[A-Z_]+_VERSION := (?<currentValue>\\S+)"
       ]
     },
     {
