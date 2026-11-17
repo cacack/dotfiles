@@ -3,26 +3,15 @@
 # `make mise-lock` is run on the branch and the lockfiles are committed.
 # Every job runs in the digest-pinned Ubuntu image the container install test
 # uses; actions are pinned to commits. Renovate bumps both.
+# `mise-lock` and `security-deps` are required checks on main, so the workflow
+# runs on every pull request and the `changes` job skips them (a skip passes)
+# when no supply-chain file changed; a `paths:` filter would leave them pending.
 name: supply-chain
 
 on:
   pull_request:
-    paths:
-      - "configs/.config/mise/**"
-      - ".make.d/mise.mk"
-      - ".make.d/security.mk"
-      - ".osv-scanner.toml"
-      - ".trivyignore.yaml"
-      - ".github/workflows/supply-chain.yml"
   push:
     branches: [main]
-    paths:
-      - "configs/.config/mise/**"
-      - ".make.d/mise.mk"
-      - ".make.d/security.mk"
-      - ".osv-scanner.toml"
-      - ".trivyignore.yaml"
-      - ".github/workflows/supply-chain.yml"
   schedule:
     - cron: "17 6 * * 1" # weekly, Monday 06:17 UTC
   workflow_dispatch:
@@ -37,9 +26,31 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
+  # Did this pull request or push touch a supply-chain file? Scheduled and
+  # manual runs have no base to diff against, so they always count as relevant.
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      relevant: ${{ steps.diff.outputs.relevant }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - id: diff
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          relevant=true
+          if [ -n "$BASE" ] && [ "$BASE" != 0000000000000000000000000000000000000000 ] &&
+            ! git diff --name-only "$BASE" HEAD | grep -qE '^(configs/\.config/mise/|\.make\.d/(mise|security)\.mk$|\.osv-scanner\.toml$|\.trivyignore\.yaml$|\.github/workflows/supply-chain\.yml$)'; then
+            relevant=false
+          fi
+          echo "relevant=$relevant" | tee -a "$GITHUB_OUTPUT"
+
   # Fails when a pinned version is missing from the mise lockfiles.
   mise-lock:
-    if: github.event_name != 'schedule'
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true' && github.event_name != 'schedule'
     runs-on: ubuntu-24.04
     container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
     steps:
@@ -53,6 +64,8 @@ jobs:
   # Known vulnerabilities in the pypi and npm tools' locked dependency trees.
   # Needs no tool install, so it runs on pull requests and weekly.
   security-deps:
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
     runs-on: ubuntu-24.04
     container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
     steps:
