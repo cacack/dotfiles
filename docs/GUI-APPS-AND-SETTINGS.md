@@ -101,7 +101,6 @@ make capture-xfce-settings
 
 ```ruby
 cask "firefox"
-mas "Bitwarden", id: 1352778147   # Mac App Store
 ```
 
 Casks install into `~/Applications`, so no admin rights are needed

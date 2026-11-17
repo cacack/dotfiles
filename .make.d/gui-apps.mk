@@ -2,7 +2,7 @@
 # GUI Applications
 #
 # Manages installation of GUI applications across platforms:
-# - macOS: Homebrew Cask / Mac App Store via Brewfile.gui (into ~/Applications)
+# - macOS: Homebrew Cask via Brewfile.gui (into ~/Applications)
 # - Linux: apt (LINUX_GUI_APPS) and Flatpak (FLATPAK_APPS)
 #
 # Two tiers: desktop apps (every desktop, `make desktop`) and personal-only
