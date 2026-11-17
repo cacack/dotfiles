@@ -40,14 +40,24 @@ matches() { grep -q -i -E -f "$terms"; }
 # Comma-separated line numbers of matching lines; binary content is skipped.
 match_lines() { { grep -n -I -i -E -f "$terms" || true; } | cut -d: -f1 | paste -s -d, -; }
 
-check_name() { # <label> <path>
-  if printf '%s\n' "$2" | matches; then report "$1 file name: $2"; fi
+# A path that itself matches would print the term, so CI (public logs) gets a
+# placeholder; locally the path is shown.
+shown() { # <path>
+  if [[ -n "${CI:-}" ]] && printf '%s\n' "$1" | matches; then
+    echo "<redacted path>"
+  else
+    echo "$1"
+  fi
 }
 
-check_blob() { # <label> <object>
+check_name() { # <label> <path>
+  if printf '%s\n' "$2" | matches; then report "$1 file name: $(shown "$2")"; fi
+}
+
+check_blob() { # <label> <path> <object>
   local lines
-  lines="$(git cat-file blob "$2" | match_lines)"
-  if [[ -n "$lines" ]]; then report "$1 line $lines"; fi
+  lines="$(git cat-file blob "$3" | match_lines)"
+  if [[ -n "$lines" ]]; then report "$1$(shown "$2") line $lines"; fi
 }
 
 check_commit() { # <sha>
@@ -58,7 +68,7 @@ check_commit() { # <sha>
   fi
   while IFS= read -r -d '' f; do
     check_name "commit $short" "$f"
-    check_blob "commit $short $f" "$c:$f"
+    check_blob "commit $short " "$f" "$c:$f"
   done < <(git diff-tree -r -z --root --no-commit-id --name-only --diff-filter=ACMR "$c")
 }
 
@@ -70,7 +80,7 @@ case "$mode" in
     fi
     while IFS= read -r -d '' f; do
       check_name "staged" "$f"
-      check_blob "$f" ":$f"
+      check_blob "" "$f" ":$f"
     done < <(git diff --cached -z --name-only --diff-filter=ACMR)
     ;;
   message)
@@ -83,7 +93,7 @@ case "$mode" in
   tree)
     while IFS= read -r -d '' f; do
       check_name "tracked" "$f"
-      check_blob "$f" "HEAD:$f"
+      check_blob "" "$f" "HEAD:$f"
     done < <(git ls-tree -r -z --name-only HEAD)
     ;;
   *)

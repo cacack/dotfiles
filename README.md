@@ -111,7 +111,8 @@ remote under `github.com/cacack` or `gitlab.com/cacack`, by including
   `commit-msg` the message; `pre-push` every pushed commit.
 - The hooks then run the repo's own `.git/hooks/<name>`, which `core.hooksPath`
   would otherwise bypass.
-- Output names only the file and line of a match, never the term.
+- Output names only the file and line of a match, never the term. In CI
+  (`CI` set), a path that itself matches prints as `<redacted path>`.
 - CI (`.github/workflows/private-terms.yml`) runs the same check from the
   `PRIVATE_TERMS` repository secret. Keep it in step with the local list.
 
