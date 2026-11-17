@@ -70,6 +70,7 @@ Install paths: `make install` (CLI, never needs root) and `make desktop`. Rules:
 - Exact versions only, locked in `mise.lock`/`mise.desktop.lock` (`locked = true` rejects anything unlocked). Renovate bumps pins; `make tools` (in `make update`) syncs the machine.
 - Pick a backend that publishes prebuilt binaries for all `lockfile_platforms` (restrict with `os = [...]` when upstream lacks one) (prefer `aqua:`/`core:`; check `mise registry <tool>`). Avoid `vfox:`/`asdf:` plugin-repo backends: Renovate can't track them, and no source builds.
 - `pypi:` tools lock their dependencies only without `uvx_args`; tools needing injected plugins (OpenStack CLI) stay in make via `uv tool install`.
+- Python tooling uses uv/uvx only: never pip, pipx or Poetry. The `pypi:poetry` pin is a temporary holdover while projects migrate to uv; don't build on it.
 - Not in Renovate's mise manager (e.g. `http:` backend, mise itself): add a custom manager in `renovate.json`.
 - Renovate bumps only the config, never the lockfiles; CI (`.github/workflows/supply-chain.yml`, `make mise-lock-check`) fails until `make mise-lock` is committed on the branch.
 
