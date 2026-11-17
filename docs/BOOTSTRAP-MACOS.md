@@ -42,7 +42,7 @@ make --version
 
 ### 2. Install Homebrew
 
-Run the official Homebrew installer:
+`install.sh` does this for you (see [Homebrew Without Admin Rights](#homebrew-without-admin-rights)). Manually, as an admin, run the official installer:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -99,8 +99,8 @@ make install
 # Optional: Install desktop components
 make install-desktop
 
-# Optional: Install additional applications
-make install-apps
+# Optional, personal machines only: personal apps on top of the desktop
+make personal
 ```
 
 ### 5. Switch to Zsh (if needed)
@@ -128,18 +128,18 @@ Zinit will automatically install plugins on first launch.
 
 ### Full Desktop (`make desktop`, or `install.sh --desktop`)
 - Records the machine as a desktop (`MISE_ENV=desktop`) and adds the desktop tool set
-- Runs basic, desktop and app installation below
+- Runs basic and desktop installation below
 
 ### Desktop Installation (`make install-desktop`)
 - Records the machine as a desktop (`MISE_ENV=desktop`); run `make tools` to add the desktop tool set
 - Installs Nerd Fonts
-- Installs Kitty terminal
-- Installs GUI applications (if configured)
+- Installs the desktop GUI apps (`Brewfile.gui`) and links the Ghostty config
+- Installs the OpenStack CLI
 - Applies macOS settings (if configured)
 
-### App Installation (`make install-apps`)
-- Installs Homebrew (if not present)
-- Installs Ghostty terminal
+### Personal Machines (`make personal`)
+- Runs the full desktop install, then adds the personal-only apps
+  (`Brewfile.personal`). Work machines skip this.
 
 ## Customization
 
@@ -200,27 +200,11 @@ eval "$(/usr/local/bin/brew shellenv)"      # Intel Mac
 
 ## Advanced Options
 
-### Alternative Homebrew Installation
+### Homebrew Without Admin Rights
 
-If you prefer a local Homebrew installation in `~/.local/opt/homebrew` instead of the system-wide installation, you can use the dotfiles' Makefile target **after cloning the repository**:
-
-```bash
-# Clone the repository first
-git clone https://github.com/cacack/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-
-# Install Homebrew locally
-make install-homebrew
-
-# Add to PATH
-eval "$(${HOME}/.local/opt/homebrew/bin/brew shellenv)"
-
-# Install Stow and continue with setup
-brew install stow
-make install
-```
-
-**Note:** This approach installs Homebrew in your home directory rather than `/opt/homebrew` or `/usr/local`. It's useful for systems where you don't have admin access or prefer to keep everything self-contained. However, you cannot use the one-line quick install script with this method since you need to clone the repo first.
+`install.sh` installs Homebrew to `/opt/homebrew` when you are an admin, and
+otherwise untars it into `~/.local/opt/homebrew` (no sudo needed). The shell
+config finds either. Casks go to `~/Applications` in both cases.
 
 ## Starting Fresh on a New Mac
 

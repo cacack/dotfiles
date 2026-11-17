@@ -96,16 +96,26 @@ install_macos_prereqs() {
         success "Command Line Tools already installed"
     fi
 
-    # Check for Homebrew
+    # Check for Homebrew. Admins get the official install (/opt/homebrew);
+    # without admin rights (no sudo), an untarred copy in the home directory.
+    # 00_init.zsh finds either.
     if ! command_exists brew; then
-        info "Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-        # Add Homebrew to PATH for this session
-        if [[ "${ARCH}" == "arm64" ]]; then
-            eval "$(/opt/homebrew/bin/brew shellenv)"
+        if id -Gn | grep -qw admin; then
+            info "Installing Homebrew to /opt/homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            if [[ "${ARCH}" == "arm64" ]]; then
+                eval "$(/opt/homebrew/bin/brew shellenv)"
+            else
+                eval "$(/usr/local/bin/brew shellenv)"
+            fi
         else
-            eval "$(/usr/local/bin/brew shellenv)"
+            local prefix="${HOME}/.local/opt/homebrew"
+            info "Not an admin: installing Homebrew to ${prefix}..."
+            mkdir -p "${prefix}"
+            curl -fsSL https://github.com/Homebrew/brew/tarball/master | tar xz --strip-components 1 -C "${prefix}"
+            eval "$("${prefix}/bin/brew" shellenv)"
+            brew update --force --quiet
+            chmod -R go-w "$(brew --prefix)/share/zsh"
         fi
 
         if ! command_exists brew; then

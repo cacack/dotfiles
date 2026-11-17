@@ -1,0 +1,19 @@
+################################################################################
+# Brewfile for personal-only GUI apps (`make personal`), on top of Brewfile.gui.
+# Work machines skip these.
+################################################################################
+
+# Same as Brewfile.gui: install into ~/Applications, adopt existing copies.
+# nextcloud and vagrant ship .pkg installers, so they need admin.
+cask_args appdir: "~/Applications", adopt: true
+
+cask "android-studio"
+cask "discord"
+cask "firefox"
+cask "gimp"
+cask "google-chrome"
+cask "libreoffice"
+cask "nextcloud"
+cask "slack"
+cask "vagrant"
+cask "vlc"

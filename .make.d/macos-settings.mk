@@ -106,7 +106,7 @@ ifeq ($(OS),darwin)
 	dockutil --remove all --no-restart || true
 
 	# Note: To add persistent apps to the Dock, uncomment and modify below:
-	# dockutil --add /Applications/Kitty.app --no-restart
+	# dockutil --add ~/Applications/Ghostty.app --no-restart
 	# dockutil --add /Applications/Firefox.app --no-restart
 	# dockutil --add /Applications/Bitwarden.app --no-restart
 	# dockutil --add /System/Applications/System\ Settings.app --no-restart

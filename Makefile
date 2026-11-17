@@ -25,8 +25,8 @@ help:
 	@echo "INSTALLATION COMMANDS:"
 	@echo "  make install              - CLI installation, no root needed (stow, mise base tools, neovim config)"
 	@echo "  make desktop              - Full desktop (install + desktop tools, GUI apps, fonts, settings)"
+	@echo "  make personal             - Desktop plus personal-only apps (Brewfile.personal)"
 	@echo "  make install-desktop      - Desktop installation (fonts, GUI apps, settings)"
-	@echo "  make install-apps         - Application installation (homebrew, ghostty)"
 	@echo ""
 	@echo "CONFIGURATION MANAGEMENT:"
 	@echo "  make stow                 - Symlink dotfiles to \$$HOME"
@@ -79,18 +79,17 @@ help:
 install: check-prereqs base-dirs stow tools setup-neovim setup-tmux
 
 .PHONY: install-desktop
-install-desktop: mise-env-desktop desktop-dirs fonts setup-ghostty setup-gui-apps setup-macos-settings setup-linux-settings
-
-.PHONY: install-apps
-install-apps: install-app-deps setup-ghostty
+install-desktop: mise-env-desktop desktop-dirs fonts setup-ghostty setup-gui-apps setup-openstack setup-macos-settings setup-linux-settings
 
 # Full desktop: CLI install plus desktop tools, GUI apps, fonts and settings.
 .PHONY: desktop
 desktop: mise-env-desktop
-	$(MAKE) install install-desktop install-apps
+	$(MAKE) install install-desktop
 
-.PHONY: install-app-deps
-install-app-deps: install-homebrew
+# Personal machines: the full desktop plus apps work machines don't get.
+.PHONY: personal
+personal: desktop
+	$(MAKE) install-personal-apps
 
 ################################################################################
 

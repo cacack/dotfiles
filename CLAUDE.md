@@ -21,7 +21,7 @@ Personal dotfiles repository managing terminal and application configurations ac
 
 - **configs/**: Dotfiles symlinked to `$HOME` via GNU Stow (`.zshrc`, `.gitconfig`, etc.)
 - **packages/**: Application-specific configurations stowed to specific locations
-  - `alacritty/`, `beets/`, `ghostty/`, `kitty/`, `neovim/`, `xdg/`
+  - `beets/`, `ghostty/`, `neovim/`, `xdg/`
 - **.make.d/**: ~30 modular Makefile components (automatically included)
 - **docs/**: User documentation (bootstrap guides, feature docs)
 
@@ -46,7 +46,7 @@ The `.zshrc` sources modular scripts from multiple directories:
 - **Editor**: neovim (custom config in packages/neovim/)
 - **Shell**: zsh with zinit plugin manager, starship prompt
 - **Storage**: Bitwarden CLI, NAS auto-mount (launchd on macOS, autofs on Linux)
-- **Terminal**: alacritty, ghostty, kitty, tmux
+- **Terminal**: ghostty, tmux
 - **Utilities**: beets, direnv, vagrant
 
 ## Development Guidelines
@@ -105,7 +105,7 @@ Modules in `.make.d/` are automatically included. Each can contribute to:
 - `nas-mount.mk`: NAS mounting (launchd on macOS, autofs on Linux)
 - `security.mk`: `security` (osv-scanner + Trivy over the pinned tools)
 - `testing.mk`: Test suite
-- Tool-specific: `claude-code.mk`, `ghostty.mk`, `kitty.mk`, `neovim.mk` (config only), `tmux.mk`, etc.
+- Tool-specific: `ghostty.mk` (config only), `neovim.mk` (config only), `openstack-cli.mk`, `tmux.mk`, etc.
 
 **Local overrides:** `.make.d/99_local.mk` is gitignored and auto-included
 last. Use it for personal-infrastructure targets (private repos, host-
@@ -119,7 +119,8 @@ specific paths) that should not be committed to a public dotfiles repo.
 
 **Core workflows:**
 - `make install` - Basic installation (directories, neovim, stow)
-- `make install-desktop` - Desktop installation (fonts, kitty, GUI apps, settings)
+- `make install-desktop` - Desktop installation (fonts, GUI apps, settings)
+- `make personal` - `make desktop` plus personal-only apps (skipped on work machines)
 - `make stow` - Symlink dotfiles to $HOME
 - `make clean-stow` - Remove symlinked dotfiles
 - `make test` - Run complete test suite
@@ -211,8 +212,8 @@ $(call verify_checksum,tool.tar.gz,$(TOOL_CHECKSUM))
 - Infrastructure-as-Code for desktop environments
 - macOS: Dock config, system preferences
 - Linux: GNOME/XFCE settings
-- macOS: Homebrew Cask
-- Linux: apt/Flatpak
+- macOS: `Brewfile.gui` (desktop, incl. work) / `Brewfile.personal` (`make personal`); casks go to `~/Applications` (no admin needed)
+- Linux: apt/Flatpak (`FLATPAK_APPS` / `FLATPAK_APPS_PERSONAL`)
 
 ## Commit Guidelines
 

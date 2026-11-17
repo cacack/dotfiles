@@ -2,6 +2,29 @@
 
 lockfile_version = 4
 
+[[tools."aqua:anthropics/claude-code"]]
+version = "2.1.325"
+backend = "aqua:anthropics/claude-code"
+specifiers = ["2.1.325"]
+
+[tools."aqua:anthropics/claude-code"."platforms.linux-arm64"]
+checksum = "sha256:2abe2bea8b802190a303f335b0fd09f95eb775457e99df5a4778b09dfab6bbd6"
+checksum_source = "mise-versions"
+url = "https://github.com/anthropics/claude-code/releases/download/v2.1.325/claude-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/anthropics/claude-code/releases/assets/745018489"
+
+[tools."aqua:anthropics/claude-code"."platforms.linux-x64"]
+checksum = "sha256:9686b0fb1eefbd7f2cc1f53f932516c29cd605e9d976223323a6c6e9a4c9c7fe"
+checksum_source = "mise-versions"
+url = "https://github.com/anthropics/claude-code/releases/download/v2.1.325/claude-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/anthropics/claude-code/releases/assets/745018803"
+
+[tools."aqua:anthropics/claude-code"."platforms.macos-arm64"]
+checksum = "sha256:b0dc23f2d8c3ef55b2b22f03ef204e98b06b22b6c51a15b66d263b13442c4e03"
+checksum_source = "mise-versions"
+url = "https://github.com/anthropics/claude-code/releases/download/v2.1.325/claude-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/anthropics/claude-code/releases/assets/745018486"
+
 [[tools."aqua:aquasecurity/trivy"]]
 version = "0.76.2"
 backend = "aqua:aquasecurity/trivy"

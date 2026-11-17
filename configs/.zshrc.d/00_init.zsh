@@ -14,6 +14,8 @@ _cached_init() {
 }
 
 if [[ $OSTYPE == darwin* ]]; then
+  # Casks go to ~/Applications (no admin needed), matching Brewfile.gui.
+  export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
   if [ -d /opt/homebrew ]; then
     _cached_init brew '/opt/homebrew/bin/brew shellenv' /opt/homebrew/bin/brew
   elif [ -d /usr/local/Homebrew ]; then

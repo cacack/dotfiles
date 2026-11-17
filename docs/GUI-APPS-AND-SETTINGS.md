@@ -22,7 +22,7 @@ make install-desktop
 This will:
 - Create desktop directories
 - Install fonts
-- Set up Kitty terminal
+- Link the Ghostty config
 - Install GUI applications
 - Apply desktop settings
 
@@ -97,17 +97,20 @@ make capture-xfce-settings
 
 ### Adding GUI Applications
 
-**Option 1: Makefile Variables (Recommended)**
+**macOS:** add a line to `Brewfile.gui`:
 
-Edit `.make.d/gui-apps.mk`:
+```ruby
+cask "firefox"
+```
+
+Casks install into `~/Applications`, so no admin rights are needed
+(`cask_args` in the Brewfile; `HOMEBREW_CASK_OPTS` does the same for manual
+`brew install --cask`). Casks that ship a `.pkg` installer, such as
+`nextcloud`, still need admin.
+
+**Linux:** edit `.make.d/gui-apps.mk`:
 
 ```makefile
-# macOS apps via Homebrew Cask
-MACOS_GUI_APPS := \
-	bitwarden \
-	firefox \
-	nextcloud
-
 # Linux apps via apt
 LINUX_GUI_APPS := \
 	firefox-esr \
@@ -119,20 +122,7 @@ FLATPAK_APPS := \
 	org.mozilla.firefox
 ```
 
-**Option 2: Brewfile (macOS only)**
-
-Edit `Brewfile.gui`:
-
-```ruby
-cask "bitwarden"
-cask "firefox"
-cask "nextcloud"
-```
-
-Then run:
-```bash
-make install-from-brewfile
-```
+Then run `make install-desktop` (macOS alone: `make install-from-brewfile`).
 
 ### Customizing Desktop Settings
 
@@ -207,7 +197,7 @@ configure-dock-items:
 	dockutil --remove all --no-restart
 
 	# Add applications (order matters!)
-	dockutil --add /Applications/Kitty.app --no-restart
+	dockutil --add ~/Applications/Ghostty.app --no-restart
 	dockutil --add /Applications/Firefox.app --no-restart
 	dockutil --add /Applications/Bitwarden.app --no-restart
 
@@ -265,7 +255,7 @@ make cleanup-brewfile           # Remove apps not in Brewfile.gui
 ## File Locations
 
 - **Makefile modules:** `.make.d/gui-apps.mk`, `.make.d/macos-settings.mk`, `.make.d/linux-settings.mk`
-- **Brewfile (optional):** `Brewfile.gui`
+- **macOS app list:** `Brewfile.gui`
 - **Backups:** `~/.dotfiles/backups/`
 - **Discovery output:** `/tmp/` (various files)
 
@@ -286,7 +276,7 @@ make discover-macos-apps
 make capture-macos-settings
 
 # 2. Edit configuration files
-# Edit .make.d/gui-apps.mk - add apps to MACOS_GUI_APPS
+# Edit Brewfile.gui - add casks
 # Edit .make.d/macos-settings.mk - uncomment desired settings
 
 # 3. Apply configuration
@@ -305,7 +295,7 @@ git commit -m "feat: Add GUI app and desktop settings configuration"
 - Run `killall Dock` (macOS) or `killall Finder` (macOS) to restart
 
 **Apps not installing:**
-- macOS: Ensure Homebrew is installed (`make install-homebrew`)
+- macOS: Ensure Homebrew is installed (`install.sh` installs it)
 - Linux: Ensure apt/flatpak is available
 - Check for typos in app names
 
