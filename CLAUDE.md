@@ -256,3 +256,4 @@ This practice maintains clean git history and makes code review, debugging, and 
 - README.md: keep updated with user-facing changes
 - Remote switching: use `make switch-repo-url` for HTTPS/SSH
 - Sort _ALL_ lists alphabetically unless it breaks functionality
+- Public repo: never commit employer or work details (hosts, policies, names). The private-terms hooks and CI job enforce this (README "Private Terms"); never add the term list itself to this repo

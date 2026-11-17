@@ -97,6 +97,24 @@ Accepted findings live in `.osv-scanner.toml` and `.trivyignore.yaml`, each with
 reason and an expiry date, so they come back for review. CI is
 `.github/workflows/supply-chain.yml`; the weekly scans run on its schedule.
 
+### Private Terms
+
+Shared git hooks block private terms (employer names, internal hosts and the
+like) from public repos. `~/.gitconfig` enables them only for repos with a
+remote under `github.com/cacack` or `gitlab.com/cacack`, by including
+`~/.config/git.d/public-repo`, which sets `core.hooksPath`.
+
+- The term list is extended regexes, one per line, matched case-insensitively,
+  at `~/.config/git-private-terms` (or `$GIT_PRIVATE_TERMS`). Keep it out of
+  this repo; with no list, the hooks warn and skip.
+- `pre-commit` checks staged file names, contents and the author and committer;
+  `commit-msg` the message; `pre-push` every pushed commit.
+- The hooks then run the repo's own `.git/hooks/<name>`, which `core.hooksPath`
+  would otherwise bypass.
+- Output names only the file and line of a match, never the term.
+- CI (`.github/workflows/private-terms.yml`) runs the same check from the
+  `PRIVATE_TERMS` repository secret. Keep it in step with the local list.
+
 ### Optional Customization
 
 - GUI applications and system settings: See [`docs/GUI-APPS-AND-SETTINGS.md`](docs/GUI-APPS-AND-SETTINGS.md)

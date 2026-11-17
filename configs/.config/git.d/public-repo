@@ -1,0 +1,4 @@
+# Included by ~/.gitconfig for repos with a public remote: run the shared
+# hooks, which block private terms from being committed or pushed.
+[core]
+	hooksPath = ~/.config/git.d/hooks
