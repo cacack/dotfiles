@@ -21,12 +21,20 @@ ifeq ($(OS),linux)
 endif
 ifeq ($(OS),darwin)
 	@echo
-	curl -Ls -o Ghostty.dmg https://release.files.ghostty.org/$(GHOSTTY_VERSION)/Ghostty.dmg
-	hdiutil attach Ghostty.dmg
-	mkdir -p ${HOME}/Applications
-	cp -R /Volumes/Ghostty/Ghostty.app ${HOME}/Applications/
-	hdiutil detach /Volumes/Ghostty
-	rm Ghostty.dmg
+	# Ghostty self-updates (Sparkle); the pin only bootstraps a fresh machine.
+	# Never copy over an existing (possibly running, newer) bundle.
+	@if [ -d ${HOME}/Applications/Ghostty.app ]; then \
+		echo "Ghostty already installed; skipping (it updates itself)"; \
+		exit 0; \
+	fi; \
+	curl -Ls -o Ghostty.dmg https://release.files.ghostty.org/$(GHOSTTY_VERSION)/Ghostty.dmg && \
+	hdiutil attach -nobrowse Ghostty.dmg && \
+	mkdir -p ${HOME}/Applications && \
+	cp -R /Volumes/Ghostty/Ghostty.app ${HOME}/Applications/; \
+	rc=$$?; \
+	hdiutil detach /Volumes/Ghostty 2>/dev/null; \
+	rm -f Ghostty.dmg; \
+	exit $$rc
 endif
 
 .PHONY: setup-ghostty-config
