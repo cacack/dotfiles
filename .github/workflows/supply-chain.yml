@@ -31,7 +31,7 @@ jobs:
   # Did this pull request or push touch a supply-chain file? Scheduled and
   # manual runs have no base to diff against, so they always count as relevant.
   changes:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       relevant: ${{ steps.diff.outputs.relevant }}
     steps:
@@ -53,7 +53,7 @@ jobs:
   mise-lock:
     needs: changes
     if: needs.changes.outputs.relevant == 'true' && github.event_name != 'schedule'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
     steps:
       - run: apt-get update -qq && apt-get install -y -qq ca-certificates curl git make >/dev/null
@@ -68,7 +68,7 @@ jobs:
   security-deps:
     needs: changes
     if: needs.changes.outputs.relevant == 'true'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
     steps:
       - run: apt-get update -qq && apt-get install -y -qq ca-certificates curl git make >/dev/null
@@ -84,7 +84,7 @@ jobs:
   security-tools:
     needs: changes
     if: needs.changes.outputs.relevant == 'true' && github.event_name != 'push'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
     steps:
       - run: apt-get update -qq && apt-get install -y -qq ca-certificates curl git make tar unzip xz-utils libatomic1 >/dev/null
