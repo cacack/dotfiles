@@ -12,6 +12,10 @@ lockfile_platforms = ["linux-arm64", "linux-x64", "macos-arm64"]
 # Re-verify the signed provenance (GitHub attestations, SLSA, cosign) recorded
 # in the lockfile on every install, not only when the lock was written.
 locked_verify_provenance = true
+# When locking a pypi or npm tool, resolve its dependencies only from releases
+# at least a week old (default 24h), matching Renovate's minimumReleaseAge for
+# the tools themselves. Exact and locked versions are not filtered.
+minimum_release_age = "7d"
 
 [tools]
 # Neovim's light-tier language servers and formatters (lua/configs/tools.lua,

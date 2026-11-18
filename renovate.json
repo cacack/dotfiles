@@ -1,11 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "description": "Wait a week before adopting a release, so compromised or broken releases are usually pulled first; vulnerability fixes skip the wait",
+  "description": "Wait a week before adopting a release, so compromised or broken releases are usually pulled first; vulnerability fixes wait 3 days, so a compromised release posing as a fix isn't fast-tracked",
   "minimumReleaseAge": "7 days",
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
-    "minimumReleaseAge": null
+    "minimumReleaseAge": "3 days"
   },
   "customDatasources": {
     "gcloud": {
