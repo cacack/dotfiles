@@ -22,3 +22,9 @@ reason = "zod 3.25.76 in bash-language-server 5.8.1; fixed only in zod 4.6.6 (ne
 id = "GHSA-g3hv-75wg-m249"
 effectiveUntil = 2027-01-16
 reason = "minimatch 10.2.6 in bash-language-server 5.8.1; fixed only in minimatch 11.0.1 (new major), awaiting an upstream release."
+
+# picomatch (npm) in the Neovim language servers: no fixed release exists.
+[[IgnoredVulns]]
+id = "GHSA-fc5q-39xc-vjpf"
+effectiveUntil = 2027-01-17
+reason = "picomatch ReDoS (all versions through 4.0.7, no fix) in bash-language-server 5.8.1, vscode-langservers-extracted 4.10.0 and yaml-language-server 2.0.0; needs attacker-supplied globs, which here come only from our own editor and workspace configs. Awaiting a picomatch fix."
