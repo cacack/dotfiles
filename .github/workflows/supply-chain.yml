@@ -54,7 +54,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.relevant == 'true' && github.event_name != 'schedule'
     runs-on: ubuntu-26.04
-    container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
+    container: ubuntu:26.04@sha256:d66b366dac61b575bee2aef07e9c26e8070096fbe84a3d4d3eb0da069b5d76db
     steps:
       - run: apt-get update -qq && apt-get install -y -qq ca-certificates curl git make >/dev/null
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -69,7 +69,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.relevant == 'true'
     runs-on: ubuntu-26.04
-    container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
+    container: ubuntu:26.04@sha256:d66b366dac61b575bee2aef07e9c26e8070096fbe84a3d4d3eb0da069b5d76db
     steps:
       - run: apt-get update -qq && apt-get install -y -qq ca-certificates curl git make >/dev/null
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -85,7 +85,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.relevant == 'true' && github.event_name != 'push'
     runs-on: ubuntu-26.04
-    container: ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
+    container: ubuntu:26.04@sha256:d66b366dac61b575bee2aef07e9c26e8070096fbe84a3d4d3eb0da069b5d76db
     steps:
       - run: apt-get update -qq && apt-get install -y -qq ca-certificates curl git make tar unzip xz-utils libatomic1 >/dev/null
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
