@@ -221,10 +221,9 @@ checksum = "sha256:be032742ff205f7f2d7c189010bbb1f3891d0a67be0b1df0fe9d3e7f5fc5a
 url = "https://awscli.amazonaws.com/AWSCLIV2-2.40.3.pkg"
 
 [[tools.azure-cli]]
-version = "2.92.0"
+version = "2.93.0"
 backend = "pypi:azure-cli"
-specifiers = ["2.92.0"]
-uv = { path = "locks/mise.desktop/azure-cli/2.92.0~a837e014", digest = "sha256:f341d7da651d3f6557332bf3d6e481d390069535dc832266f9033ba14a437058" }
+specifiers = ["2.93.0"]
 
 [tools.azure-cli.options]
 dependency_prereleases = "allow"
