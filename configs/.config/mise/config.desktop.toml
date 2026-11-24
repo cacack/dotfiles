@@ -24,7 +24,7 @@ node = "26.13.1"
 python = "3.13.18"
 ruby = "4.0.9"
 rust = { version = "1.100.0", profile = "minimal", components = "rustfmt" }
-uv = "0.13.8"
+uv = "0.13.9"
 yamllint = "1.38.0"
 
 # Neovim's heavy-tier language servers and formatters (lua/configs/tools.lua,
