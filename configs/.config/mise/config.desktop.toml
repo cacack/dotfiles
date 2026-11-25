@@ -22,7 +22,7 @@ node = "26.13.1"
 # Held at 3.13 until pyyaml ships 3.15 wheels; without them mise cannot lock
 # the dependencies of the Python tools (azure-cli, yamllint, poetry).
 python = "3.13.18"
-ruby = "4.0.9"
+ruby = "4.0.10"
 rust = { version = "1.100.0", profile = "minimal", components = "rustfmt" }
 uv = "0.13.8"
 yamllint = "1.38.0"
